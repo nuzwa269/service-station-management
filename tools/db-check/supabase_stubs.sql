@@ -6,7 +6,7 @@ create role service_role nologin bypassrls;
 
 create schema auth;
 create table auth.users (
-  id uuid primary key default gen_random_uuid(),
+  id uuid primary key,          -- like Supabase: no default, callers must supply it
   phone text unique,
   phone_confirmed_at timestamptz,
   email text

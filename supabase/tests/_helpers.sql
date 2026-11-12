@@ -7,8 +7,8 @@ grant usage on schema tests to anon, authenticated, service_role;
 -- Creates an auth user with a confirmed (or unconfirmed) Pakistani phone.
 create or replace function tests.create_user(p_phone text, p_confirmed boolean default true)
 returns uuid language sql as $$
-  insert into auth.users (phone, phone_confirmed_at)
-  values (p_phone, case when p_confirmed then now() end)
+  insert into auth.users (id, phone, phone_confirmed_at)
+  values (gen_random_uuid(), p_phone, case when p_confirmed then now() end)
   returning id;
 $$;
 
