@@ -1,0 +1,24 @@
+# Environment configs (keys stay out of git; copy config/example.json)
+config/*.json
+!config/example.json
+.env
+supabase/.temp/
+supabase/.branches/
+
+# Dart / Flutter
+.dart_tool/
+build/
+*.iml
+.idea/
+.flutter-plugins
+.flutter-plugins-dependencies
+pubspec_overrides.yaml
+
+# Node
+node_modules/
+
+# Android signing — keystore is kept offline (TASK-072)
+*.jks
+*.keystore
+key.properties
+.claude/settings.local.json

@@ -1,0 +1,956 @@
+{
+  "project": {
+    "name": "Car Service Station Management SaaS",
+    "tagline": "Bookings, job cards, parts, billing, staff pay and customer history for independent car service stations in Pakistan",
+    "version": "1.0",
+    "status": "APPROVED 2026-11-13 — development handoff (no code built yet)",
+    "date": "2026-11-13",
+    "brand_color": "#275D71",
+    "approved_sources": [
+      "PROJECT_CONCEPT_BRIEF.md v1.2 (APPROVED, incl. CR-002)",
+      "PRD.md v1.1 (APPROVED, 61 active REQs, REQ-011 deprecated)",
+      "ARCHITECTURE.md v1.0 (APPROVED)",
+      "IMPLEMENTATION_PLAN.md v1.0 (APPROVED)",
+      "TASKS.md v1.0 (APPROVED plan, 75 tasks, all NOT_STARTED)",
+      "DECISIONS.md (DEC-001…DEC-032, CR-001 superseded, CR-002)",
+      "Styling: neutral default colour — provisional design, no brand assets supplied"
+    ]
+  },
+  "overview": {
+    "problem": "Workshops run on paper job cards, registers and spreadsheets: parts used on a car are not always billed, stock and supplier dues are hard to track, customers cannot see progress, and owners lack daily cash and staff-performance figures.",
+    "solution": "A multi-tenant SaaS with fully isolated data per station. Web dashboard for owner, manager and cashier; Android Staff app (mechanic work offline up to 24 h); Android Customer app for booking, estimate approval, tracking and invoices. Three plans: Basic PKR 2,500, Standard PKR 5,000, Premium PKR 8,000 per month; yearly = 10 months' price; 14-day full trial.",
+    "audience": "Independent car service stations in Pakistan (one branch each at launch), their staff and mechanics, their customers, and the platform owner as super admin. English UI, PKR, Pakistani formats.",
+    "mvp": [
+      "MOD-001…MOD-010, one branch per station, web + Android Staff app + Android Customer app (direct APK)",
+      "Job cards with checklist (no photos), estimate approval and extra-work re-approval",
+      "Parts by piece / litre / partial drum / kit, supplier purchases and ledger, low-stock alerts",
+      "Invoices with optional sales tax (NTN/STRN), split payments, approved credit, refunds by credit note, daily cash closing",
+      "Booking with owner-set bay capacity and no-show blocking (Standard+)",
+      "WhatsApp: manual prefilled send on all plans; automatic from the station's own connected account on Standard+ (CR-002)",
+      "Staff attendance, payroll with commission and advances (Premium)",
+      "Approvals inbox, owner-only audit log, reports with Excel export"
+    ],
+    "non_goals": [
+      "iOS apps (later)",
+      "Multi-branch, stock transfers, branch-based plans (later)",
+      "Urdu/RTL UI, FBR e-invoicing, Play Store listing, inspection photos (later)",
+      "SMS for customer messages and any platform message quota (removed by CR-002; SMS only for login codes)",
+      "In-app online payment by customers, marketplace/station search, white-label domains, general ledger accounting"
+    ]
+  },
+  "roles": [
+    {
+      "name": "Platform Super Admin",
+      "permissions": [
+        "Tenants, plans, trials, suspensions",
+        "Verify bank/cash subscription payments",
+        "Usage counts only — no station records without an owner-granted, time-limited support grant (REQ-005, REQ-012)"
+      ]
+    },
+    {
+      "name": "Station Owner",
+      "permissions": [
+        "Everything in the station: settings, prices, discount limit, tax",
+        "Sees profit, purchase cost, audit log, payroll",
+        "Approves discounts over limit, refunds, stock adjustments, credit release (REQ-057)",
+        "Connects the station's WhatsApp account (REQ-061)"
+      ]
+    },
+    {
+      "name": "Manager",
+      "permissions": [
+        "Job cards, bookings, assignment, quality check",
+        "Daily attendance (same day)",
+        "Approval rights delegated by owner by default",
+        "No profit, payroll or audit log"
+      ]
+    },
+    {
+      "name": "Cashier / Service Advisor",
+      "permissions": [
+        "Intake, estimates, invoices, payments",
+        "Discount up to owner-set limit (default 5%)",
+        "Requests approvals; sends manual WhatsApp (REQ-062)"
+      ]
+    },
+    {
+      "name": "Mechanic",
+      "permissions": [
+        "Only assigned jobs, no prices",
+        "Checklist, stages up to quality check, parts used",
+        "Works offline up to 24 h (REQ-023)"
+      ]
+    },
+    {
+      "name": "Customer",
+      "permissions": [
+        "One phone login across linked stations (REQ-047)",
+        "Book free slots, approve estimates and extra work",
+        "Track status, view invoices, dues and history"
+      ]
+    }
+  ],
+  "modules": [
+    {
+      "id": "MOD-001",
+      "name": "Tenant workspace, sign-up & access",
+      "description": "Self sign-up, roles, strict station isolation, branding, support access.",
+      "features": [
+        "OTP-verified sign-up",
+        "Role-based menus",
+        "Row-level isolation",
+        "Logo/NTN/STRN/tax settings"
+      ],
+      "req_ids": [
+        "REQ-001",
+        "REQ-002",
+        "REQ-003",
+        "REQ-004",
+        "REQ-005"
+      ]
+    },
+    {
+      "id": "MOD-002",
+      "name": "Subscription & platform admin",
+      "description": "Plans, trial, payments, 7-day grace then read-only, tenant exit.",
+      "features": [
+        "3 plans by features",
+        "JazzCash/Easypaisa/card/bank/cash",
+        "Grace + read-only",
+        "Excel export, deletion after 90 days"
+      ],
+      "req_ids": [
+        "REQ-006",
+        "REQ-007",
+        "REQ-008",
+        "REQ-009",
+        "REQ-010",
+        "REQ-012",
+        "REQ-013"
+      ]
+    },
+    {
+      "id": "MOD-003",
+      "name": "Booking & scheduling",
+      "description": "Owner-set bays and hours; customers auto-book free slots.",
+      "features": [
+        "Capacity per slot = bays",
+        "Staff walk-in/phone bookings",
+        "No-show after 30 min, block after N"
+      ],
+      "req_ids": [
+        "REQ-014",
+        "REQ-015",
+        "REQ-016",
+        "REQ-017"
+      ]
+    },
+    {
+      "id": "MOD-004",
+      "name": "Job cards & inspection",
+      "description": "Intake to delivery with approvals, offline mechanic work, rework and warranty.",
+      "features": [
+        "Checklist (no photos)",
+        "Estimate + re-approval",
+        "Stages + QC",
+        "Offline 24 h, last change wins"
+      ],
+      "req_ids": [
+        "REQ-018",
+        "REQ-019",
+        "REQ-020",
+        "REQ-021",
+        "REQ-022",
+        "REQ-023",
+        "REQ-024",
+        "REQ-025",
+        "REQ-026",
+        "REQ-027"
+      ]
+    },
+    {
+      "id": "MOD-005",
+      "name": "Parts, inventory & suppliers",
+      "description": "Stock by movement ledger with weighted average cost.",
+      "features": [
+        "Piece/litre/drum/kit",
+        "Supplier ledger (Standard+)",
+        "Adjustments with approval",
+        "Low/negative stock alerts",
+        "Excel import"
+      ],
+      "req_ids": [
+        "REQ-028",
+        "REQ-029",
+        "REQ-030",
+        "REQ-031",
+        "REQ-032",
+        "REQ-033",
+        "REQ-034"
+      ]
+    },
+    {
+      "id": "MOD-006",
+      "name": "Billing, payments & customer credit",
+      "description": "Invoices, discounts, tax, split payments, credit, refunds, day closing, printing.",
+      "features": [
+        "Labour service list",
+        "Discount limit",
+        "Credit only with approval",
+        "Credit notes, no deletion",
+        "Bluetooth / A4 / PDF"
+      ],
+      "req_ids": [
+        "REQ-035",
+        "REQ-036",
+        "REQ-037",
+        "REQ-038",
+        "REQ-039",
+        "REQ-040",
+        "REQ-041",
+        "REQ-042",
+        "REQ-043",
+        "REQ-044",
+        "REQ-045"
+      ]
+    },
+    {
+      "id": "MOD-007",
+      "name": "Customer & vehicle history",
+      "description": "Records, customer app account with station links, history, reminders.",
+      "features": [
+        "Search by phone/plate",
+        "Linked stations only",
+        "Next-service reminders"
+      ],
+      "req_ids": [
+        "REQ-046",
+        "REQ-047",
+        "REQ-048",
+        "REQ-049"
+      ]
+    },
+    {
+      "id": "MOD-008",
+      "name": "Staff, attendance, payroll & commission",
+      "description": "Premium: attendance, salary proration, commission on paid labour, advances.",
+      "features": [
+        "Daily attendance",
+        "Commission % per mechanic",
+        "Payroll finalise + lock",
+        "Performance report"
+      ],
+      "req_ids": [
+        "REQ-050",
+        "REQ-051",
+        "REQ-052",
+        "REQ-053",
+        "REQ-054"
+      ]
+    },
+    {
+      "id": "MOD-009",
+      "name": "Notifications",
+      "description": "Push to staff and customers; WhatsApp manual (all plans) or automatic from the station's own account (Standard+).",
+      "features": [
+        "Per-event toggles",
+        "Messages-to-send list",
+        "Meta Embedded Signup",
+        "No customer SMS"
+      ],
+      "req_ids": [
+        "REQ-055",
+        "REQ-056",
+        "REQ-061",
+        "REQ-062"
+      ]
+    },
+    {
+      "id": "MOD-010",
+      "name": "Reports, approvals & audit log",
+      "description": "Approvals inbox, append-only audit, reports and dashboard.",
+      "features": [
+        "4 approval types",
+        "Owner-only audit log",
+        "Excel export",
+        "Owner dashboard"
+      ],
+      "req_ids": [
+        "REQ-057",
+        "REQ-058",
+        "REQ-059",
+        "REQ-060"
+      ]
+    }
+  ],
+  "screens": [
+    {
+      "id": "SCR-003",
+      "name": "Owner dashboard (web)",
+      "purpose": "Today at a glance",
+      "components": [
+        "Jobs per stage tiles",
+        "Collections by method",
+        "Dues total",
+        "Low stock",
+        "Pending approvals",
+        "Messages to send"
+      ],
+      "actions": [
+        "Open module",
+        "Approve"
+      ],
+      "req_ids": [
+        "REQ-060",
+        "REQ-062"
+      ]
+    },
+    {
+      "id": "SCR-006",
+      "name": "Job card detail (web)",
+      "purpose": "Intake to quality check",
+      "components": [
+        "Vehicle + odometer + fuel",
+        "Checklist",
+        "Estimate lines",
+        "Approval state",
+        "Mechanics",
+        "Stage"
+      ],
+      "actions": [
+        "Send estimate",
+        "Record approval",
+        "Assign",
+        "QC pass/fail",
+        "Create invoice"
+      ],
+      "req_ids": [
+        "REQ-018",
+        "REQ-019",
+        "REQ-020",
+        "REQ-021",
+        "REQ-022",
+        "REQ-024"
+      ]
+    },
+    {
+      "id": "SCR-007",
+      "name": "Invoice & payment (web)",
+      "purpose": "Bill and collect",
+      "components": [
+        "Parts + labour lines",
+        "Discount + tax",
+        "Payments list",
+        "Due"
+      ],
+      "actions": [
+        "Record payment",
+        "Request credit",
+        "Print / share",
+        "Send on WhatsApp",
+        "Reverse"
+      ],
+      "req_ids": [
+        "REQ-036",
+        "REQ-037",
+        "REQ-038",
+        "REQ-039",
+        "REQ-045",
+        "REQ-062"
+      ]
+    },
+    {
+      "id": "SCR-009",
+      "name": "Inventory items (web)",
+      "purpose": "Stock and prices",
+      "components": [
+        "Item list with stock",
+        "Unit + min level",
+        "Selling price",
+        "Cost (owner only)"
+      ],
+      "actions": [
+        "Add item",
+        "Scan",
+        "Import",
+        "Request adjustment"
+      ],
+      "req_ids": [
+        "REQ-028",
+        "REQ-032",
+        "REQ-033",
+        "REQ-034"
+      ]
+    },
+    {
+      "id": "SCR-013",
+      "name": "Day closing (web)",
+      "purpose": "Match cash daily",
+      "components": [
+        "Expected per method",
+        "Counted cash",
+        "Difference + note"
+      ],
+      "actions": [
+        "Close day"
+      ],
+      "req_ids": [
+        "REQ-044"
+      ]
+    },
+    {
+      "id": "SCR-017",
+      "name": "Settings (web)",
+      "purpose": "Station rules",
+      "components": [
+        "Branding + tax",
+        "Services list",
+        "Discount limit",
+        "Bays + hours",
+        "WhatsApp connection status"
+      ],
+      "actions": [
+        "Save",
+        "Connect WhatsApp",
+        "Grant support access"
+      ],
+      "req_ids": [
+        "REQ-004",
+        "REQ-014",
+        "REQ-035",
+        "REQ-037",
+        "REQ-061",
+        "REQ-005"
+      ]
+    },
+    {
+      "id": "SCR-032",
+      "name": "Job work view (Staff app)",
+      "purpose": "Mechanic does the job, online or offline",
+      "components": [
+        "Complaints",
+        "Checklist",
+        "Parts used",
+        "Offline badge + pending count"
+      ],
+      "actions": [
+        "Start",
+        "Add part / scan",
+        "Request QC"
+      ],
+      "req_ids": [
+        "REQ-021",
+        "REQ-023",
+        "REQ-031"
+      ]
+    },
+    {
+      "id": "SCR-036",
+      "name": "Invoice print (Staff app)",
+      "purpose": "Receipt at the counter",
+      "components": [
+        "Invoice summary",
+        "Paired printer"
+      ],
+      "actions": [
+        "Bluetooth print",
+        "Share PDF",
+        "Send on WhatsApp"
+      ],
+      "req_ids": [
+        "REQ-045",
+        "REQ-062"
+      ]
+    },
+    {
+      "id": "SCR-042",
+      "name": "Book a slot (Customer app)",
+      "purpose": "Self-booking",
+      "components": [
+        "Linked station",
+        "Vehicle",
+        "Service",
+        "Free slots"
+      ],
+      "actions": [
+        "Confirm",
+        "Reschedule",
+        "Cancel (1 h before)"
+      ],
+      "req_ids": [
+        "REQ-015",
+        "REQ-016",
+        "REQ-017"
+      ]
+    },
+    {
+      "id": "SCR-043",
+      "name": "Job tracking (Customer app)",
+      "purpose": "Follow and approve",
+      "components": [
+        "Stage timeline",
+        "Estimate",
+        "Extra work request"
+      ],
+      "actions": [
+        "Approve",
+        "Reject"
+      ],
+      "req_ids": [
+        "REQ-020",
+        "REQ-022"
+      ]
+    },
+    {
+      "id": "SCR-019",
+      "name": "Subscription & billing (web)",
+      "purpose": "Owner pays the platform",
+      "components": [
+        "Plan + renewal date",
+        "Status (Trial/Active/Grace/Read-only)",
+        "Payment history"
+      ],
+      "actions": [
+        "Pay",
+        "Upgrade",
+        "Upload bank receipt"
+      ],
+      "req_ids": [
+        "REQ-007",
+        "REQ-008",
+        "REQ-009",
+        "REQ-010"
+      ]
+    },
+    {
+      "id": "SCR-022",
+      "name": "Tenant detail (Super admin)",
+      "purpose": "Run the SaaS",
+      "components": [
+        "Plan + status",
+        "Usage counts",
+        "Payments to verify",
+        "Support session (if granted)"
+      ],
+      "actions": [
+        "Verify payment",
+        "Extend trial",
+        "Suspend"
+      ],
+      "req_ids": [
+        "REQ-012",
+        "REQ-005",
+        "REQ-008"
+      ]
+    }
+  ],
+  "journeys": [
+    {
+      "name": "J1 Booking to delivery (Standard)",
+      "steps": [
+        "Customer books free slot in app",
+        "Arrives; job card with odometer, fuel, checklist",
+        "Estimate approved in app",
+        "Mechanic adds parts (offline OK) and syncs",
+        "Manager QC pass → Ready message",
+        "Invoice paid by JazzCash",
+        "Delivered + next-service reminder"
+      ],
+      "outcome": "Stock reduced, invoice paid, customer informed via push and station WhatsApp",
+      "req_ids": [
+        "REQ-015",
+        "REQ-018",
+        "REQ-020",
+        "REQ-023",
+        "REQ-024",
+        "REQ-036",
+        "REQ-038",
+        "REQ-049",
+        "REQ-055"
+      ]
+    },
+    {
+      "name": "J2 Walk-in on Basic plan",
+      "steps": [
+        "Cashier creates walk-in job card",
+        "Records phone approval",
+        "Discount above limit needs owner login",
+        "Invoice + Bluetooth receipt",
+        "Manual WhatsApp send"
+      ],
+      "outcome": "Paid invoice; money control kept with the owner",
+      "req_ids": [
+        "REQ-018",
+        "REQ-020",
+        "REQ-037",
+        "REQ-045",
+        "REQ-062"
+      ]
+    },
+    {
+      "name": "J3 Stock in",
+      "steps": [
+        "Manager enters supplier bill",
+        "Stock rises; average cost updated",
+        "Supplier due rises (Standard+)",
+        "Supplier payment reduces due"
+      ],
+      "outcome": "Correct stock value and supplier ledger",
+      "req_ids": [
+        "REQ-029",
+        "REQ-030"
+      ]
+    },
+    {
+      "name": "J4 Credit release",
+      "steps": [
+        "Customer can't pay full amount",
+        "Cashier requests credit release",
+        "Owner approves in Staff app",
+        "Vehicle delivered; due in customer ledger",
+        "Weekly dues reminder"
+      ],
+      "outcome": "Vehicle leaves only with approval; dues tracked",
+      "req_ids": [
+        "REQ-039",
+        "REQ-040",
+        "REQ-057"
+      ]
+    },
+    {
+      "name": "J5 Subscription lapse",
+      "steps": [
+        "Renewal date passes unpaid",
+        "Days 1–7: full use + reminders",
+        "Day 8: read-only",
+        "Owner uploads bank receipt",
+        "Super admin verifies → full access"
+      ],
+      "outcome": "Station keeps its data; access restored immediately on payment",
+      "req_ids": [
+        "REQ-008",
+        "REQ-009"
+      ]
+    },
+    {
+      "name": "J6 Month end payroll (Premium)",
+      "steps": [
+        "Daily attendance by manager",
+        "Owner opens March payroll",
+        "Salary by paid days + commission on paid labour − advances",
+        "Owner finalises; sheet locks"
+      ],
+      "outcome": "Example from PRD: net Rs 28,000",
+      "req_ids": [
+        "REQ-051",
+        "REQ-052",
+        "REQ-053"
+      ]
+    }
+  ],
+  "architecture": {
+    "layers": [
+      {
+        "name": "Clients (Flutter)",
+        "components": [
+          "Web dashboard + super admin (Flutter web)",
+          "Staff app (Android 8+, local SQLite + change queue)",
+          "Customer app (Android 8+, online)"
+        ]
+      },
+      {
+        "name": "Supabase — Mumbai ap-south-1",
+        "components": [
+          "Auth (password; phone OTP via SMS hook)",
+          "Postgres with row-level security per station",
+          "Business rules in SQL functions (one transaction each)",
+          "Append-only stock, payment, ledger and audit tables",
+          "Edge Functions (webhooks, WhatsApp sending, exports)",
+          "Scheduler jobs (no-show, grace, reminders, deletion)",
+          "Storage (logos, receipts, PDFs, APKs)"
+        ]
+      },
+      {
+        "name": "External services",
+        "components": [
+          "Firebase Cloud Messaging (push)",
+          "WhatsApp Cloud API — each station's own account via Embedded Signup",
+          "Local SMS aggregator — login codes only",
+          "Payment aggregator — JazzCash, Easypaisa, cards"
+        ]
+      }
+    ],
+    "flows": [
+      "Every money/stock/stage change goes through a named SQL function that checks role, plan, read-only state and validation, then writes ledgers and audit",
+      "Staff app offline: local write → change queue → sync_apply (idempotent by client_change_id) → last change wins, loser kept in history, manager alerted",
+      "Event → message outbox → automatic send from the station's WhatsApp account, or the manual Messages-to-send list with a prefilled wa.me link",
+      "Subscription: checkout → provider webhook (signature checked, status re-queried) → plan activated; bank/cash verified by super admin",
+      "Backups: Supabase daily (7-day retention) + weekly off-site copy; quarterly restore drill"
+    ],
+    "trust_boundaries": [
+      "Apps hold only the public URL and anon key; all access enforced by row-level security",
+      "Provider keys and station WhatsApp tokens live only in Edge Function secrets",
+      "Mechanic devices never receive prices or purchase costs; server re-validates every uploaded change",
+      "Super admin sees station data only during an owner-granted, time-limited, read-only support grant"
+    ]
+  },
+  "ai_workflow": [],
+  "data": [
+    {
+      "name": "Station operations (jobs, invoices, payments, stock, staff)",
+      "source": "Staff entry on web and Staff app",
+      "retention": "While account active; deleted 90 days after closing"
+    },
+    {
+      "name": "Customers and vehicles",
+      "source": "Staff entry, Excel import, customer app",
+      "retention": "Same as station data; customer account per phone links to stations"
+    },
+    {
+      "name": "Audit log",
+      "source": "Database triggers (no edits or deletes)",
+      "retention": "Life of the account"
+    },
+    {
+      "name": "Subscription payments",
+      "source": "Payment aggregator webhooks; super admin verification",
+      "retention": "Platform records"
+    },
+    {
+      "name": "Backups",
+      "source": "Supabase daily + weekly off-site export",
+      "retention": "7 days daily; 8 weeks weekly copies"
+    }
+  ],
+  "security": [
+    "Cross-station isolation tests on every table in CI (TEST-003)",
+    "Discount, credit, refund and stock rules enforced on the server, not only in the UI",
+    "No deletion of money or stock records — reversal with reason only (REQ-042)",
+    "Webhook signature checks + idempotency; OTP rate limit (5 per hour per phone, ARCHITECTURE §6)",
+    "Signed APKs from our HTTPS domain; keystore kept offline with two copies",
+    "Read-only mode on subscription lapse blocks writes in the database",
+    "Targets: screens < 3 s on 4G, 99.5% monthly availability, 24 h offline for mechanics"
+  ],
+  "roadmap": [
+    {
+      "phase": "Phase 0 — Setup & verification",
+      "goal": "Accounts, vendors and spikes verified",
+      "tasks": [
+        "TASK-001…TASK-009: repo + CI, Supabase Mumbai, hosting, Meta Tech Provider, SMS OTP, payment aggregator, own-sync spike, Flutter web spike, printer/scanner spike"
+      ],
+      "req_ids": [
+        "REQ-003",
+        "REQ-008",
+        "REQ-023",
+        "REQ-045",
+        "REQ-061"
+      ]
+    },
+    {
+      "phase": "Phase 1 — Foundation",
+      "goal": "Tenancy, roles, entitlements, audit",
+      "tasks": [
+        "TASK-010…TASK-019"
+      ],
+      "req_ids": [
+        "REQ-001",
+        "REQ-002",
+        "REQ-003",
+        "REQ-004",
+        "REQ-005",
+        "REQ-006",
+        "REQ-058"
+      ]
+    },
+    {
+      "phase": "Phase 2 — Inventory, approvals, customers",
+      "goal": "Stock, suppliers, approvals engine, customer records",
+      "tasks": [
+        "TASK-020…TASK-028"
+      ],
+      "req_ids": [
+        "REQ-028",
+        "REQ-029",
+        "REQ-030",
+        "REQ-032",
+        "REQ-033",
+        "REQ-034",
+        "REQ-046",
+        "REQ-048",
+        "REQ-057"
+      ]
+    },
+    {
+      "phase": "Phase 3 — Job cards & offline Staff app",
+      "goal": "Intake to QC, own sync engine",
+      "tasks": [
+        "TASK-029…TASK-037"
+      ],
+      "req_ids": [
+        "REQ-018",
+        "REQ-019",
+        "REQ-020",
+        "REQ-021",
+        "REQ-022",
+        "REQ-023",
+        "REQ-024",
+        "REQ-025",
+        "REQ-026",
+        "REQ-027",
+        "REQ-031"
+      ]
+    },
+    {
+      "phase": "Phase 4 — Billing & payments → M1 internal alpha",
+      "goal": "Basic-plan feature set complete",
+      "tasks": [
+        "TASK-038…TASK-046"
+      ],
+      "req_ids": [
+        "REQ-035",
+        "REQ-036",
+        "REQ-037",
+        "REQ-038",
+        "REQ-039",
+        "REQ-040",
+        "REQ-041",
+        "REQ-042",
+        "REQ-043",
+        "REQ-044",
+        "REQ-045"
+      ]
+    },
+    {
+      "phase": "Phase 5 — Subscription & super admin",
+      "goal": "Trial → grace → read-only → paid cycle",
+      "tasks": [
+        "TASK-047…TASK-052"
+      ],
+      "req_ids": [
+        "REQ-007",
+        "REQ-008",
+        "REQ-009",
+        "REQ-010",
+        "REQ-012",
+        "REQ-013"
+      ]
+    },
+    {
+      "phase": "Phase 6 — Booking & Customer app",
+      "goal": "Self-booking and customer approvals",
+      "tasks": [
+        "TASK-053…TASK-059"
+      ],
+      "req_ids": [
+        "REQ-014",
+        "REQ-015",
+        "REQ-016",
+        "REQ-017",
+        "REQ-047",
+        "REQ-049"
+      ]
+    },
+    {
+      "phase": "Phase 7 — Notifications & WhatsApp → M2 beta",
+      "goal": "Automatic + manual WhatsApp, staff push",
+      "tasks": [
+        "TASK-060…TASK-062"
+      ],
+      "req_ids": [
+        "REQ-055",
+        "REQ-056",
+        "REQ-061",
+        "REQ-062"
+      ]
+    },
+    {
+      "phase": "Phase 8 — Reports, dashboard, payroll",
+      "goal": "Premium feature set",
+      "tasks": [
+        "TASK-063…TASK-067"
+      ],
+      "req_ids": [
+        "REQ-050",
+        "REQ-051",
+        "REQ-052",
+        "REQ-053",
+        "REQ-054",
+        "REQ-059",
+        "REQ-060"
+      ]
+    },
+    {
+      "phase": "Phase 9 — Hardening, pilot → M3 launch",
+      "goal": "Security, load, E2E, device tests; 2–3 station pilot",
+      "tasks": [
+        "TASK-068…TASK-075"
+      ],
+      "req_ids": [
+        "REQ-003",
+        "REQ-005",
+        "REQ-013",
+        "REQ-045"
+      ]
+    }
+  ],
+  "risks": [
+    "Own offline sync must be correct (ordering, duplicates, conflicts) — dedicated test suite, real-device spike (R5)",
+    "Meta Tech Provider and template approval delays — manual WhatsApp covers the gap (R2)",
+    "Stations may find Meta sign-up / payment method hard — guide, video and onboarding support (R1)",
+    "Payment aggregator merchant approval time — bank/cash manual path still works (R3)",
+    "Direct-APK installs and updates may put customers off — install guide, in-app updater (R6)",
+    "Schedule ≈ 9 months to launch assumes 2 developers + part-time QA (ASSUMED)",
+    "Running cost ≈ US$40–50/month fixed is an estimate; prices to be verified in Phase 0"
+  ],
+  "open_questions": [
+    "Team size — needed to re-estimate the ~9-month schedule",
+    "Vendors for SMS (login codes) and payment aggregator — chosen in Phase 0 after verification",
+    "Exact current prices (Supabase compute, SMS, aggregator fees) — TASK-002, TASK-005, TASK-006"
+  ],
+  "acceptance_checklist": [
+    "Blueprint content matches approved Brief v1.2, PRD v1.1, Architecture v1.0 and Plan v1.0 — no new features",
+    "All 10 modules, 6 roles and 6 journeys shown with REQ IDs",
+    "Screens are low-fidelity concept cards, not implemented UI",
+    "Architecture shows trust boundaries and external services",
+    "Roadmap links phases to TASK and REQ IDs",
+    "Open items labelled; no implemented code implied (all tasks NOT_STARTED)",
+    "PDF rendered on A4 and pages visually checked"
+  ],
+  "source_trace": [
+    {
+      "artifact": "PROJECT_CONCEPT_BRIEF.md",
+      "version": "1.2",
+      "status": "APPROVED 2026-11-12/13"
+    },
+    {
+      "artifact": "PRD.md + TRACEABILITY_MATRIX.csv",
+      "version": "1.1",
+      "status": "APPROVED 2026-11-13"
+    },
+    {
+      "artifact": "ARCHITECTURE.md",
+      "version": "1.0",
+      "status": "APPROVED 2026-11-13"
+    },
+    {
+      "artifact": "IMPLEMENTATION_PLAN.md",
+      "version": "1.0",
+      "status": "APPROVED 2026-11-13"
+    },
+    {
+      "artifact": "TASKS.md",
+      "version": "1.0",
+      "status": "APPROVED plan; all tasks NOT_STARTED"
+    },
+    {
+      "artifact": "DECISIONS.md",
+      "version": "DEC-001…DEC-032, CR-002",
+      "status": "Current"
+    },
+    {
+      "artifact": "blueprint_data.json / BLUEPRINT.md",
+      "version": "1.0",
+      "status": "APPROVED 2026-11-13"
+    }
+  ]
+}

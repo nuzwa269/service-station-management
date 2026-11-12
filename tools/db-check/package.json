@@ -1,0 +1,19 @@
+{
+  "name": "db-check",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node run.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@electric-sql/pglite": "0.5.16"
+  },
+  "devDependencies": {
+    "@supabase/supabase-js": "2.119.0"
+  }
+}

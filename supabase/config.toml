@@ -1,0 +1,25 @@
+project_id = "car-service-saas"
+
+[api]
+port = 54321
+schemas = ["public", "storage"]
+max_rows = 1000
+
+[db]
+port = 54322
+major_version = 15
+
+[auth]
+site_url = "http://localhost:3000"
+enable_signup = true
+
+[auth.sms]
+enable_signup = true
+enable_confirmations = true
+# Login codes go through a local SMS aggregator via the Send SMS hook (TASK-005).
+# For local development use test OTPs:
+[auth.sms.test_otp]
+923001234567 = "123456"
+
+[functions.invite-member]
+verify_jwt = true

@@ -1,0 +1,44 @@
+# TASK-001 — pull request gate: lint, unit, widget, database and isolation tests.
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  flutter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: flutter analyze apps packages
+      - run: dart test
+        working-directory: packages/core
+      - run: flutter test
+        working-directory: apps/web
+      - run: flutter test
+        working-directory: apps/staff
+
+  database:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # Fast check on embedded Postgres (PGlite): migrations + TEST-003 isolation + rule tests.
+      - run: npm ci
+        working-directory: tools/db-check
+      - run: node run.mjs
+        working-directory: tools/db-check
+      # Same tests on the real Supabase stack (auth, storage, Postgres 15).
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      - run: supabase start -x studio,imgproxy,inbucket,edge-runtime,logflare,vector,supavisor
+      - run: npm install --no-save pg && DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:54322/postgres node run.mjs
+        working-directory: tools/db-check

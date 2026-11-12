@@ -1,0 +1,5 @@
+{
+  "APP_ENV": "staging",
+  "SUPABASE_URL": "https://<project-ref>.supabase.co",
+  "SUPABASE_PUBLISHABLE_KEY": "sb_publishable_..."
+}

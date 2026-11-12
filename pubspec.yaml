@@ -1,0 +1,15 @@
+name: car_service_saas_workspace
+publish_to: none
+
+environment:
+  sdk: ^3.9.0
+
+workspace:
+  - packages/core
+  - packages/app_shared
+  - apps/web
+  - apps/staff
+  - apps/customer
+
+dev_dependencies:
+  lints: ^6.0.0
