@@ -7,7 +7,7 @@
 
 | Task ID | Phase | Task | REQ IDs | Dependencies | Test / proof | Status |
 |---|---|---|---|---|---|---|
-| TASK-001 | 0 | Create monorepo (apps/staff, apps/customer, apps/web, packages/core, supabase/) with lint and CI skeleton | — | — | CI runs lint + empty test suite green | IN_PROGRESS |
+| TASK-001 | 0 | Create monorepo (apps/staff, apps/customer, apps/web, packages/core, supabase/) with lint and CI skeleton | — | — | CI runs lint + empty test suite green | DONE |
 | TASK-002 | 0 | Create Supabase staging + production projects in Mumbai; record plan, compute size and current prices | REQ-003 | TASK-001 | Cost table filled in IMPLEMENTATION_PLAN Costs section | NOT_STARTED |
 | TASK-003 | 0 | Choose web hosting + domain/subdomains; HTTPS for web, super admin, APK downloads | REQ-045 | TASK-001 | Staging URL serves a test page over HTTPS | NOT_STARTED |
 | TASK-004 | 0 | Register as Meta Tech Provider, set up Embedded Signup test, prepare standard English templates for REQ-055 events | REQ-061, REQ-055 | — | Test station connected; a template message sent from its number | NOT_STARTED |
@@ -16,16 +16,16 @@
 | TASK-007 | 0 | Own sync engine spike: local SQLite + change queue + sync_pull/sync_apply on Android 8 / 2 GB phone, 24 h offline | REQ-023, REQ-031 | TASK-002 | Spike report: memory, sync time, duplicate and conflict handling | NOT_STARTED |
 | TASK-008 | 0 | Flutter web spike: measure first-load size and time on 4G for a dashboard shell | REQ-060 | TASK-001 | Report vs 3 s target; confirms DEC-030 | NOT_STARTED |
 | TASK-009 | 0 | Bluetooth ESC/POS printer (58/80 mm) + barcode/QR scanning spike on Android 8 | REQ-045, REQ-028 | TASK-001 | Receipt printed; barcode read | NOT_STARTED |
-| TASK-010 | 1 | Core schema: stations, profiles, station_members, roles; RLS on every tenant table | REQ-002, REQ-003 | TASK-002 | Database policy tests pass | IN_PROGRESS |
-| TASK-011 | 1 | Automated cross-station isolation test suite covering every table and view | REQ-003 | TASK-010 | TEST-003 passes for all tables | IN_PROGRESS |
-| TASK-012 | 1 | Shared core package: PKR/date/phone/plate formatting, error codes, validation | REQ-018, REQ-036, REQ-046 | TASK-001 | Unit tests for formats | IN_PROGRESS |
-| TASK-013 | 1 | App shells: web (role routes), staff app, customer app with login and session | REQ-002 | TASK-010, TASK-012 | Widget tests; login works on staging | IN_PROGRESS |
-| TASK-014 | 1 | Station sign-up with OTP + onboarding wizard (SCR-001, SCR-002) | REQ-001, REQ-004 | TASK-005, TASK-013 | TEST-001 | IN_PROGRESS |
-| TASK-015 | 1 | Users and roles management, deactivation with open-job check | REQ-002 | TASK-013 | TEST-002 | IN_PROGRESS |
+| TASK-010 | 1 | Core schema: stations, profiles, station_members, roles; RLS on every tenant table | REQ-002, REQ-003 | TASK-002 | Database policy tests pass | DONE |
+| TASK-011 | 1 | Automated cross-station isolation test suite covering every table and view | REQ-003 | TASK-010 | TEST-003 passes for all tables | DONE |
+| TASK-012 | 1 | Shared core package: PKR/date/phone/plate formatting, error codes, validation | REQ-018, REQ-036, REQ-046 | TASK-001 | Unit tests for formats | DONE |
+| TASK-013 | 1 | App shells: web (role routes), staff app, customer app with login and session | REQ-002 | TASK-010, TASK-012 | Widget tests; login works on staging | DONE |
+| TASK-014 | 1 | Station sign-up with OTP + onboarding wizard (SCR-001, SCR-002) | REQ-001, REQ-004 | TASK-005, TASK-013 | TEST-001 | DONE |
+| TASK-015 | 1 | Users and roles management, deactivation with open-job check | REQ-002 | TASK-013 | TEST-002 | DONE |
 | TASK-016 | 1 | Station profile, logo upload, tax and NTN/STRN settings | REQ-004 | TASK-014 | TEST-004 | IN_PROGRESS |
-| TASK-017 | 1 | Plans, features, station_entitlements view; gating in write functions and locked-feature UI | REQ-006 | TASK-010 | TEST-006 | IN_PROGRESS |
-| TASK-018 | 1 | Audit-log triggers on all money/stock/settings tables + owner viewer (SCR-018) | REQ-058 | TASK-010 | TEST-058; no update/delete grants | IN_PROGRESS |
-| TASK-019 | 1 | Support access grants (time-limited, read-only, logged) | REQ-005 | TASK-017, TASK-018 | TEST-005 | IN_PROGRESS |
+| TASK-017 | 1 | Plans, features, station_entitlements view; gating in write functions and locked-feature UI | REQ-006 | TASK-010 | TEST-006 | DONE |
+| TASK-018 | 1 | Audit-log triggers on all money/stock/settings tables + owner viewer (SCR-018) | REQ-058 | TASK-010 | TEST-058; no update/delete grants | DONE |
+| TASK-019 | 1 | Support access grants (time-limited, read-only, logged) | REQ-005 | TASK-017, TASK-018 | TEST-005 | DONE |
 | TASK-020 | 2 | Items, units (piece/litre/kit), bulk containers, kits, prices, min level (SCR-009) | REQ-028 | TASK-017 | TEST-028 | NOT_STARTED |
 | TASK-021 | 2 | Purchases with stock movements and weighted average cost (SCR-010) | REQ-029 | TASK-020 | TEST-029 | NOT_STARTED |
 | TASK-022 | 2 | Suppliers, supplier ledger and payments (Standard+) | REQ-030 | TASK-021 | TEST-030 | NOT_STARTED |
@@ -94,3 +94,5 @@ Allowed statuses: NOT_STARTED, IN_PROGRESS, BLOCKED, DONE. Do not claim tests pa
 - 2026-11-13: phone confirmations turned on in staging. With test number 0399-0000003: sign-up gives no session and an unconfirmed phone; creating a station before the code is refused; a wrong code is rejected; the right code confirms and logs in; the station is then created with a Premium trial, and the owner sees exactly 1 station.
 - Staging SMS provider is a placeholder (dummy Twilio values), so only test numbers can sign up until TASK-005.
 - Not yet done, so none is DONE: database tests not run on the real Supabase stack; CI not run on GitHub; phone OTP not tested with a real SMS.
+- 2026-11-13: CI run #3 green on `main` (commit 90fe91b): flutter analyze, core unit tests, web and staff widget tests, database tests on PGlite **and** on the real Supabase stack (CLI 3.1.0). TASK-001, 010–015, 017–019 marked DONE on that evidence plus the staging checks above.
+- TASK-016 stays IN_PROGRESS: profile and tax are proven (TEST-004, staging), but the logo upload to the `station-logos` bucket has not been tried yet.
