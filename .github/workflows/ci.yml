@@ -7,13 +7,16 @@ on:
 
 jobs:
   flutter:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
+          # Same version as development machines, so analyze/test results match.
+          flutter-version: 3.47.8
           cache: true
+      - run: flutter --version
       - run: flutter pub get
       - run: flutter analyze apps packages
       - run: dart test
@@ -24,10 +27,10 @@ jobs:
         working-directory: apps/staff
 
   database:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
       # Fast check on embedded Postgres (PGlite): migrations + TEST-003 isolation + rule tests.
@@ -35,10 +38,11 @@ jobs:
         working-directory: tools/db-check
       - run: node run.mjs
         working-directory: tools/db-check
-      # Same tests on the real Supabase stack (auth, storage, Postgres 15).
+      # Same tests on the real Supabase stack (auth, storage, Postgres).
       - uses: supabase/setup-cli@v1
         with:
-          version: latest
-      - run: supabase start -x studio,imgproxy,inbucket,edge-runtime,logflare,vector,supavisor
+          version: 3.1.0
+      # Names valid for Supabase CLI 3.x (mailpit replaced inbucket).
+      - run: supabase start -x studio,imgproxy,mailpit,edge-runtime,logflare,vector,supavisor,realtime
       - run: npm install --no-save pg && DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:54322/postgres node run.mjs
         working-directory: tools/db-check
