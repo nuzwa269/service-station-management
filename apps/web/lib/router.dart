@@ -6,8 +6,13 @@ import 'package:go_router/go_router.dart';
 import 'package:station_core/station_core.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'screens/approvals_screen.dart';
 import 'screens/audit_screen.dart';
 import 'screens/auth_screens.dart';
+import 'screens/customers_screen.dart';
+import 'screens/import_screen.dart';
+import 'screens/inventory_screen.dart';
+import 'screens/purchases_screen.dart';
 import 'screens/shell.dart';
 import 'screens/settings_screen.dart';
 import 'screens/subscription_screen.dart';
@@ -42,6 +47,7 @@ class AppRouter {
           routes: [
             for (final m in MenuItem.values) GoRoute(path: pathFor(m), builder: (_, _) => screenFor(m)),
             GoRoute(path: '/users', builder: (_, _) => const UsersScreen()),
+            GoRoute(path: '/import', builder: (_, _) => const ImportScreen()),
           ],
         ),
       ],
@@ -80,10 +86,10 @@ Widget screenFor(MenuItem m) => switch (m) {
       MenuItem.dashboard => const PlannedScreen(title: 'Today at a glance', phase: 'Phase 8 (TASK-064)'),
       MenuItem.bookings => const PlannedScreen(title: 'Bookings', phase: 'Phase 6 (TASK-056)'),
       MenuItem.jobCards => const PlannedScreen(title: 'Job cards', phase: 'Phase 3 (TASK-029)'),
-      MenuItem.customers => const PlannedScreen(title: 'Customers & vehicles', phase: 'Phase 2 (TASK-026)'),
-      MenuItem.inventory => const PlannedScreen(title: 'Inventory', phase: 'Phase 2 (TASK-020)'),
-      MenuItem.purchases => const PlannedScreen(title: 'Purchases & suppliers', phase: 'Phase 2 (TASK-021)'),
-      MenuItem.approvals => const PlannedScreen(title: 'Approvals', phase: 'Phase 2 (TASK-023)'),
+      MenuItem.customers => const CustomersScreen(),
+      MenuItem.inventory => const InventoryScreen(),
+      MenuItem.purchases => const PurchasesScreen(),
+      MenuItem.approvals => const ApprovalsScreen(),
       MenuItem.dayClosing => const PlannedScreen(title: 'Day closing', phase: 'Phase 4 (TASK-045)'),
       MenuItem.reports => const PlannedScreen(title: 'Reports', phase: 'Phase 8 (TASK-063)'),
       MenuItem.staff => const PlannedScreen(title: 'Staff & attendance', phase: 'Phase 8 (TASK-065)'),

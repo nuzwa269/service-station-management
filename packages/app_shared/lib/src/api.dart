@@ -82,6 +82,9 @@ class StationApi {
 
   String? get userId => client.auth.currentUser?.id;
 
+  /// Runs a backend call and converts failures to [AppError] (used by API extensions).
+  Future<T> guard<T>(Future<T> Function() run) => _guard(run);
+
   Future<T> _guard<T>(Future<T> Function() run) async {
     try {
       return await run();

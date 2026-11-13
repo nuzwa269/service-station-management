@@ -13,6 +13,8 @@ enum AppErrorCode {
   mobileInUse('MOBILE_IN_USE', 'This mobile number is already in use.'),
   hasOpenJobs('HAS_OPEN_JOBS', 'Reassign this user\'s open jobs first.'),
   auditImmutable('AUDIT_IMMUTABLE', 'Audit entries cannot be changed.'),
+  appendOnly('APPEND_ONLY', 'Saved entries cannot be changed. Reverse them with a reason.'),
+  ownerOnly('OWNER_ONLY', 'On the Basic plan only the owner can do this. Ask the owner to log in.'),
   network('NETWORK', 'No internet connection. Please try again.'),
   unknown('UNKNOWN', 'Something went wrong. Please try again.');
 
@@ -38,7 +40,8 @@ class AppError implements Exception {
   final String? detail;
 
   /// Validation details are written for users; other codes use the fixed message.
-  String get message => (code == AppErrorCode.validation || code == AppErrorCode.readOnly) && detail != null
+  String get message => (code == AppErrorCode.validation || code == AppErrorCode.readOnly || code == AppErrorCode.notFound) &&
+          detail != null
       ? detail!
       : code.defaultMessage;
 

@@ -26,15 +26,15 @@
 | TASK-017 | 1 | Plans, features, station_entitlements view; gating in write functions and locked-feature UI | REQ-006 | TASK-010 | TEST-006 | DONE |
 | TASK-018 | 1 | Audit-log triggers on all money/stock/settings tables + owner viewer (SCR-018) | REQ-058 | TASK-010 | TEST-058; no update/delete grants | DONE |
 | TASK-019 | 1 | Support access grants (time-limited, read-only, logged) | REQ-005 | TASK-017, TASK-018 | TEST-005 | DONE |
-| TASK-020 | 2 | Items, units (piece/litre/kit), bulk containers, kits, prices, min level (SCR-009) | REQ-028 | TASK-017 | TEST-028 | NOT_STARTED |
-| TASK-021 | 2 | Purchases with stock movements and weighted average cost (SCR-010) | REQ-029 | TASK-020 | TEST-029 | NOT_STARTED |
-| TASK-022 | 2 | Suppliers, supplier ledger and payments (Standard+) | REQ-030 | TASK-021 | TEST-030 | NOT_STARTED |
-| TASK-023 | 2 | Approvals engine: requests, approve/reject, inbox web + staff app, Basic owner-only path | REQ-057, REQ-032, REQ-037, REQ-039, REQ-041 | TASK-017, TASK-018 | TEST-057 | NOT_STARTED |
-| TASK-024 | 2 | Stock adjustment requests via approvals (SCR-011) | REQ-032 | TASK-020, TASK-023 | TEST-032 | NOT_STARTED |
-| TASK-025 | 2 | Low-stock and negative-stock alerts | REQ-033, REQ-031 | TASK-020 | TEST-033 | NOT_STARTED |
-| TASK-026 | 2 | Customers and vehicles: records, search, ownership change (SCR-008) | REQ-046 | TASK-010 | TEST-046 | NOT_STARTED |
-| TASK-027 | 2 | Excel templates and import with row-level rejection report (SCR-020) | REQ-034 | TASK-020, TASK-026 | TEST-034 (1,000-row file) | NOT_STARTED |
-| TASK-028 | 2 | Vehicle service history timeline | REQ-048 | TASK-026 | TEST-048 | NOT_STARTED |
+| TASK-020 | 2 | Items, units (piece/litre/kit), bulk containers, kits, prices, min level (SCR-009) | REQ-028 | TASK-017 | TEST-028 | IN_PROGRESS |
+| TASK-021 | 2 | Purchases with stock movements and weighted average cost (SCR-010) | REQ-029 | TASK-020 | TEST-029 | IN_PROGRESS |
+| TASK-022 | 2 | Suppliers, supplier ledger and payments (Standard+) | REQ-030 | TASK-021 | TEST-030 | IN_PROGRESS |
+| TASK-023 | 2 | Approvals engine: requests, approve/reject, inbox web + staff app, Basic owner-only path | REQ-057, REQ-032, REQ-037, REQ-039, REQ-041 | TASK-017, TASK-018 | TEST-057 | IN_PROGRESS |
+| TASK-024 | 2 | Stock adjustment requests via approvals (SCR-011) | REQ-032 | TASK-020, TASK-023 | TEST-032 | IN_PROGRESS |
+| TASK-025 | 2 | Low-stock and negative-stock alerts | REQ-033, REQ-031 | TASK-020 | TEST-033 | IN_PROGRESS |
+| TASK-026 | 2 | Customers and vehicles: records, search, ownership change (SCR-008) | REQ-046 | TASK-010 | TEST-046 | IN_PROGRESS |
+| TASK-027 | 2 | Excel templates and import with row-level rejection report (SCR-020) | REQ-034 | TASK-020, TASK-026 | TEST-034 (1,000-row file) | IN_PROGRESS |
+| TASK-028 | 2 | Vehicle service history timeline | REQ-048 | TASK-026 | TEST-048 | IN_PROGRESS |
 | TASK-029 | 3 | Job card intake from booking or walk-in, odometer check (SCR-005, SCR-006) | REQ-018 | TASK-026 | TEST-018 | NOT_STARTED |
 | TASK-030 | 3 | Station checklist configuration and use, add-to-estimate | REQ-019 | TASK-029 | TEST-019 | NOT_STARTED |
 | TASK-031 | 3 | Estimate, customer/phone approval, extra-work re-approval | REQ-020, REQ-022 | TASK-029 | TEST-020, TEST-022 | NOT_STARTED |
@@ -96,3 +96,5 @@ Allowed statuses: NOT_STARTED, IN_PROGRESS, BLOCKED, DONE. Do not claim tests pa
 - Not yet done, so none is DONE: database tests not run on the real Supabase stack; CI not run on GitHub; phone OTP not tested with a real SMS.
 - 2026-11-13: CI run #3 green on `main` (commit 90fe91b): flutter analyze, core unit tests, web and staff widget tests, database tests on PGlite **and** on the real Supabase stack (CLI 3.1.0). TASK-001, 010–015, 017–019 marked DONE on that evidence plus the staging checks above.
 - TASK-016 stays IN_PROGRESS: profile and tax are proven (TEST-004, staging), but the logo upload to the `station-logos` bucket has not been tried yet.
+- 2026-11-14 Phase 2 (branch `phase-2-inventory`): migrations 07–10 (items, kits, append-only stock movements with weighted average cost, suppliers and ledger, purchases with reversal, approvals engine with Basic owner-only path, customers and vehicles with search, Excel import). `test_phase2_inventory.sql` passes on PGlite: TEST-028, 029 (avg cost 450), 030 (due 20,000), 031/033 (negative and low stock), 032, 034 (1,000 rows → 997 added, 3 "Name missing"), 046 (search "1234"), 057. TEST-003 now seeds every Phase 2 table in the other station and still finds no leak. Web screens for inventory, purchases/suppliers, approvals, customers and Excel import; 17 core tests and 8 web tests pass.
+- Phase 2 tasks stay IN_PROGRESS until CI is green and `supabase/dashboard_phase2.sql` is applied on staging. TASK-028 is partial by design: the vehicle timeline shows ownership now; jobs, parts and invoices join it in Phases 3–4. Low-stock push (REQ-033) arrives with notifications in Phase 7.

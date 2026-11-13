@@ -3,6 +3,7 @@ library;
 
 export 'src/api.dart';
 export 'src/config.dart';
+export 'src/inventory_api.dart';
 export 'src/login.dart';
 export 'src/session.dart';
 export 'src/widgets.dart';

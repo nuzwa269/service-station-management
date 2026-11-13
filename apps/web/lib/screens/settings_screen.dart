@@ -27,6 +27,13 @@ class SettingsScreen extends StatelessWidget {
         onTap: () => context.go('/users'),
       ),
       if (role == MemberRole.owner) ...[
+        ListTile(
+          leading: const Icon(Icons.upload_file_outlined),
+          title: const Text('Import from Excel'),
+          subtitle: const Text('Items with opening stock, customers and vehicles'),
+          trailing: const Icon(Icons.chevron_right),
+          onTap: () => context.go('/import'),
+        ),
         const Divider(height: 32),
         const SupportAccessSection(),
       ],

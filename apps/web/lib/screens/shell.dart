@@ -75,7 +75,8 @@ class StationShellView extends StatelessWidget {
     final current = items.where((m) => location == '/${m.name}').firstOrNull;
     final locked = current?.feature != null && !entitlements.has(current!.feature!);
     final allowed = current != null ||
-        (location == '/users' && (role == MemberRole.owner || role == MemberRole.manager));
+        (location == '/users' && (role == MemberRole.owner || role == MemberRole.manager)) ||
+        (location == '/import' && role == MemberRole.owner);
     final wide = MediaQuery.sizeOf(context).width >= 900;
 
     final body = Column(children: [

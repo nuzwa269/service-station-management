@@ -11,6 +11,7 @@ environment:
 dependencies:
   app_shared:
     path: ../../packages/app_shared
+  excel: ^4.0.6
   file_picker: ^13.3.3
   flutter:
     sdk: flutter
@@ -18,6 +19,7 @@ dependencies:
   station_core:
     path: ../../packages/core
   supabase_flutter: ^2.18.3
+  web: ^1.1.2
 
 dev_dependencies:
   flutter_test:

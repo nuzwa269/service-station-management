@@ -83,6 +83,29 @@ void main() {
     });
   });
 
+  group('Inventory (REQ-028, REQ-029)', () {
+    test('quantity rules per unit', () {
+      expect(isValidQty(ItemUnit.litre, 3.5), isTrue);
+      expect(isValidQty(ItemUnit.litre, 3.55), isTrue);
+      expect(isValidQty(ItemUnit.litre, 3.555), isFalse);
+      expect(isValidQty(ItemUnit.piece, 2), isTrue);
+      expect(isValidQty(ItemUnit.piece, 1.5), isFalse);
+      expect(formatQty(196.5, ItemUnit.litre), '196.50 L');
+      expect(formatQty(20, ItemUnit.piece), '20 pcs');
+    });
+
+    test('weighted average cost: 10 @ 400 + 10 @ 500 = 450', () {
+      expect(weightedAverageCost(onHand: 10, avgCost: 40000, qty: 10, unitCost: 50000), 45000);
+      expect(weightedAverageCost(onHand: -2, avgCost: 40000, qty: 10, unitCost: 50000), 50000);
+    });
+
+    test('new error codes map', () {
+      expect(AppError.fromDatabase('OWNER_ONLY', 'x').code, AppErrorCode.ownerOnly);
+      expect(AppError.fromDatabase('APPEND_ONLY', 'x').code, AppErrorCode.appendOnly);
+      expect(AppError.fromDatabase('NOT_FOUND', 'Item not found').message, 'Item not found');
+    });
+  });
+
   group('Access (REQ-002, REQ-006)', () {
     test('role menus follow the permissions matrix', () {
       expect(menuFor(MemberRole.owner), contains(MenuItem.auditLog));

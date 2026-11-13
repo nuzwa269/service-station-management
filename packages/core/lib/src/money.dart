@@ -11,6 +11,10 @@ class Money implements Comparable<Money> {
   Money operator -(Money o) => Money.paisa(paisa - o.paisa);
   Money operator -() => Money.paisa(-paisa);
   bool get isNegative => paisa < 0;
+  bool operator <(Money o) => paisa < o.paisa;
+  bool operator >(Money o) => paisa > o.paisa;
+  bool operator <=(Money o) => paisa <= o.paisa;
+  bool operator >=(Money o) => paisa >= o.paisa;
 
   /// Percentage with half-up rounding to the nearest paisa. [pctTimes100] is the
   /// percentage × 100 (e.g. 17.5% = 1750) so tax rates with 2 decimals stay exact.
