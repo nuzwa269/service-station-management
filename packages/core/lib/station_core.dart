@@ -2,6 +2,7 @@
 library;
 
 export 'src/access.dart';
+export 'src/billing.dart';
 export 'src/errors.dart';
 export 'src/formats.dart';
 export 'src/inventory.dart';

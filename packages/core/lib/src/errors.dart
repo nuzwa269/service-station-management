@@ -17,6 +17,8 @@ enum AppErrorCode {
   ownerOnly('OWNER_ONLY', 'On the Basic plan only the owner can do this. Ask the owner to log in.'),
   odometerLower('ODOMETER_LOWER', 'Odometer is lower than the last visit — confirm?'),
   warrantyExpired('WARRANTY_EXPIRED', 'Warranty has expired.'),
+  paymentDue('PAYMENT_DUE', 'Collect the payment or request credit approval.'),
+  dayClosed('DAY_CLOSED', 'That day is closed — ask the owner to reopen it.'),
   network('NETWORK', 'No internet connection. Please try again.'),
   unknown('UNKNOWN', 'Something went wrong. Please try again.');
 
@@ -47,7 +49,9 @@ class AppError implements Exception {
               code == AppErrorCode.notFound ||
               code == AppErrorCode.forbidden ||
               code == AppErrorCode.odometerLower ||
-              code == AppErrorCode.warrantyExpired) &&
+              code == AppErrorCode.warrantyExpired ||
+              code == AppErrorCode.paymentDue ||
+              code == AppErrorCode.dayClosed) &&
           detail != null
       ? detail!
       : code.defaultMessage;

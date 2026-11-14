@@ -16,6 +16,8 @@ dependencies:
   flutter:
     sdk: flutter
   go_router: ^18.1.4
+  pdf: ^3.12.0
+  printing: ^5.14.3
   station_core:
     path: ../../packages/core
   supabase_flutter: ^2.18.3

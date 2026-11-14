@@ -11,6 +11,7 @@ import 'screens/audit_screen.dart';
 import 'screens/auth_screens.dart';
 import 'screens/customers_screen.dart';
 import 'screens/dashboard_screen.dart';
+import 'screens/day_closing_screen.dart';
 import 'screens/import_screen.dart';
 import 'screens/inventory_screen.dart';
 import 'screens/jobs_screen.dart';
@@ -92,7 +93,7 @@ Widget screenFor(MenuItem m) => switch (m) {
       MenuItem.inventory => const InventoryScreen(),
       MenuItem.purchases => const PurchasesScreen(),
       MenuItem.approvals => const ApprovalsScreen(),
-      MenuItem.dayClosing => const PlannedScreen(title: 'Day closing', phase: 'Phase 4 (TASK-045)'),
+      MenuItem.dayClosing => const DayClosingScreen(),
       MenuItem.reports => const PlannedScreen(title: 'Reports', phase: 'Phase 8 (TASK-063)'),
       MenuItem.staff => const PlannedScreen(title: 'Staff & attendance', phase: 'Phase 8 (TASK-065)'),
     };

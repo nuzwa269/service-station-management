@@ -22,6 +22,8 @@ class SettingsScreen extends StatelessWidget {
         const Divider(height: 32),
         const JobSettingsSection(),
         const Divider(height: 32),
+        const BillingSettingsSection(),
+        const Divider(height: 32),
         const SupportAccessSection(),
       ],
     ]);
@@ -324,6 +326,112 @@ class _JobSettingsSectionState extends State<JobSettingsSection> {
           },
           child: const Text('Save job settings'),
         ),
+      ),
+    ]);
+  }
+}
+
+/// REQ-035 service list, REQ-037 discount limit, REQ-043 storage charge (owner).
+class BillingSettingsSection extends StatefulWidget {
+  const BillingSettingsSection({super.key});
+
+  @override
+  State<BillingSettingsSection> createState() => _BillingSettingsSectionState();
+}
+
+class _BillingSettingsSectionState extends State<BillingSettingsSection> {
+  late Future<List<Service>> _services;
+  final _limit = TextEditingController();
+  final _freeDays = TextEditingController();
+  final _perDay = TextEditingController();
+  bool _loaded = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final s = SessionScope.of(context);
+    _services = s.api.services(s.current!.stationId);
+    if (_loaded) return;
+    _loaded = true;
+    s.api.station(s.current!.stationId).then((st) {
+      if (!mounted) return;
+      _limit.text = '${st['discount_limit_pct']}';
+      _freeDays.text = '${st['storage_free_days']}';
+      _perDay.text = (((st['storage_charge_paisa'] as num?) ?? 0) / 100).toStringAsFixed(0);
+    });
+  }
+
+  Future<void> _edit([Service? sv]) async {
+    final s = SessionScope.of(context);
+    final name = TextEditingController(text: sv?.name);
+    final rate = TextEditingController(text: sv == null ? '' : '${sv.rate.wholeRupees}');
+    final warranty = TextEditingController(text: '${sv?.warrantyDays ?? 0}');
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(sv == null ? 'Add service' : 'Edit service'),
+        content: Column(mainAxisSize: MainAxisSize.min, children: [
+          TextField(controller: name, decoration: const InputDecoration(labelText: 'Service name')),
+          const SizedBox(height: 12),
+          TextField(controller: rate, decoration: const InputDecoration(labelText: 'Standard rate (Rs)')),
+          const SizedBox(height: 12),
+          TextField(controller: warranty, decoration: const InputDecoration(labelText: 'Warranty days')),
+        ]),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
+          FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Save')),
+        ],
+      ),
+    );
+    final r = parsePkr(rate.text);
+    if (ok != true || r == null || !mounted) return;
+    if (await runAction(context, () => s.api.saveService(s.current!.stationId, id: sv?.id, name: name.text, rate: r, warrantyDays: int.tryParse(warranty.text) ?? 0))) {
+      setState(() => _services = s.api.services(s.current!.stationId));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final s = SessionScope.of(context);
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      Text('Billing', style: Theme.of(context).textTheme.titleMedium),
+      const SizedBox(height: 12),
+      Wrap(spacing: 12, runSpacing: 12, children: [
+        SizedBox(width: 200, child: TextField(controller: _limit, decoration: const InputDecoration(labelText: 'Discount limit %', helperText: 'Above this needs approval'))),
+        SizedBox(width: 200, child: TextField(controller: _freeDays, decoration: const InputDecoration(labelText: 'Free days after Ready'))),
+        SizedBox(width: 200, child: TextField(controller: _perDay, decoration: const InputDecoration(labelText: 'Storage charge per day (Rs)', helperText: '0 = off'))),
+      ]),
+      const SizedBox(height: 12),
+      Align(
+        alignment: Alignment.centerLeft,
+        child: FilledButton(
+          onPressed: () async {
+            final pct = num.tryParse(_limit.text.trim());
+            final days = int.tryParse(_freeDays.text.trim());
+            final per = parsePkr(_perDay.text.isEmpty ? '0' : _perDay.text);
+            if (pct == null || days == null || per == null) return;
+            await runAction(context, () => s.api.setBillingRules(s.current!.stationId, discountLimitPct: pct, storageFreeDays: days, storagePerDay: per),
+                success: 'Saved');
+          },
+          child: const Text('Save billing rules'),
+        ),
+      ),
+      const SizedBox(height: 20),
+      Row(children: [
+        const Expanded(child: Text('Service list (labour)', style: TextStyle(fontWeight: FontWeight.w700))),
+        TextButton.icon(onPressed: _edit, icon: const Icon(Icons.add_rounded), label: const Text('Add service')),
+      ]),
+      FutureBuilder<List<Service>>(
+        future: _services,
+        builder: (context, snap) => Column(children: [
+          for (final sv in snap.data ?? const <Service>[])
+            ListTile(
+              dense: true,
+              title: Text(sv.name),
+              subtitle: Text('${formatPkr(sv.rate)} · warranty ${sv.warrantyDays} days'),
+              trailing: IconButton(icon: const Icon(Icons.edit_outlined), onPressed: () => _edit(sv)),
+            ),
+        ]),
       ),
     ]);
   }

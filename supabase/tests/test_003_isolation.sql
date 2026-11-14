@@ -48,6 +48,16 @@ insert into tests.fx values ('jobB', public.station_create_job(tests.id('B'), te
 select public.job_add_line(tests.id('jobB'), 'part', tests.id('itemB'), null, 1);
 select public.job_record_approval(tests.id('jobB'), true, 'phone', 'B Customer');
 select public.job_add_line(tests.id('jobB'), 'part', tests.id('itemB'), null, 10);  -- extra, drives stock negative -> notification
+-- Phase 4: service, invoice, payments, credit note, day closing.
+select public.station_save_service(tests.id('B'), null, 'B labour', 50000, 0);
+insert into tests.fx values ('jobB2', public.station_create_job(tests.id('B'), tests.id('custB'), tests.id('carB'), 2000, 'H'));
+select public.job_add_line(tests.id('jobB2'), 'labour', null, 'B work', 1, 100000);
+select public.job_record_approval(tests.id('jobB2'), true, 'phone', 'B Customer');
+insert into tests.fx values ('invB', public.station_create_invoice(tests.id('jobB2')));
+select public.invoice_record_payment(tests.id('invB'), 100000, 'cash');
+select public.invoice_request_refund(tests.id('invB'), 10000, 'credit', 'Goodwill');
+select public.job_record_advance(tests.id('jobB'), 5000, 'cash');
+select public.station_close_day(tests.id('B'), private.today_pk(), 105000, null);  -- 1,000 + 50 advance
 reset role;
 
 set role service_role;

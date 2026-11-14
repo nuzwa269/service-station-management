@@ -35,7 +35,7 @@ class _SetupStep {
 }
 
 class _DashData {
-  const _DashData({required this.lowStock, required this.pending, this.setup = const [], this.activity = const [], this.names = const {}, this.team = const [], this.jobs = const {}});
+  const _DashData({required this.lowStock, required this.pending, this.setup = const [], this.activity = const [], this.names = const {}, this.team = const [], this.jobs = const {}, this.collected});
   final List<Map<String, dynamic>> lowStock;
   final List<ApprovalRequest> pending;
   final List<_SetupStep> setup;
@@ -43,6 +43,7 @@ class _DashData {
   final Map<String, String> names;
   final List<Member> team;
   final Map<JobStage, int> jobs;
+  final DaySummary? collected;
 }
 
 /// SCR-003 — today at a glance. Balanced two-column layout: work on the left,
@@ -106,6 +107,7 @@ class _DashboardHomeState extends State<DashboardHome> {
       team: team,
       names: {for (final m in team) m.userId: m.name},
       jobs: await s.api.jobCounts(id),
+      collected: await s.api.daySummary(id, DateTime.now()),
     );
   }
 
@@ -196,7 +198,14 @@ class _KpiRow extends StatelessWidget {
         hint: data == null ? '' : '${data!.jobs[JobStage.inProgress] ?? 0} in progress · ${data!.jobs[JobStage.ready] ?? 0} ready',
         onTap: () => context.go('/${MenuItem.jobCards.name}'),
       ),
-      _Kpi(icon: Icons.payments_rounded, color: const Color(0xFF22C55E), label: 'Collected today', value: '—', hint: 'Starts with billing'),
+      _Kpi(
+        icon: Icons.payments_rounded,
+        color: const Color(0xFF22C55E),
+        label: 'Collected today',
+        value: data?.collected == null ? '…' : formatPkr(data!.collected!.expected.values.fold(Money.zero, (a, b) => a + b)),
+        hint: data?.collected == null ? '' : (data!.collected!.closed ? 'Day closed' : 'Cash ${formatPkr(data!.collected!.expectedCash)}'),
+        onTap: () => context.go('/${MenuItem.dayClosing.name}'),
+      ),
       _Kpi(
         icon: Icons.inventory_2_rounded,
         color: const Color(0xFFF59E0B),

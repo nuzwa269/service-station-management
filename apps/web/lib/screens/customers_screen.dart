@@ -172,7 +172,7 @@ class _CustomerDetailState extends State<CustomerDetail> {
                 ]),
               ),
             const Divider(height: 32),
-            const Text('Jobs, invoices, dues and booking-block status appear here in later phases.'),
+            CustomerDuesCard(customerId: widget.customerId),
           ]);
         },
       );
@@ -326,6 +326,101 @@ class _VehicleDialogState extends State<VehicleDialog> {
           child: const Text('Save'),
         ),
       ],
+    );
+  }
+}
+
+/// REQ-040 — dues (oldest first) and credit balance, with "Collect dues".
+class CustomerDuesCard extends StatefulWidget {
+  const CustomerDuesCard({super.key, required this.customerId});
+  final String customerId;
+
+  @override
+  State<CustomerDuesCard> createState() => _CustomerDuesCardState();
+}
+
+class _CustomerDuesCardState extends State<CustomerDuesCard> {
+  late Future<({Money dues, Money credit})> _bal;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _bal = SessionScope.of(context).api.customerBalance(widget.customerId);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final api = SessionScope.of(context).api;
+    return FutureBuilder<({Money dues, Money credit})>(
+      future: _bal,
+      builder: (context, snap) {
+        final b = snap.data;
+        if (b == null) return const SizedBox(height: 40);
+        return Row(children: [
+          Expanded(
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(14),
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  const Text('Dues'),
+                  Text(formatPkr(b.dues), style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: b.dues.paisa > 0 ? const Color(0xFFDC2626) : null)),
+                  if (b.dues.paisa > 0)
+                    TextButton(
+                      onPressed: () async {
+                        final amount = TextEditingController(text: '${b.dues.wholeRupees}');
+                        final ref = TextEditingController();
+                        var method = PayMethod.cash;
+                        final ok = await showDialog<bool>(
+                          context: context,
+                          builder: (ctx) => StatefulBuilder(
+                            builder: (ctx, set) => AlertDialog(
+                              title: const Text('Collect dues'),
+                              content: Column(mainAxisSize: MainAxisSize.min, children: [
+                                Text('Oldest invoice is cleared first. Dues: ${formatPkr(b.dues)}'),
+                                const SizedBox(height: 12),
+                                TextField(controller: amount, decoration: const InputDecoration(labelText: 'Amount (Rs)')),
+                                const SizedBox(height: 12),
+                                DropdownButtonFormField<PayMethod>(
+                                  initialValue: method,
+                                  items: [for (final m in PayMethod.receivable) DropdownMenuItem(value: m, child: Text(m.label))],
+                                  onChanged: (m) => set(() => method = m!),
+                                ),
+                                if (method.needsReference) TextField(controller: ref, decoration: const InputDecoration(labelText: 'Reference number')),
+                              ]),
+                              actions: [
+                                TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
+                                FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Collect')),
+                              ],
+                            ),
+                          ),
+                        );
+                        final m = parsePkr(amount.text);
+                        if (ok != true || m == null || !context.mounted) return;
+                        if (await runAction(context, () => api.collectDues(widget.customerId, m, method, reference: ref.text), success: 'Dues collected')) {
+                          setState(() => _bal = api.customerBalance(widget.customerId));
+                        }
+                      },
+                      child: const Text('Collect dues'),
+                    ),
+                ]),
+              ),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(14),
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  const Text('Credit'),
+                  Text(formatPkr(b.credit), style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: Color(0xFF16A34A))),
+                  const Text('Used from the invoice screen', style: TextStyle(fontSize: 12)),
+                ]),
+              ),
+            ),
+          ),
+        ]);
+      },
     );
   }
 }

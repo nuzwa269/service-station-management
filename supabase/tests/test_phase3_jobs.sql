@@ -143,6 +143,8 @@ select public.job_set_stage(tests.id('j1'), 'quality_check');
 select tests.as_user(tests.id('manager'));
 select public.job_quality_check(tests.id('j1'), true);
 select tests.as_user(tests.id('cashier'));
+-- Phase 4: delivery needs a paid invoice (REQ-039).
+select public.invoice_record_payment(public.station_create_invoice(tests.id('j1')), 740000, 'cash');
 select public.job_set_stage(tests.id('j1'), 'delivered');
 do $$ begin
   assert (select stage from public.job_cards where id = tests.id('j1')) = 'delivered', 'delivered';

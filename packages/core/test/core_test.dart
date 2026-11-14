@@ -106,6 +106,29 @@ void main() {
     });
   });
 
+  group('Billing (REQ-037…043)', () {
+    test('change to return', () {
+      expect(changeToReturn(due: Money.rupees(9500), cashReceived: Money.rupees(10000)), Money.rupees(500));
+      expect(changeToReturn(due: Money.rupees(9500), cashReceived: Money.rupees(5000)), Money.zero);
+    });
+    test('discount limit 5% of 10,000', () {
+      expect(discountWithinLimit(discount: Money.rupees(500), subtotal: Money.rupees(10000), limitPct: 5), isTrue);
+      expect(discountWithinLimit(discount: Money.rupees(800), subtotal: Money.rupees(10000), limitPct: 5), isFalse);
+    });
+    test('storage: 3 free days, Rs 300/day, day 6 -> Rs 900', () {
+      expect(storageCharge(daysReady: 6, freeDays: 3, perDay: Money.rupees(300)), Money.rupees(900));
+      expect(storageCharge(daysReady: 2, freeDays: 3, perDay: Money.rupees(300)), Money.zero);
+    });
+    test('dues 3,000 + 2,000, pay 4,000 -> 3,000 then 1,000', () {
+      expect(allocateOldestFirst(400000, [300000, 200000]), [300000, 100000]);
+    });
+    test('methods', () {
+      expect(PayMethod.jazzcash.needsReference, isTrue);
+      expect(PayMethod.cash.needsReference, isFalse);
+      expect(InvoiceStatus.parse('discount_pending'), InvoiceStatus.discountPending);
+    });
+  });
+
   group('Jobs (REQ-018…024)', () {
     test('stage codes round-trip with the database', () {
       for (final s in JobStage.values) {

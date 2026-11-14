@@ -4,6 +4,7 @@ import 'package:station_core/station_core.dart';
 
 import '../main.dart';
 import 'common.dart';
+import 'invoice_panel.dart';
 import 'jobs_screen.dart';
 
 /// SCR-006 — one job card: intake to quality check, approvals, lines, mechanics, history.
@@ -53,6 +54,13 @@ class _JobDetailViewState extends State<JobDetailView> {
               _ChecklistCard(d: d, act: _act),
             ]);
             final right = Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+              if (SessionScope.of(context).role != MemberRole.mechanic) ...[
+                InvoiceCard(d: d, onChanged: () {
+                  _reload();
+                  widget.onChanged();
+                }),
+                const SizedBox(height: 12),
+              ],
               _IntakeCard(d: d),
               const SizedBox(height: 12),
               _MechanicsCard(d: d, act: _act),
@@ -388,7 +396,9 @@ class AddLineDialog extends StatefulWidget {
 class _AddLineDialogState extends State<AddLineDialog> {
   LineKind _kind = LineKind.part;
   Future<List<Item>>? _items;
+  Future<List<Service>>? _services;
   Item? _item;
+  Service? _service;
   late final _desc = TextEditingController(text: widget.presetDescription);
   final _qty = TextEditingController(text: '1');
   final _price = TextEditingController();
@@ -398,6 +408,7 @@ class _AddLineDialogState extends State<AddLineDialog> {
     super.didChangeDependencies();
     final s = SessionScope.of(context);
     _items ??= s.api.items(s.current!.stationId);
+    _services ??= s.api.services(s.current!.stationId);
   }
 
   @override
@@ -438,8 +449,35 @@ class _AddLineDialogState extends State<AddLineDialog> {
                 );
               },
             )
-          else
+          else ...[
+            if (_kind == LineKind.labour && widget.checkId == null)
+              FutureBuilder<List<Service>>(
+                future: _services,
+                builder: (context, snap) {
+                  final list = (snap.data ?? const <Service>[]).where((x) => x.active).toList();
+                  if (list.isEmpty) return const SizedBox.shrink();
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: DropdownButtonFormField<Service?>(
+                      initialValue: _service,
+                      decoration: const InputDecoration(labelText: 'From the service list (optional)'),
+                      items: [
+                        const DropdownMenuItem<Service?>(value: null, child: Text('— Free text —')),
+                        for (final x in list) DropdownMenuItem<Service?>(value: x, child: Text('${x.name} · ${formatPkr(x.rate)}')),
+                      ],
+                      onChanged: (x) => setState(() {
+                        _service = x;
+                        if (x != null) {
+                          _desc.text = x.name;
+                          _price.text = '${x.rate.wholeRupees}';
+                        }
+                      }),
+                    ),
+                  );
+                },
+              ),
             TextField(controller: _desc, decoration: InputDecoration(labelText: _kind == LineKind.labour ? 'Work description' : 'Part brought by customer')),
+          ],
           if (_item != null && _kind == LineKind.part)
             Padding(
               padding: const EdgeInsets.only(top: 6),
@@ -465,6 +503,8 @@ class _AddLineDialogState extends State<AddLineDialog> {
             final ok = await runAction(context, () async {
               if (widget.checkId != null) {
                 await s.api.checkToEstimate(widget.checkId!, itemId: _kind == LineKind.part ? _item!.id : null, description: _desc.text, price: price);
+              } else if (_kind == LineKind.labour && _service != null) {
+                await s.api.addService(widget.jobId, _service!.id, qty: qty, price: price);
               } else {
                 await s.api.addLine(widget.jobId, _kind, itemId: _item?.id, description: _desc.text, qty: qty, price: price);
               }

@@ -109,6 +109,10 @@ try {
     const r = await owner.rpc("job_set_stage", { p_job: job, p_stage: "delivered", p_note: null });
     if (r.error?.message !== "VALIDATION") throw new Error("not blocked");
     must(await owner.rpc("job_record_approval", { p_job: job, p_approve: true, p_via: "in_person", p_by_name: "Job Customer", p_extra: true }));
+    // Phase 4: delivery needs a paid invoice (REQ-039).
+    const inv = must(await owner.rpc("station_create_invoice", { p_job: job }));
+    const bal = must(await owner.from("invoice_balances").select("due_paisa").eq("invoice_id", inv).single());
+    must(await owner.rpc("invoice_record_payment", { p_invoice: inv, p_amount_paisa: bal.due_paisa, p_method: "cash", p_reference: null, p_paid_on: null }));
     must(await owner.rpc("job_set_stage", { p_job: job, p_stage: "delivered", p_note: null }));
     return "delivered";
   });
