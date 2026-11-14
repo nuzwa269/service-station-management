@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:station_core/station_core.dart';
 
 import '../main.dart';
+import 'common.dart';
 
 /// SCR-017 — station rules. This phase: profile, branding, tax (REQ-004),
 /// users link (REQ-002) and support access (REQ-005).
@@ -18,6 +19,8 @@ class SettingsScreen extends StatelessWidget {
       const SizedBox(height: 12),
       StationProfileForm(readOnly: role != MemberRole.owner),
       if (role == MemberRole.owner) ...[
+        const Divider(height: 32),
+        const JobSettingsSection(),
         const Divider(height: 32),
         const SupportAccessSection(),
       ],
@@ -250,6 +253,77 @@ class _SupportAccessSectionState extends State<SupportAccessSection> {
               }(),
           ]);
         },
+      ),
+    ]);
+  }
+}
+
+/// REQ-019 checklist template and REQ-025 inspection fee (owner).
+class JobSettingsSection extends StatefulWidget {
+  const JobSettingsSection({super.key});
+
+  @override
+  State<JobSettingsSection> createState() => _JobSettingsSectionState();
+}
+
+class _JobSettingsSectionState extends State<JobSettingsSection> {
+  final _items = TextEditingController();
+  final _fee = TextEditingController();
+  bool _loaded = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_loaded) return;
+    _loaded = true;
+    final s = SessionScope.of(context);
+    final id = s.current!.stationId;
+    s.api.checklistTemplate(id).then((names) {
+      if (mounted) _items.text = names.join('\n');
+    });
+    s.api.station(id).then((st) {
+      if (mounted) _fee.text = (((st['inspection_fee_paisa'] as num?) ?? 0) / 100).toStringAsFixed(0);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final s = SessionScope.of(context);
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      Text('Job cards', style: Theme.of(context).textTheme.titleMedium),
+      const SizedBox(height: 4),
+      const Text('Checklist items are copied onto every new job card. One item per line.'),
+      const SizedBox(height: 12),
+      TextField(
+        controller: _items,
+        minLines: 4,
+        maxLines: 10,
+        decoration: const InputDecoration(labelText: 'Inspection checklist', hintText: 'Brake pads\nTyres\nLights\nBattery\nFluids'),
+      ),
+      const SizedBox(height: 12),
+      SizedBox(
+        width: 260,
+        child: TextField(
+          controller: _fee,
+          decoration: const InputDecoration(labelText: 'Inspection fee (Rs)', helperText: 'Charged when a job is cancelled or rejected'),
+        ),
+      ),
+      const SizedBox(height: 12),
+      Align(
+        alignment: Alignment.centerLeft,
+        child: FilledButton(
+          onPressed: () async {
+            final id = s.current!.stationId;
+            final names = _items.text.split('\n').map((e) => e.trim()).where((e) => e.length >= 2).toList();
+            final fee = parsePkr(_fee.text.isEmpty ? '0' : _fee.text);
+            if (fee == null) return;
+            await runAction(context, () async {
+              await s.api.saveChecklistTemplate(id, names);
+              await s.api.setInspectionFee(id, fee);
+            }, success: 'Saved');
+          },
+          child: const Text('Save job settings'),
+        ),
       ),
     ]);
   }

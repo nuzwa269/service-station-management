@@ -13,6 +13,8 @@ dependencies:
     path: ../../packages/app_shared
   flutter:
     sdk: flutter
+  path: ^1.9.1
+  sqflite: ^2.4.6
   station_core:
     path: ../../packages/core
   supabase_flutter: ^2.18.3

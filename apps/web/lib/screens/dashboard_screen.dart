@@ -35,13 +35,14 @@ class _SetupStep {
 }
 
 class _DashData {
-  const _DashData({required this.lowStock, required this.pending, this.setup = const [], this.activity = const [], this.names = const {}, this.team = const []});
+  const _DashData({required this.lowStock, required this.pending, this.setup = const [], this.activity = const [], this.names = const {}, this.team = const [], this.jobs = const {}});
   final List<Map<String, dynamic>> lowStock;
   final List<ApprovalRequest> pending;
   final List<_SetupStep> setup;
   final List<AuditEntry> activity;
   final Map<String, String> names;
   final List<Member> team;
+  final Map<JobStage, int> jobs;
 }
 
 /// SCR-003 — today at a glance. Balanced two-column layout: work on the left,
@@ -104,6 +105,7 @@ class _DashboardHomeState extends State<DashboardHome> {
       activity: activity,
       team: team,
       names: {for (final m in team) m.userId: m.name},
+      jobs: await s.api.jobCounts(id),
     );
   }
 
@@ -186,7 +188,14 @@ class _KpiRow extends StatelessWidget {
     final low = data?.lowStock.length;
     final pending = data?.pending.length;
     final cards = [
-      _Kpi(icon: Icons.assignment_rounded, color: const Color(0xFF0EA5E9), label: 'Jobs in progress', value: '—', hint: 'Starts with job cards'),
+      _Kpi(
+        icon: Icons.assignment_rounded,
+        color: const Color(0xFF0EA5E9),
+        label: 'Open job cards',
+        value: data == null ? '…' : '${data!.jobs.values.fold(0, (a, b) => a + b)}',
+        hint: data == null ? '' : '${data!.jobs[JobStage.inProgress] ?? 0} in progress · ${data!.jobs[JobStage.ready] ?? 0} ready',
+        onTap: () => context.go('/${MenuItem.jobCards.name}'),
+      ),
       _Kpi(icon: Icons.payments_rounded, color: const Color(0xFF22C55E), label: 'Collected today', value: '—', hint: 'Starts with billing'),
       _Kpi(
         icon: Icons.inventory_2_rounded,

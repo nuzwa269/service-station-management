@@ -15,6 +15,8 @@ enum AppErrorCode {
   auditImmutable('AUDIT_IMMUTABLE', 'Audit entries cannot be changed.'),
   appendOnly('APPEND_ONLY', 'Saved entries cannot be changed. Reverse them with a reason.'),
   ownerOnly('OWNER_ONLY', 'On the Basic plan only the owner can do this. Ask the owner to log in.'),
+  odometerLower('ODOMETER_LOWER', 'Odometer is lower than the last visit — confirm?'),
+  warrantyExpired('WARRANTY_EXPIRED', 'Warranty has expired.'),
   network('NETWORK', 'No internet connection. Please try again.'),
   unknown('UNKNOWN', 'Something went wrong. Please try again.');
 
@@ -40,7 +42,12 @@ class AppError implements Exception {
   final String? detail;
 
   /// Validation details are written for users; other codes use the fixed message.
-  String get message => (code == AppErrorCode.validation || code == AppErrorCode.readOnly || code == AppErrorCode.notFound) &&
+  String get message => (code == AppErrorCode.validation ||
+              code == AppErrorCode.readOnly ||
+              code == AppErrorCode.notFound ||
+              code == AppErrorCode.forbidden ||
+              code == AppErrorCode.odometerLower ||
+              code == AppErrorCode.warrantyExpired) &&
           detail != null
       ? detail!
       : code.defaultMessage;

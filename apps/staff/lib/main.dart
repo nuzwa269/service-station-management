@@ -3,6 +3,37 @@ import 'package:flutter/material.dart';
 import 'package:station_core/station_core.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'mechanic/mechanic_screens.dart';
+import 'sync/own_sync_engine.dart';
+import 'sync/sync_store.dart';
+
+/// Opens the phone's SQLite store and the sync engine for a mechanic.
+class MechanicLoader extends StatefulWidget {
+  const MechanicLoader({super.key, required this.stationId, required this.stationName, required this.client, required this.onSignOut});
+  final String stationId;
+  final String stationName;
+  final SupabaseClient client;
+  final VoidCallback onSignOut;
+
+  @override
+  State<MechanicLoader> createState() => _MechanicLoaderState();
+}
+
+class _MechanicLoaderState extends State<MechanicLoader> {
+  late final Future<OwnSyncEngine> _engine = () async {
+    final store = await SqfliteSyncStore.open(name: 'sync_${widget.stationId}.db');
+    return OwnSyncEngine(store: store, transport: SupabaseSyncTransport(widget.client, widget.stationId));
+  }();
+
+  @override
+  Widget build(BuildContext context) => FutureBuilder<OwnSyncEngine>(
+        future: _engine,
+        builder: (context, snap) => snap.hasData
+            ? MechanicHome(engine: snap.data!, stationName: widget.stationName, onSignOut: widget.onSignOut)
+            : const Scaffold(body: Center(child: CircularProgressIndicator())),
+      );
+}
+
 /// Staff app (Android 8+): mechanics' job work (offline from Phase 3) and a
 /// quick dashboard for owner / manager / cashier.
 Future<void> main() async {
@@ -59,6 +90,15 @@ class _StaffRootState extends State<StaffRoot> {
                   TextButton(onPressed: s.signOut, child: const Text('Log out')),
                 ]),
               ),
+            );
+          }
+          if (s.current!.role == MemberRole.mechanic) {
+            return MechanicLoader(
+              key: ValueKey(s.current!.stationId),
+              stationId: s.current!.stationId,
+              stationName: s.current!.stationName,
+              client: s.api.client,
+              onSignOut: s.signOut,
             );
           }
           return StaffHome(

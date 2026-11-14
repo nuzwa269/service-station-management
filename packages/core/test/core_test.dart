@@ -106,6 +106,32 @@ void main() {
     });
   });
 
+  group('Jobs (REQ-018…024)', () {
+    test('stage codes round-trip with the database', () {
+      for (final s in JobStage.values) {
+        expect(JobStage.parse(s.code), s);
+      }
+      expect(JobStage.awaitingApproval.code, 'awaiting_approval');
+      expect(JobStage.qualityCheck.code, 'quality_check');
+    });
+
+    test('mechanic moves', () {
+      expect(JobStage.approved.mechanicNext, JobStage.inProgress);
+      expect(JobStage.inProgress.mechanicNext, JobStage.qualityCheck);
+      expect(JobStage.ready.mechanicNext, isNull);
+    });
+
+    test('totals skip rejected and removed lines', () {
+      final total = linesTotalPaisa([
+        (qty: 1, unitPrice: 450000, status: LineStatus.approved),
+        (qty: 3.5, unitPrice: 250000, status: LineStatus.approved),
+        (qty: 1, unitPrice: 300000, status: LineStatus.rejected),
+        (qty: 1, unitPrice: 90000, status: LineStatus.extraPending),
+      ]);
+      expect(total, 450000 + 875000 + 90000);
+    });
+  });
+
   group('Access (REQ-002, REQ-006)', () {
     test('role menus follow the permissions matrix', () {
       expect(menuFor(MemberRole.owner), contains(MenuItem.auditLog));

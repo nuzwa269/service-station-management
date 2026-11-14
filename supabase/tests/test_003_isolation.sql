@@ -40,8 +40,14 @@ insert into tests.fx values ('supB', public.station_save_supplier(tests.id('B'),
 select public.station_post_purchase(tests.id('B'), tests.id('supB'), null, 'B-1', current_date,
   jsonb_build_array(jsonb_build_object('item_id', tests.id('itemB'), 'qty', 5, 'unit_cost_paisa', 100)), 0);
 select public.station_request_stock_adjustment(tests.id('B'), tests.id('itemB'), -1, 'damaged');
-select public.station_save_vehicle(tests.id('B'), null,
-  public.station_save_customer(tests.id('B'), null, 'B Customer', '03009990000'), 'KHI-1');
+insert into tests.fx values ('custB', public.station_save_customer(tests.id('B'), null, 'B Customer', '03009990000'));
+insert into tests.fx values ('carB', public.station_save_vehicle(tests.id('B'), null, tests.id('custB'), 'KHI-1'));
+-- Phase 3: a job card with checklist, line, history and a notification.
+select public.station_save_checklist_template(tests.id('B'), array['Brakes']);
+insert into tests.fx values ('jobB', public.station_create_job(tests.id('B'), tests.id('custB'), tests.id('carB'), 1000, 'H', 'B job'));
+select public.job_add_line(tests.id('jobB'), 'part', tests.id('itemB'), null, 1);
+select public.job_record_approval(tests.id('jobB'), true, 'phone', 'B Customer');
+select public.job_add_line(tests.id('jobB'), 'part', tests.id('itemB'), null, 10);  -- extra, drives stock negative -> notification
 reset role;
 
 set role service_role;

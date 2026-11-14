@@ -13,6 +13,7 @@ import 'screens/customers_screen.dart';
 import 'screens/dashboard_screen.dart';
 import 'screens/import_screen.dart';
 import 'screens/inventory_screen.dart';
+import 'screens/jobs_screen.dart';
 import 'screens/purchases_screen.dart';
 import 'screens/shell.dart';
 import 'screens/settings_screen.dart';
@@ -86,7 +87,7 @@ Widget screenFor(MenuItem m) => switch (m) {
       MenuItem.users => const UsersScreen(),
       MenuItem.dataImport => const ImportScreen(),
       MenuItem.bookings => const PlannedScreen(title: 'Bookings', phase: 'Phase 6 (TASK-056)'),
-      MenuItem.jobCards => const PlannedScreen(title: 'Job cards', phase: 'Phase 3 (TASK-029)'),
+      MenuItem.jobCards => const JobCardsScreen(),
       MenuItem.customers => const CustomersScreen(),
       MenuItem.inventory => const InventoryScreen(),
       MenuItem.purchases => const PurchasesScreen(),
