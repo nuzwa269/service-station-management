@@ -21,6 +21,26 @@ begin
   end loop;
 end $$;
 
+-- Function privileges: service-role-only functions are not callable by logged-in users,
+-- and every admin_* function a logged-in user can call checks for the super admin.
+do $$
+declare r record;
+begin
+  for r in
+    select p.proname, p.prosrc, p.oid from pg_proc p join pg_namespace n on n.oid = p.pronamespace
+    where n.nspname = 'public' and p.proname like 'admin\_%'
+  loop
+    if r.proname in ('admin_add_member', 'admin_confirm_provider_payment') then
+      if has_function_privilege('authenticated', r.oid, 'execute') or has_function_privilege('anon', r.oid, 'execute') then
+        raise exception 'TEST-003: % must be callable by the service role only', r.proname;
+      end if;
+    elsif has_function_privilege('authenticated', r.oid, 'execute')
+          and r.prosrc not like '%assert_super_admin%' and r.prosrc not like '%has_support_grant%' then
+      raise exception 'TEST-003: % is callable by users but does not check for the super admin', r.proname;
+    end if;
+  end loop;
+end $$;
+
 -- Fixture: two stations A and B, each with an owner; A also has a mechanic.
 insert into tests.fx values
   ('ownerA', tests.create_user('923001111111')),

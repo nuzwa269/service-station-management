@@ -185,7 +185,7 @@ class ImportResult {
 /// Phase 2 backend calls (TASK-020…028). All writes go through database functions.
 extension InventoryApi on StationApi {
   Future<List<Item>> items(String stationId, {bool withCost = false}) => guard(() async {
-        final rows = await client.from('items').select().eq('station_id', stationId).order('name');
+        final rows = await client.from('items').select().eq('station_id', stationId).order('name', ascending: true);
         final stock = await client.from('item_stock').select('item_id, on_hand').eq('station_id', stationId);
         final onHand = {for (final s in stock) s['item_id'] as String: s['on_hand'] as num};
         final costs = <String, int>{};
@@ -223,7 +223,7 @@ extension InventoryApi on StationApi {
 
   // Suppliers and purchases
   Future<List<Supplier>> suppliers(String stationId) => guard(() async {
-        final rows = await client.from('supplier_balances').select().eq('station_id', stationId).order('name');
+        final rows = await client.from('supplier_balances').select().eq('station_id', stationId).order('name', ascending: true);
         final phones = {
           for (final s in await client.from('suppliers').select('id, phone').eq('station_id', stationId)) s['id'] as String: s['phone'] as String?
         };

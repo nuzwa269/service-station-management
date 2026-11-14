@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:station_core/station_core.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'screens/admin_screen.dart';
 import 'screens/approvals_screen.dart';
 import 'screens/audit_screen.dart';
 import 'screens/auth_screens.dart';
@@ -43,7 +44,7 @@ class AppRouter {
         GoRoute(path: '/no-station', builder: (_, _) => const NoStationScreen()),
         GoRoute(
           path: '/admin',
-          builder: (_, _) => const Scaffold(body: PlannedScreen(title: 'Super admin — tenants', phase: 'Phase 5 (TASK-051)')),
+          builder: (_, _) => const AdminHome(),
         ),
         ShellRoute(
           builder: (context, state, child) => StationShell(location: state.uri.path, child: child),

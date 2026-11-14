@@ -71,7 +71,7 @@ class _DashboardHomeState extends State<DashboardHome> {
   Future<_DashData> _load() async {
     final s = SessionScope.of(context);
     final id = s.current!.stationId;
-    final low = await s.api.client.from('low_stock_items').select('name, unit, on_hand, min_stock, negative').eq('station_id', id).order('on_hand').limit(50);
+    final low = await s.api.client.from('low_stock_items').select('name, unit, on_hand, min_stock, negative').eq('station_id', id).order('on_hand', ascending: true).limit(50);
     final pending = s.entitlements!.has(Feature.approvalsInbox) && menuFor(s.role!).contains(MenuItem.approvals)
         ? await s.api.approvals(id, pendingOnly: true)
         : <ApprovalRequest>[];

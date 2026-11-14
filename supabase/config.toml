@@ -23,3 +23,7 @@ enable_confirmations = true
 
 [functions.invite-member]
 verify_jwt = true
+
+# Called by the payment provider, not by our apps: it is protected by the HMAC signature.
+[functions.payment-webhook]
+verify_jwt = false

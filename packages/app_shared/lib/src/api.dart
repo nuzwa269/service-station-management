@@ -203,7 +203,7 @@ class StationApi {
             .from('station_members')
             .select('id, user_id, role, active, profile:profiles(full_name, mobile)')
             .eq('station_id', stationId)
-            .order('created_at');
+            .order('created_at', ascending: true);
         return rows.map(Member.fromRow).toList();
       });
 

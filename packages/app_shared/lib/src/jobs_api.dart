@@ -165,8 +165,8 @@ extension JobsApi on StationApi {
             .select('*, customer:customers(name, mobile), vehicle:vehicles(plate, make, model), job_assignments(user_id, profile:profiles(full_name))')
             .eq('id', jobId)
             .single();
-        final checklist = await client.from('job_checklist_items').select().eq('job_id', jobId).order('sort_order');
-        final lines = await client.from('job_lines').select().eq('job_id', jobId).order('created_at');
+        final checklist = await client.from('job_checklist_items').select().eq('job_id', jobId).order('sort_order', ascending: true);
+        final lines = await client.from('job_lines').select().eq('job_id', jobId).order('created_at', ascending: true);
         final history = await client.from('job_history').select().eq('job_id', jobId).order('created_at', ascending: false).limit(100);
         return JobDetail(
           job: JobSummary.fromRow(r),
@@ -268,7 +268,7 @@ extension JobsApi on StationApi {
 
   // Settings (REQ-019, REQ-025)
   Future<List<String>> checklistTemplate(String stationId) => guard(() async {
-        final rows = await client.from('checklist_templates').select('name').eq('station_id', stationId).eq('active', true).order('sort_order');
+        final rows = await client.from('checklist_templates').select('name').eq('station_id', stationId).eq('active', true).order('sort_order', ascending: true);
         return [for (final r in rows) r['name'] as String];
       });
 

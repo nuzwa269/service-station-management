@@ -21,6 +21,7 @@ dependencies:
   station_core:
     path: ../../packages/core
   supabase_flutter: ^2.18.3
+  url_launcher: ^6.3.3
   web: ^1.1.2
 
 dev_dependencies:

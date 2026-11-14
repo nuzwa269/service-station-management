@@ -8,4 +8,5 @@ export 'src/inventory_api.dart';
 export 'src/jobs_api.dart';
 export 'src/login.dart';
 export 'src/session.dart';
+export 'src/subscription_api.dart';
 export 'src/widgets.dart';

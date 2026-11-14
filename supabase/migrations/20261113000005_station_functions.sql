@@ -277,3 +277,4 @@ to authenticated;
 grant execute on function
   public.admin_add_member(uuid, uuid, uuid, text, text, public.member_role)
 to service_role;
+revoke execute on function public.admin_add_member(uuid, uuid, uuid, text, text, public.member_role) from authenticated;

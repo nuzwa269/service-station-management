@@ -127,7 +127,7 @@ Money _m(Object? v) => Money.paisa((v as num? ?? 0).toInt());
 extension BillingApi on StationApi {
   // Services (REQ-035)
   Future<List<Service>> services(String stationId) => guard(() async {
-        final rows = await client.from('services').select().eq('station_id', stationId).order('name');
+        final rows = await client.from('services').select().eq('station_id', stationId).order('name', ascending: true);
         return rows.map(Service.fromRow).toList();
       });
 
@@ -163,14 +163,14 @@ extension BillingApi on StationApi {
   Future<InvoiceDetail> invoice(String invoiceId) => guard(() async {
         final i = await client.from('invoices').select().eq('id', invoiceId).single();
         final b = await client.from('invoice_balances').select().eq('invoice_id', invoiceId).single();
-        final lines = await client.from('invoice_lines').select().eq('invoice_id', invoiceId).order('kind');
+        final lines = await client.from('invoice_lines').select().eq('invoice_id', invoiceId).order('kind', ascending: true);
         final pays = await client
             .from('payments')
             .select()
             .or('invoice_id.eq.$invoiceId,and(invoice_id.is.null,job_id.eq.${i['job_id']})')
-            .order('created_at');
+            .order('created_at', ascending: true);
         final reversedIds = {for (final p in pays) if (p['reverses_id'] != null) p['reverses_id'] as String};
-        final cns = await client.from('credit_notes').select().eq('invoice_id', invoiceId).order('cn_no');
+        final cns = await client.from('credit_notes').select().eq('invoice_id', invoiceId).order('cn_no', ascending: true);
         final cb = await client.from('customer_balances').select('credit_paisa').eq('customer_id', i['customer_id'] as String).single();
         return InvoiceDetail(
           id: invoiceId,
