@@ -35,15 +35,15 @@
 | TASK-026 | 2 | Customers and vehicles: records, search, ownership change (SCR-008) | REQ-046 | TASK-010 | TEST-046 | DONE |
 | TASK-027 | 2 | Excel templates and import with row-level rejection report (SCR-020) | REQ-034 | TASK-020, TASK-026 | TEST-034 (1,000-row file) | DONE |
 | TASK-028 | 2 | Vehicle service history timeline | REQ-048 | TASK-026 | TEST-048 | IN_PROGRESS |
-| TASK-029 | 3 | Job card intake from booking or walk-in, odometer check (SCR-005, SCR-006) | REQ-018 | TASK-026 | TEST-018 | IN_PROGRESS |
-| TASK-030 | 3 | Station checklist configuration and use, add-to-estimate | REQ-019 | TASK-029 | TEST-019 | IN_PROGRESS |
-| TASK-031 | 3 | Estimate, customer/phone approval, extra-work re-approval | REQ-020, REQ-022 | TASK-029 | TEST-020, TEST-022 | IN_PROGRESS |
-| TASK-032 | 3 | Stages, mechanic assignment, quality check | REQ-021, REQ-024 | TASK-029 | TEST-021, TEST-024 | IN_PROGRESS |
-| TASK-033 | 3 | Parts on job cards incl. customer-supplied lines, stock movements | REQ-031 | TASK-020, TASK-029 | TEST-031 | IN_PROGRESS |
-| TASK-034 | 3 | Own sync engine: sync_pull (assigned jobs, items without prices), change queue, sync_apply with idempotency, conflict history + manager alert, SyncEngine interface for a later PowerSync swap | REQ-023 | TASK-007, TASK-032, TASK-033 | TEST-023 + sync test suite (ordering, duplicates, restarts, conflicts) | IN_PROGRESS |
+| TASK-029 | 3 | Job card intake from booking or walk-in, odometer check (SCR-005, SCR-006) | REQ-018 | TASK-026 | TEST-018 | DONE |
+| TASK-030 | 3 | Station checklist configuration and use, add-to-estimate | REQ-019 | TASK-029 | TEST-019 | DONE |
+| TASK-031 | 3 | Estimate, customer/phone approval, extra-work re-approval | REQ-020, REQ-022 | TASK-029 | TEST-020, TEST-022 | DONE |
+| TASK-032 | 3 | Stages, mechanic assignment, quality check | REQ-021, REQ-024 | TASK-029 | TEST-021, TEST-024 | DONE |
+| TASK-033 | 3 | Parts on job cards incl. customer-supplied lines, stock movements | REQ-031 | TASK-020, TASK-029 | TEST-031 | DONE |
+| TASK-034 | 3 | Own sync engine: sync_pull (assigned jobs, items without prices), change queue, sync_apply with idempotency, conflict history + manager alert, SyncEngine interface for a later PowerSync swap | REQ-023 | TASK-007, TASK-032, TASK-033 | TEST-023 + sync test suite (ordering, duplicates, restarts, conflicts) | DONE |
 | TASK-035 | 3 | Staff app mechanic screens SCR-031 to SCR-033 with offline badge and 24 h warning | REQ-023, REQ-021 | TASK-034 | TEST-023 on device | IN_PROGRESS |
-| TASK-036 | 3 | Cancellation and rejected estimate (fee invoice completed with TASK-039) | REQ-025 | TASK-031 | TEST-025 | IN_PROGRESS |
-| TASK-037 | 3 | Rework jobs and warranty claims (incl. return to supplier) | REQ-026, REQ-027 | TASK-029, TASK-022 | TEST-026, TEST-027 | IN_PROGRESS |
+| TASK-036 | 3 | Cancellation and rejected estimate (fee invoice completed with TASK-039) | REQ-025 | TASK-031 | TEST-025 | DONE |
+| TASK-037 | 3 | Rework jobs and warranty claims (incl. return to supplier) | REQ-026, REQ-027 | TASK-029, TASK-022 | TEST-026, TEST-027 | DONE |
 | TASK-038 | 4 | Labour/service list with warranty days | REQ-035 | TASK-017 | TEST-035 | NOT_STARTED |
 | TASK-039 | 4 | Invoice from approved lines, sequential numbering, tax per category (SCR-007) | REQ-036 | TASK-031, TASK-038 | TEST-036, TEST-004 | NOT_STARTED |
 | TASK-040 | 4 | Discount limit enforcement with approval/owner path | REQ-037 | TASK-023, TASK-039 | TEST-037 | NOT_STARTED |
@@ -101,3 +101,4 @@ Allowed statuses: NOT_STARTED, IN_PROGRESS, BLOCKED, DONE. Do not claim tests pa
 - 2026-11-14: CI run #5 green on `main` (1b5aa7c). Phase 2 SQL applied on staging; `tools/db-check/staging-smoke-phase2.mjs` passed 9/9 there (avg cost 450, supplier due, owner adjustment, search, Excel import with "Name missing", mechanic sees no items/prices/customers, other station sees 0 rows). TASK-020…027 marked DONE. TASK-028 stays IN_PROGRESS until jobs and invoices feed the vehicle timeline (Phases 3–4).
 - 2026-11-15 Phase 3 (branch `phase-3-jobs`): migrations 11–13 — job cards with sequential numbers, odometer check, station checklist, estimate lines, phone/in-person approval, extra-work re-approval, stages with mechanic limits, QC pass/fail, cancellation with inspection fee, parts with stock (kits by component, negative stock alert), rework and warranty (incl. return to supplier), notifications, and the own sync engine (`sync_pull` without prices, `sync_apply` idempotent by client_change_id, last-change-wins with conflict history and manager alert, read-only changes held). `test_phase3_jobs.sql` passes on PGlite (TEST-018…027, 031, sync suite); TEST-003 seeds a job card in the other station. Web job cards screen; Staff app mechanic screens with SQLite queue (9 tests incl. offline, restart, duplicate, held).
 - Phase 3 tasks stay IN_PROGRESS until CI is green and `supabase/dashboard_phase3.sql` runs on staging. TASK-035 also needs the real-device test (Android 8 / 2 GB, 24 h offline). Delivery payment rule (REQ-039), fee invoice (REQ-025) and warranty from invoice lines follow in Phase 4; customer app approval in Phase 6; push in Phase 7.
+- 2026-11-15: CI run #8 green on `main` (27a47ee). Phase 3 SQL applied on staging; `tools/db-check/staging-smoke-phase3.mjs` passed 12/12 there (intake, odometer warning, estimate + phone approval with stock, assignment, mechanic sync_pull without prices, offline batch via sync_apply with duplicate detection, QC fail note to mechanic then pass, delivery blocked by pending extra work, rejected estimate → Rs 500 fee, no leak to another station). TASK-029…034, 036, 037 marked DONE. TASK-035 stays IN_PROGRESS until the real Android 8 / 2 GB device test (24 h offline).
