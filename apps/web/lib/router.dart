@@ -10,6 +10,7 @@ import 'screens/approvals_screen.dart';
 import 'screens/audit_screen.dart';
 import 'screens/auth_screens.dart';
 import 'screens/customers_screen.dart';
+import 'screens/dashboard_screen.dart';
 import 'screens/import_screen.dart';
 import 'screens/inventory_screen.dart';
 import 'screens/purchases_screen.dart';
@@ -46,8 +47,6 @@ class AppRouter {
           builder: (context, state, child) => StationShell(location: state.uri.path, child: child),
           routes: [
             for (final m in MenuItem.values) GoRoute(path: pathFor(m), builder: (_, _) => screenFor(m)),
-            GoRoute(path: '/users', builder: (_, _) => const UsersScreen()),
-            GoRoute(path: '/import', builder: (_, _) => const ImportScreen()),
           ],
         ),
       ],
@@ -83,7 +82,9 @@ Widget screenFor(MenuItem m) => switch (m) {
       MenuItem.settings => const SettingsScreen(),
       MenuItem.auditLog => const AuditLogScreen(),
       MenuItem.subscription => const SubscriptionScreen(),
-      MenuItem.dashboard => const PlannedScreen(title: 'Today at a glance', phase: 'Phase 8 (TASK-064)'),
+      MenuItem.dashboard => const DashboardHome(),
+      MenuItem.users => const UsersScreen(),
+      MenuItem.dataImport => const ImportScreen(),
       MenuItem.bookings => const PlannedScreen(title: 'Bookings', phase: 'Phase 6 (TASK-056)'),
       MenuItem.jobCards => const PlannedScreen(title: 'Job cards', phase: 'Phase 3 (TASK-029)'),
       MenuItem.customers => const CustomersScreen(),

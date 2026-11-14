@@ -85,13 +85,15 @@ enum MenuItem {
   dashboard('SCR-003', 'Dashboard', null),
   bookings('SCR-004', 'Bookings', Feature.booking),
   jobCards('SCR-005', 'Job cards', null),
-  customers('SCR-008', 'Customers & vehicles', null),
+  customers('SCR-008', 'Customers', null),
   inventory('SCR-009', 'Inventory', null),
-  purchases('SCR-010', 'Purchases & suppliers', null),
+  purchases('SCR-010', 'Purchases', null),
   approvals('SCR-012', 'Approvals', Feature.approvalsInbox),
   dayClosing('SCR-013', 'Day closing', null),
   reports('SCR-014', 'Reports', null),
-  staff('SCR-015', 'Staff & attendance', Feature.payroll),
+  staff('SCR-015', 'Staff', Feature.payroll),
+  users('SCR-017', 'Users', null),
+  dataImport('SCR-020', 'Import', null),
   settings('SCR-017', 'Settings', null),
   auditLog('SCR-018', 'Audit log', Feature.auditLogView),
   subscription('SCR-019', 'Subscription', null);
@@ -104,6 +106,10 @@ enum MenuItem {
   /// but open a locked card (REQ-006).
   final String? feature;
 }
+
+/// Owner/admin tools shown as icon buttons at the top right, so the main
+/// tab row stays short. Everything else is a main tab.
+const adminItems = {MenuItem.users, MenuItem.dataImport, MenuItem.settings, MenuItem.auditLog, MenuItem.subscription};
 
 /// Which menu items a role sees (PRD §3 permissions matrix).
 List<MenuItem> menuFor(MemberRole role) => switch (role) {
@@ -119,6 +125,7 @@ List<MenuItem> menuFor(MemberRole role) => switch (role) {
           MenuItem.dayClosing,
           MenuItem.reports,
           MenuItem.staff,
+          MenuItem.users,
           MenuItem.settings,
         ],
       MemberRole.cashier => const [

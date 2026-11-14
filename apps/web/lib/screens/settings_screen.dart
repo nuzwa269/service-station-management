@@ -1,7 +1,6 @@
 import 'package:app_shared/app_shared.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:station_core/station_core.dart';
 
 import '../main.dart';
@@ -18,22 +17,7 @@ class SettingsScreen extends StatelessWidget {
       Text('Station profile and tax', style: Theme.of(context).textTheme.titleLarge),
       const SizedBox(height: 12),
       StationProfileForm(readOnly: role != MemberRole.owner),
-      const Divider(height: 32),
-      ListTile(
-        leading: const Icon(Icons.group_outlined),
-        title: const Text('Users and roles'),
-        subtitle: const Text('Add managers, cashiers and mechanics'),
-        trailing: const Icon(Icons.chevron_right),
-        onTap: () => context.go('/users'),
-      ),
       if (role == MemberRole.owner) ...[
-        ListTile(
-          leading: const Icon(Icons.upload_file_outlined),
-          title: const Text('Import from Excel'),
-          subtitle: const Text('Items with opening stock, customers and vehicles'),
-          trailing: const Icon(Icons.chevron_right),
-          onTap: () => context.go('/import'),
-        ),
         const Divider(height: 32),
         const SupportAccessSection(),
       ],

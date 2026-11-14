@@ -3,11 +3,38 @@ import 'package:station_core/station_core.dart';
 
 /// Neutral provisional theme (no brand assets supplied yet).
 ThemeData appTheme() {
-  const seed = Color(0xFF2B5F75);
+  const seed = Color(0xFF0E7490);
+  final scheme = ColorScheme.fromSeed(seedColor: seed, surface: Colors.white);
+  final radius = BorderRadius.circular(12);
   return ThemeData(
-    colorScheme: ColorScheme.fromSeed(seedColor: seed),
+    colorScheme: scheme,
     useMaterial3: true,
-    inputDecorationTheme: const InputDecorationTheme(border: OutlineInputBorder()),
+    scaffoldBackgroundColor: const Color(0xFFF4F6F9),
+    visualDensity: VisualDensity.standard,
+    cardTheme: CardThemeData(
+      color: Colors.white,
+      elevation: 0,
+      margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: scheme.outlineVariant)),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: Colors.white,
+      border: OutlineInputBorder(borderRadius: radius),
+      enabledBorder: OutlineInputBorder(borderRadius: radius, borderSide: BorderSide(color: scheme.outlineVariant)),
+    ),
+    filledButtonTheme: FilledButtonThemeData(
+      style: FilledButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: radius), padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14)),
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: radius), padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14)),
+    ),
+    dialogTheme: DialogThemeData(backgroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
+    dataTableTheme: DataTableThemeData(
+      headingRowColor: WidgetStatePropertyAll(scheme.surfaceContainerHighest.withValues(alpha: 0.5)),
+      headingTextStyle: const TextStyle(fontWeight: FontWeight.w600),
+    ),
+    chipTheme: ChipThemeData(shape: RoundedRectangleBorder(borderRadius: radius)),
   );
 }
 
@@ -57,8 +84,10 @@ class SubscriptionBanner extends StatelessWidget {
     Color? color;
     switch (entitlements.status) {
       case StationStatus.trial:
+        // Shown only in the last 3 days; otherwise the dashboard plan card carries it.
         final days = renews == null ? null : renews.difference(at).inDays + 1;
-        text = days == null ? 'Free trial' : 'Free trial — $days days left';
+        if (days == null || days > 3) return const SizedBox.shrink();
+        text = 'Free trial — $days days left';
         color = scheme.secondaryContainer;
       case StationStatus.grace:
         final left = renews == null ? null : renews.add(const Duration(days: 7)).difference(at).inDays + 1;

@@ -4,12 +4,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:station_core/station_core.dart';
 import 'package:station_web/screens/shell.dart';
 
-Entitlements _ent(String plan, String status, List<String> features) => Entitlements.fromRow({
+Entitlements _ent(String plan, String status, List<String> features, {int days = 10}) => Entitlements.fromRow({
       'plan_code': plan,
       'effective_plan': plan,
       'status': status,
       'features': features,
-      'renews_at': DateTime.now().add(const Duration(days: 10)).toIso8601String(),
+      'renews_at': DateTime.now().add(Duration(days: days)).toIso8601String(),
     });
 
 Widget _shell({required MemberRole role, required Entitlements ent, required String location, List<String>? navLog}) =>
@@ -77,7 +77,7 @@ void main() {
     tester.view.physicalSize = const Size(1280, 900);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
-    await tester.pumpWidget(_shell(role: MemberRole.owner, ent: _ent('premium', 'trial', ['core', 'booking']), location: '/dashboard'));
+    await tester.pumpWidget(_shell(role: MemberRole.owner, ent: _ent('premium', 'trial', ['core', 'booking'], days: 2), location: '/dashboard'));
     expect(find.textContaining('Free trial'), findsOneWidget);
   });
 }
