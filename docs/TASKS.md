@@ -53,12 +53,12 @@
 | TASK-044 | 4 | Storage-charge scheduler job and ready-vehicle reminders | REQ-043 | TASK-039 | TEST-043 | DONE |
 | TASK-045 | 4 | Daily cash closing and reopen (SCR-013) | REQ-044 | TASK-041 | TEST-044 | DONE |
 | TASK-046 | 4 | Invoice/estimate PDF, A4 web print, Bluetooth receipt, share (SCR-036) | REQ-045 | TASK-009, TASK-039 | TEST-045 | IN_PROGRESS |
-| TASK-047 | 5 | Trial lifecycle, reminders, trial extension | REQ-007 | TASK-017 | TEST-007 | IN_PROGRESS |
+| TASK-047 | 5 | Trial lifecycle, reminders, trial extension | REQ-007 | TASK-017 | TEST-007 | DONE |
 | TASK-048 | 5 | Subscription checkout, webhook activation, bank/cash verification (SCR-019, SCR-022) | REQ-008 | TASK-006, TASK-047 | TEST-008 | IN_PROGRESS |
-| TASK-049 | 5 | Grace and read-only enforcement in functions, UI banner, offline hold | REQ-009 | TASK-017, TASK-034 | TEST-009, TEST-104 | IN_PROGRESS |
-| TASK-050 | 5 | Upgrade/downgrade with proration | REQ-010 | TASK-048 | TEST-010 | IN_PROGRESS |
-| TASK-051 | 5 | Super admin tenants list/detail, plans and packs config (SCR-021 to SCR-023) | REQ-012 | TASK-017 | TEST-012 | IN_PROGRESS |
-| TASK-052 | 5 | Full Excel export, close account, 90-day deletion job | REQ-013 | TASK-026 | TEST-013 | IN_PROGRESS |
+| TASK-049 | 5 | Grace and read-only enforcement in functions, UI banner, offline hold | REQ-009 | TASK-017, TASK-034 | TEST-009, TEST-104 | DONE |
+| TASK-050 | 5 | Upgrade/downgrade with proration | REQ-010 | TASK-048 | TEST-010 | DONE |
+| TASK-051 | 5 | Super admin tenants list/detail, plans and packs config (SCR-021 to SCR-023) | REQ-012 | TASK-017 | TEST-012 | DONE |
+| TASK-052 | 5 | Full Excel export, close account, 90-day deletion job | REQ-013 | TASK-026 | TEST-013 | DONE |
 | TASK-053 | 6 | Booking settings: bays, slot length, hours, off-days | REQ-014 | TASK-017 | TEST-014 | NOT_STARTED |
 | TASK-054 | 6 | Customer app login (OTP) and station links by phone/code | REQ-047 | TASK-005, TASK-013 | TEST-047 | NOT_STARTED |
 | TASK-055 | 6 | Customer self-booking with capacity locking (SCR-042) | REQ-015 | TASK-053, TASK-054 | TEST-015 (concurrency) | NOT_STARTED |
@@ -109,3 +109,4 @@ Allowed statuses: NOT_STARTED, IN_PROGRESS, BLOCKED, DONE. Do not claim tests pa
 - **Security fix found by the Phase 5 tests:** Supabase grants EXECUTE on public functions to `authenticated` by default, so `admin_add_member` (Phase 1) could be called by any logged-in user. Revoked in migration 16 (and `supabase/hotfix_admin_add_member.sql`); TEST-003 now fails if any service-only function is callable by users or any admin_* function skips the super-admin check. Confirmed open on staging before the fix.
 - Also fixed: the Dart Supabase client sorts descending unless `ascending: true` is given, so lists (items, plans, checklist, lines) were in reverse order.
 - Phase 5 tasks stay IN_PROGRESS until CI is green and `supabase/dashboard_phase5.sql` runs on staging. TASK-048 wallet/card needs the chosen aggregator (TASK-006) to replace the sandbox provider.
+- 2026-11-14: CI run #13 green on `main` (4f906be; migration 17 queues station files for the `storage-cleanup` Edge Function because Supabase blocks deleting `storage.objects` with SQL). Phase 5 SQL applied on staging; `tools/db-check/staging-smoke-phase5.mjs` passed 6/6 there (admin_add_member denied, owner FORBIDDEN on admin functions, Standard yearly quote Rs 50,000, bank payment with receipt pending and unreadable by another station, super-admin tenant list shows usage only, verification activates Standard and moves renewal one year with receipt #1). TASK-047, 049, 050, 051, 052 marked DONE. TASK-048 stays IN_PROGRESS: bank/cash verification is proven, wallet/card waits for the aggregator (TASK-006). Not yet deployed to staging: the `payment-webhook` and `storage-cleanup` Edge Functions (and a daily schedule for `storage-cleanup`).
