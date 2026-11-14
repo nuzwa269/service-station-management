@@ -41,6 +41,9 @@ try {
     must(await owner.rpc("job_add_service", { p_job: j, p_service: svc, p_qty: 1, p_price_paisa: null }));
     must(await owner.rpc("job_record_approval", { p_job: j, p_approve: true, p_via: "phone", p_by_name: "Bill Customer", p_extra: false }));
     must(await owner.rpc("job_set_stage", { p_job: j, p_stage: "in_progress", p_note: null }));
+    for (const c of must(await owner.from("job_checklist_items").select("id").eq("job_id", j))) {
+      must(await owner.rpc("job_set_check", { p_check: c.id, p_status: "ok", p_note: null }));
+    }
     must(await owner.rpc("job_set_stage", { p_job: j, p_stage: "quality_check", p_note: null }));
     must(await owner.rpc("job_quality_check", { p_job: j, p_pass: true, p_note: null }));
     return j;
@@ -119,7 +122,9 @@ try {
     if (!(d.expected.cash > 0) || !(d.expected.jazzcash >= 450000)) throw new Error(JSON.stringify(d.expected));
     return `cash ${rs(d.expected.cash)}, JazzCash ${rs(d.expected.jazzcash)}`;
   });
-} catch { /* reported below */ }
+} catch (e) {
+  if (!results.some((r) => r[0] === "FAIL")) results.push(["FAIL", "setup", e.message]);
+}
 
 for (const [s, n, o] of results) console.log(`${s}  ${n}${o ? "  — " + o : ""}`);
 process.exit(results.some((r) => r[0] === "FAIL") ? 1 : 0);

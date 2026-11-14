@@ -44,14 +44,14 @@
 | TASK-035 | 3 | Staff app mechanic screens SCR-031 to SCR-033 with offline badge and 24 h warning | REQ-023, REQ-021 | TASK-034 | TEST-023 on device | IN_PROGRESS |
 | TASK-036 | 3 | Cancellation and rejected estimate (fee invoice completed with TASK-039) | REQ-025 | TASK-031 | TEST-025 | DONE |
 | TASK-037 | 3 | Rework jobs and warranty claims (incl. return to supplier) | REQ-026, REQ-027 | TASK-029, TASK-022 | TEST-026, TEST-027 | DONE |
-| TASK-038 | 4 | Labour/service list with warranty days | REQ-035 | TASK-017 | TEST-035 | IN_PROGRESS |
-| TASK-039 | 4 | Invoice from approved lines, sequential numbering, tax per category (SCR-007) | REQ-036 | TASK-031, TASK-038 | TEST-036, TEST-004 | IN_PROGRESS |
-| TASK-040 | 4 | Discount limit enforcement with approval/owner path | REQ-037 | TASK-023, TASK-039 | TEST-037 | IN_PROGRESS |
-| TASK-041 | 4 | Payments: methods, references, split, advance, change | REQ-038 | TASK-039 | TEST-038 | IN_PROGRESS |
-| TASK-042 | 4 | Handover rule, credit release, customer ledger and collections | REQ-039, REQ-040 | TASK-023, TASK-041 | TEST-039, TEST-040 | IN_PROGRESS |
-| TASK-043 | 4 | Refunds, credit notes, reversals with reason | REQ-041, REQ-042 | TASK-023, TASK-041 | TEST-041, TEST-042 | IN_PROGRESS |
-| TASK-044 | 4 | Storage-charge scheduler job and ready-vehicle reminders | REQ-043 | TASK-039 | TEST-043 | IN_PROGRESS |
-| TASK-045 | 4 | Daily cash closing and reopen (SCR-013) | REQ-044 | TASK-041 | TEST-044 | IN_PROGRESS |
+| TASK-038 | 4 | Labour/service list with warranty days | REQ-035 | TASK-017 | TEST-035 | DONE |
+| TASK-039 | 4 | Invoice from approved lines, sequential numbering, tax per category (SCR-007) | REQ-036 | TASK-031, TASK-038 | TEST-036, TEST-004 | DONE |
+| TASK-040 | 4 | Discount limit enforcement with approval/owner path | REQ-037 | TASK-023, TASK-039 | TEST-037 | DONE |
+| TASK-041 | 4 | Payments: methods, references, split, advance, change | REQ-038 | TASK-039 | TEST-038 | DONE |
+| TASK-042 | 4 | Handover rule, credit release, customer ledger and collections | REQ-039, REQ-040 | TASK-023, TASK-041 | TEST-039, TEST-040 | DONE |
+| TASK-043 | 4 | Refunds, credit notes, reversals with reason | REQ-041, REQ-042 | TASK-023, TASK-041 | TEST-041, TEST-042 | DONE |
+| TASK-044 | 4 | Storage-charge scheduler job and ready-vehicle reminders | REQ-043 | TASK-039 | TEST-043 | DONE |
+| TASK-045 | 4 | Daily cash closing and reopen (SCR-013) | REQ-044 | TASK-041 | TEST-044 | DONE |
 | TASK-046 | 4 | Invoice/estimate PDF, A4 web print, Bluetooth receipt, share (SCR-036) | REQ-045 | TASK-009, TASK-039 | TEST-045 | IN_PROGRESS |
 | TASK-047 | 5 | Trial lifecycle, reminders, trial extension | REQ-007 | TASK-017 | TEST-007 | NOT_STARTED |
 | TASK-048 | 5 | Subscription checkout, webhook activation, bank/cash verification (SCR-019, SCR-022) | REQ-008 | TASK-006, TASK-047 | TEST-008 | NOT_STARTED |
@@ -104,3 +104,4 @@ Allowed statuses: NOT_STARTED, IN_PROGRESS, BLOCKED, DONE. Do not claim tests pa
 - 2026-11-15: CI run #8 green on `main` (27a47ee). Phase 3 SQL applied on staging; `tools/db-check/staging-smoke-phase3.mjs` passed 12/12 there (intake, odometer warning, estimate + phone approval with stock, assignment, mechanic sync_pull without prices, offline batch via sync_apply with duplicate detection, QC fail note to mechanic then pass, delivery blocked by pending extra work, rejected estimate → Rs 500 fee, no leak to another station). TASK-029…034, 036, 037 marked DONE. TASK-035 stays IN_PROGRESS until the real Android 8 / 2 GB device test (24 h offline).
 - 2026-11-16 Phase 4 (branch `phase-4-billing`): migrations 14–15 — service list, invoices from approved lines (sequential, tax per category, whole rupees, locked after first payment), discount limit with approval / Basic owner-only, append-only payments (split, advance, credit use, reversal), handover rule (paid or credit released) now enforced at delivery, customer dues (oldest first) and credit, refunds as numbered credit notes with parts back to stock, storage charge + uncollected reminders (daily job; pg_cron if enabled), day closing with difference note and owner reopen. `test_phase4_billing.sql` passes on PGlite (TEST-035…044, TEST-102 Rs 9,200); TEST-003 seeds invoices, payments, credit notes and a day closing. Web: invoice panel in the job card, day closing screen, customer dues, billing settings, A4 print / PDF.
 - Phase 4 tasks stay IN_PROGRESS until CI is green and `supabase/dashboard_phase4.sql` runs on staging (then `tools/db-check/staging-smoke-phase4.mjs`). TASK-046: Bluetooth 58/80 mm receipt from the Staff app still needs the printer spike (TASK-009) and real printers.
+- 2026-11-16: CI run #10 green on `main` (b874481). Phase 4 SQL applied on staging; `tools/db-check/staging-smoke-phase4.mjs` passed 9/9 there (service rate, Rs 9,500 invoice, delivery blocked "Collect Rs 9,500 or request credit approval", split cash + JazzCash with reference, discount, credit release and dues collection, refund as credit with stock back, reversal, day summary per method) and the Phase 3 smoke still passes 12/12 with payment before delivery. TASK-038…045 marked DONE. TASK-046 stays IN_PROGRESS for the Bluetooth receipt (needs TASK-009 printers); A4 print and PDF are done.
