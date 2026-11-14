@@ -31,6 +31,12 @@ create table storage.objects (
   owner uuid
 );
 alter table storage.objects enable row level security;
+-- Like Supabase: files are deleted through the Storage API, never with SQL.
+create function storage.protect_delete() returns trigger language plpgsql as $$
+begin
+  raise exception 'Direct deletion from storage tables is not allowed. Use the Storage API instead.';
+end $$;
+create trigger protect_objects_delete before delete on storage.objects for each statement execute function storage.protect_delete();
 create function storage.foldername(name text) returns text[] language sql immutable as $$
   select (string_to_array(name, '/'))[1:array_length(string_to_array(name, '/'), 1) - 1]
 $$;

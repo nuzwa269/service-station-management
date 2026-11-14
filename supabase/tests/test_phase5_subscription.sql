@@ -209,5 +209,6 @@ begin
   assert not exists (select 1 from public.station_members where station_id = tests.id('S3')), 'TEST-013: members gone';
   assert not exists (select 1 from public.audit_log where station_id = tests.id('S3')), 'TEST-013: audit gone with the station';
   assert exists (select 1 from public.deleted_stations where station_id = tests.id('S3')), 'TEST-013: shows Closed — deleted';
+  assert (select count(*) from public.storage_cleanup_queue where prefix = tests.id('S3')::text || '/') = 2, 'TEST-013: logo and receipt folders queued for the Storage API';
   assert exists (select 1 from public.stations where id = tests.id('S')), 'other stations untouched';
 end $$;
