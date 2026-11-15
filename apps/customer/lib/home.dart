@@ -2,6 +2,7 @@ import 'package:app_shared/app_shared.dart';
 import 'package:flutter/material.dart';
 import 'package:station_core/station_core.dart';
 
+import 'push.dart';
 import 'station_screens.dart';
 
 /// SCR-041 — linked stations, add a station by its code, notifications.
@@ -20,9 +21,15 @@ class _CustomerHomeState extends State<CustomerHome> {
   void initState() {
     super.initState();
     _reload();
+    Push.register(widget.api);
   }
 
   void _reload() => setState(() => _stations = widget.api.myStations());
+
+  Future<void> _signOut() async {
+    await Push.unregister(widget.api);
+    await widget.api.signOut();
+  }
 
   Future<void> _link() async {
     final ok = await showDialog<bool>(context: context, builder: (_) => LinkStationDialog(api: widget.api));
@@ -39,7 +46,7 @@ class _CustomerHomeState extends State<CustomerHome> {
               icon: const Icon(Icons.notifications_outlined),
               onPressed: () => Navigator.push(context, MaterialPageRoute<void>(builder: (_) => NotificationsScreen(api: widget.api))),
             ),
-            IconButton(tooltip: 'Log out', onPressed: widget.api.signOut, icon: const Icon(Icons.logout)),
+            IconButton(tooltip: 'Log out', onPressed: _signOut, icon: const Icon(Icons.logout)),
           ],
         ),
         floatingActionButton: FloatingActionButton.extended(onPressed: _link, icon: const Icon(Icons.add_business_outlined), label: const Text('Add station')),

@@ -89,6 +89,7 @@ enum MenuItem {
   inventory('SCR-009', 'Inventory', null),
   purchases('SCR-010', 'Purchases', null),
   approvals('SCR-012', 'Approvals', Feature.approvalsInbox),
+  messages('SCR-045', 'Messages', null),
   dayClosing('SCR-013', 'Day closing', null),
   reports('SCR-014', 'Reports', null),
   staff('SCR-015', 'Staff', Feature.payroll),
@@ -122,6 +123,7 @@ List<MenuItem> menuFor(MemberRole role) => switch (role) {
           MenuItem.inventory,
           MenuItem.purchases,
           MenuItem.approvals,
+          MenuItem.messages,
           MenuItem.dayClosing,
           MenuItem.reports,
           MenuItem.staff,
@@ -134,6 +136,7 @@ List<MenuItem> menuFor(MemberRole role) => switch (role) {
           MenuItem.jobCards,
           MenuItem.customers,
           MenuItem.inventory,
+          MenuItem.messages,
           MenuItem.dayClosing,
         ],
       // Mechanics use the Staff app only (assigned jobs).

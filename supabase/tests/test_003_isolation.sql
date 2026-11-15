@@ -85,10 +85,18 @@ select public.station_save_booking_settings(tests.id('B'), 2, 60, 3,
 select public.station_create_booking(tests.id('B'), tests.id('custB'), tests.id('carB'), null,
   ((private.today_pk() + 1) + time '10:00') at time zone 'Asia/Karachi');
 select public.job_set_next_service(tests.id('jobB2'), private.today_pk() + 90);
+-- Phase 7: event switches, WhatsApp account and templates, outbox (from the booking above), a phone.
+select public.station_set_message_events(tests.id('B'), '{"dues_reminder": false}');
+select public.whatsapp_begin_connect(tests.id('B'));
+select public.register_device('fcm-token-owner-b-00000000000', 'staff');
 -- Station A has one app customer.
 select tests.as_user(tests.id('ownerA'));
 insert into tests.fx values ('custA', public.station_save_customer(tests.id('A'), null, 'A Customer', '03008880000'));
 reset role;
+do $$ begin
+  assert (select count(*) from public.message_outbox where station_id = tests.id('B')) > 0, 'fixture: B has outbox rows';
+end $$;
+insert into public.whatsapp_templates (station_id, event) values (tests.id('B'), 'vehicle_ready');
 insert into public.no_show_counters (station_id, customer_id, no_shows) values (tests.id('B'), tests.id('custB'), 1);
 insert into tests.fx values ('appA', tests.create_user('923008880000'));
 
@@ -127,6 +135,9 @@ begin
   end loop;
   assert checked >= 20, 'TEST-003: expected at least 20 tenant relations, found ' || checked;
   assert (select count(*) from public.station_search_customers(tests.id('B'), 'B Customer')) = 0, 'TEST-003: search across stations';
+  assert (select count(*) from public.device_tokens) = 0, 'TEST-003: another user''s phone token';
+  perform tests.throws(format('select public.station_whatsapp_disconnect(%L)', tests.id('B')), 'FORBIDDEN');
+  perform tests.throws(format($q$select public.station_set_message_events(%L, '{"vehicle_ready": false}')$q$, tests.id('B')), 'FORBIDDEN');
   assert (select count(*) from public.stations where id = tests.id('A')) = 1, 'owner A must see own station';
 end $$;
 

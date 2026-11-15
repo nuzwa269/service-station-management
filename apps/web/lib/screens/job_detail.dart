@@ -6,6 +6,7 @@ import '../main.dart';
 import 'common.dart';
 import 'invoice_panel.dart';
 import 'jobs_screen.dart';
+import 'messages_screen.dart';
 
 /// SCR-006 — one job card: intake to quality check, approvals, lines, mechanics, history.
 class JobDetailView extends StatefulWidget {
@@ -67,6 +68,10 @@ class _JobDetailViewState extends State<JobDetailView> {
                 _NextServiceCard(d: d, act: _act),
                 const SizedBox(height: 12),
               ],
+              if (SessionScope.of(context).role != MemberRole.mechanic) ...[
+                _MessagesCard(key: ValueKey('msg-${d.job.id}-${d.job.stage.name}'), jobId: d.job.id),
+                const SizedBox(height: 12),
+              ],
               _MechanicsCard(d: d, act: _act),
               const SizedBox(height: 12),
               _HistoryCard(d: d),
@@ -80,6 +85,43 @@ class _JobDetailViewState extends State<JobDetailView> {
                 : Column(children: [left, const SizedBox(height: 12), right]);
           }),
         ]),
+      );
+}
+
+/// REQ-062: customer messages about this job card and its invoice, with "Send on WhatsApp".
+class _MessagesCard extends StatefulWidget {
+  const _MessagesCard({super.key, required this.jobId});
+  final String jobId;
+
+  @override
+  State<_MessagesCard> createState() => _MessagesCardState();
+}
+
+class _MessagesCardState extends State<_MessagesCard> {
+  late Future<List<OutboxMessage>> _messages;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _reload();
+  }
+
+  void _reload() => setState(() => _messages = SessionScope.of(context).api.messagesForJob(widget.jobId));
+
+  @override
+  Widget build(BuildContext context) => _Box(
+        title: 'Customer messages',
+        child: FutureBuilder<List<OutboxMessage>>(
+          future: _messages,
+          builder: (context, snap) {
+            if (!snap.hasData) return const SizedBox(height: 4, child: LinearProgressIndicator());
+            final list = snap.data!;
+            if (list.isEmpty) return const Text('No messages for this job yet.', style: TextStyle(fontSize: 13));
+            return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+              for (final m in list.take(4)) MessageTile(message: m, onChanged: _reload, dense: true),
+            ]);
+          },
+        ),
       );
 }
 

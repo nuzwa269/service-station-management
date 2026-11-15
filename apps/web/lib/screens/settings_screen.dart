@@ -5,6 +5,7 @@ import 'package:station_core/station_core.dart';
 
 import '../main.dart';
 import 'common.dart';
+import 'whatsapp_settings.dart';
 
 /// SCR-017 — station rules. This phase: profile, branding, tax (REQ-004),
 /// users link (REQ-002) and support access (REQ-005).
@@ -23,6 +24,8 @@ class SettingsScreen extends StatelessWidget {
         const JobSettingsSection(),
         const Divider(height: 32),
         const BillingSettingsSection(),
+        const Divider(height: 32),
+        const WhatsAppSettingsSection(),
         const Divider(height: 32),
         const SupportAccessSection(),
       ],

@@ -4,6 +4,8 @@ import 'package:station_core/station_core.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'mechanic/mechanic_screens.dart';
+import 'office/office_screens.dart';
+import 'push.dart';
 import 'sync/own_sync_engine.dart';
 import 'sync/sync_store.dart';
 
@@ -62,8 +64,14 @@ class _StaffRootState extends State<StaffRoot> {
     widget.session.api.client.auth.onAuthStateChange.listen((s) {
       if (s.session != null && (s.event == AuthChangeEvent.signedIn || s.event == AuthChangeEvent.initialSession)) {
         widget.session.load();
+        Push.register(widget.session.api);
       }
     });
+  }
+
+  Future<void> _signOut() async {
+    await Push.unregister(widget.session.api);
+    await widget.session.signOut();
   }
 
   @override
@@ -87,7 +95,7 @@ class _StaffRootState extends State<StaffRoot> {
               body: Center(
                 child: Column(mainAxisSize: MainAxisSize.min, children: [
                   Text(s.error?.message ?? 'Your account is not active in any station.'),
-                  TextButton(onPressed: s.signOut, child: const Text('Log out')),
+                  TextButton(onPressed: _signOut, child: const Text('Log out')),
                 ]),
               ),
             );
@@ -98,43 +106,81 @@ class _StaffRootState extends State<StaffRoot> {
               stationId: s.current!.stationId,
               stationName: s.current!.stationName,
               client: s.api.client,
-              onSignOut: s.signOut,
+              onSignOut: _signOut,
             );
           }
           return StaffHome(
             stationName: s.current!.stationName,
             role: s.current!.role,
             entitlements: s.entitlements!,
-            onSignOut: s.signOut,
+            onSignOut: _signOut,
+            api: s.api,
+            stationId: s.current!.stationId,
           );
         },
       );
 }
 
-/// SCR-031 (mechanic) or SCR-035 (owner / manager / cashier).
-class StaffHome extends StatelessWidget {
-  const StaffHome({super.key, required this.stationName, required this.role, required this.entitlements, required this.onSignOut});
+/// SCR-031 (mechanic) or SCR-035 (owner / manager / cashier): dashboard, the
+/// "Messages to send" list (REQ-062) and notifications (REQ-056).
+class StaffHome extends StatefulWidget {
+  const StaffHome({
+    super.key,
+    required this.stationName,
+    required this.role,
+    required this.entitlements,
+    required this.onSignOut,
+    this.api,
+    this.stationId,
+  });
   final String stationName;
   final MemberRole role;
   final Entitlements entitlements;
   final VoidCallback onSignOut;
 
+  /// Null in widget tests (no backend).
+  final StationApi? api;
+  final String? stationId;
+
+  @override
+  State<StaffHome> createState() => _StaffHomeState();
+}
+
+class _StaffHomeState extends State<StaffHome> {
+  int _tab = 0;
+
   @override
   Widget build(BuildContext context) {
-    final mechanic = role == MemberRole.mechanic;
+    final mechanic = widget.role == MemberRole.mechanic;
+    final api = widget.api;
+    final station = widget.stationId;
+    final body = mechanic
+        ? const PlannedScreen(title: 'Assigned jobs (works offline)', phase: 'Phase 3 (TASK-035)')
+        : switch (_tab) {
+            1 when api != null && station != null => StaffMessagesTab(api: api, stationId: station),
+            2 when api != null && station != null => StaffAlertsTab(api: api, stationId: station),
+            _ => const PlannedScreen(title: 'Quick dashboard & approvals', phase: 'Phase 8'),
+          };
     return Scaffold(
       appBar: AppBar(
-        title: Text(mechanic ? 'My jobs' : stationName),
-        actions: [IconButton(tooltip: 'Log out', onPressed: onSignOut, icon: const Icon(Icons.logout))],
+        title: Text(mechanic ? 'My jobs' : widget.stationName),
+        actions: [IconButton(tooltip: 'Log out', onPressed: widget.onSignOut, icon: const Icon(Icons.logout))],
       ),
       body: Column(children: [
-        SubscriptionBanner(entitlements: entitlements),
-        Expanded(
-          child: mechanic
-              ? const PlannedScreen(title: 'Assigned jobs (works offline)', phase: 'Phase 3 (TASK-035)')
-              : const PlannedScreen(title: 'Quick dashboard & approvals', phase: 'Phase 2 / Phase 8'),
-        ),
+        SubscriptionBanner(entitlements: widget.entitlements),
+        Expanded(child: body),
       ]),
+      bottomNavigationBar: mechanic
+          ? null
+          : NavigationBar(
+              selectedIndex: _tab,
+              onDestinationSelected: (i) => setState(() => _tab = i),
+              destinations: const [
+                NavigationDestination(icon: Icon(Icons.space_dashboard_outlined), label: 'Dashboard'),
+                NavigationDestination(icon: Icon(Icons.chat_outlined), label: 'Messages'),
+                NavigationDestination(icon: Icon(Icons.notifications_none), label: 'Alerts'),
+              ],
+            ),
     );
   }
 }

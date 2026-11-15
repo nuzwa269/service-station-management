@@ -11,6 +11,8 @@ environment:
 dependencies:
   app_shared:
     path: ../../packages/app_shared
+  firebase_core: ^5.1.0
+  firebase_messaging: ^17.0.1
   flutter:
     sdk: flutter
   path: ^1.9.1
@@ -18,6 +20,7 @@ dependencies:
   station_core:
     path: ../../packages/core
   supabase_flutter: ^2.18.3
+  url_launcher: ^6.3.3
 
 dev_dependencies:
   flutter_test:

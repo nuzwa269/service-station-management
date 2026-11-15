@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:station_core/station_core.dart';
 
 import '../main.dart';
+import 'notifications_button.dart';
 
 const moduleIcons = <MenuItem, IconData>{
   MenuItem.dashboard: Icons.space_dashboard_rounded,
@@ -13,6 +14,7 @@ const moduleIcons = <MenuItem, IconData>{
   MenuItem.inventory: Icons.inventory_2_rounded,
   MenuItem.purchases: Icons.local_shipping_rounded,
   MenuItem.approvals: Icons.fact_check_rounded,
+  MenuItem.messages: Icons.chat_rounded,
   MenuItem.dayClosing: Icons.point_of_sale_rounded,
   MenuItem.reports: Icons.insights_rounded,
   MenuItem.staff: Icons.badge_rounded,
@@ -31,6 +33,7 @@ const moduleColors = <MenuItem, Color>{
   MenuItem.inventory: Color(0xFFF59E0B),
   MenuItem.purchases: Color(0xFF8B5CF6),
   MenuItem.approvals: Color(0xFFEC4899),
+  MenuItem.messages: Color(0xFF16A34A),
   MenuItem.dayClosing: Color(0xFF22C55E),
   MenuItem.reports: Color(0xFF3B82F6),
   MenuItem.staff: Color(0xFFEF4444),
@@ -63,6 +66,7 @@ class StationShell extends StatelessWidget {
       location: location,
       onNavigate: (path) => context.go(path),
       onSignOut: session.signOut,
+      notifications: NotificationsButton(key: ValueKey(membership.stationId), stationId: membership.stationId),
       child: child,
     );
   }
@@ -82,6 +86,7 @@ class StationShellView extends StatelessWidget {
     required this.onNavigate,
     required this.onSignOut,
     required this.child,
+    this.notifications,
   });
 
   final String stationName;
@@ -91,6 +96,9 @@ class StationShellView extends StatelessWidget {
   final void Function(String path) onNavigate;
   final VoidCallback onSignOut;
   final Widget child;
+
+  /// Bell with unread staff notifications (REQ-056); null in widget tests.
+  final Widget? notifications;
 
   @override
   Widget build(BuildContext context) {
@@ -170,6 +178,7 @@ class StationShellView extends StatelessWidget {
                               ),
                           ],
                         ),
+                      ?notifications,
                       const SizedBox(width: 6),
                       _ToolButton(icon: Icons.logout_rounded, tooltip: 'Log out', onTap: onSignOut),
                     ]),

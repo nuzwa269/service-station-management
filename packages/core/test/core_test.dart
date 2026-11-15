@@ -162,6 +162,7 @@ void main() {
       expect(menuFor(MemberRole.manager), isNot(contains(MenuItem.subscription)));
       expect(menuFor(MemberRole.cashier), isNot(contains(MenuItem.settings)));
       expect(menuFor(MemberRole.mechanic), isEmpty);
+      expect(menuFor(MemberRole.cashier), contains(MenuItem.messages), reason: 'REQ-062: cashiers send WhatsApp');
     });
 
     test('locked feature text names the plans', () {
@@ -226,6 +227,23 @@ void main() {
     test('booking errors are readable', () {
       expect(AppError.fromDatabase('SLOT_TAKEN', 'Slot just filled, pick another').code, AppErrorCode.slotTaken);
       expect(const AppError(AppErrorCode.bookingBlocked).message, 'Please call the station.');
+    });
+  });
+
+  group('Messages (REQ-055, REQ-061, REQ-062)', () {
+    test('wa.me link with the number and the text', () {
+      expect(whatsAppLink('03215550000', 'Your invoice INV-0042 from Basic Garage: Rs 9,500. Thank you!'),
+          'https://wa.me/923215550000?text=Your%20invoice%20INV-0042%20from%20Basic%20Garage%3A%20Rs%209%2C500.%20Thank%20you!');
+      expect(whatsAppLink('0300-1234567', 'Hi'), 'https://wa.me/923001234567?text=Hi');
+    });
+
+    test('WhatsApp status and message status', () {
+      expect(WhatsAppStatus.parse('payment_problem').label, 'Payment problem');
+      expect(WhatsAppStatus.parse(null), WhatsAppStatus.notConnected);
+      expect(WhatsAppStatus.connected.sendsAutomatically, isTrue);
+      expect(WhatsAppStatus.pending.sendsAutomatically, isFalse);
+      expect(MessageStatus.parse('opened').needsStaff, isTrue);
+      expect(MessageStatus.parse('sent').needsStaff, isFalse);
     });
   });
 }

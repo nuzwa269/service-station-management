@@ -27,6 +27,14 @@ void main() {
     await tester.pumpWidget(home(MemberRole.cashier));
     expect(find.text('Delta'), findsOneWidget);
     expect(find.textContaining('Quick dashboard'), findsOneWidget);
+    // REQ-062 / REQ-056: messages to send and notifications on the phone.
+    expect(find.text('Messages'), findsOneWidget);
+    expect(find.text('Alerts'), findsOneWidget);
+  });
+
+  testWidgets('mechanic has no messages tab', (tester) async {
+    await tester.pumpWidget(home(MemberRole.mechanic));
+    expect(find.text('Messages'), findsNothing);
   });
 
   testWidgets('staff login validates Pakistani mobile', (tester) async {
