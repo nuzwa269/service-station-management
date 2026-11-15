@@ -22,3 +22,9 @@ node_modules/
 *.keystore
 key.properties
 .claude/settings.local.json
+
+# Phone screenshots taken during manual checks
+build-shots/
+
+# Built APKs for hand-out (large; publish through App releases instead)
+dist/

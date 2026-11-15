@@ -89,6 +89,11 @@ select public.job_set_next_service(tests.id('jobB2'), private.today_pk() + 90);
 select public.station_set_message_events(tests.id('B'), '{"dues_reminder": false}');
 select public.whatsapp_begin_connect(tests.id('B'));
 select public.register_device('fcm-token-owner-b-00000000000', 'staff');
+-- Phase 8: staff, attendance, advance and a payroll sheet.
+insert into tests.fx values ('staffB', public.station_save_staff(tests.id('B'), '{"name":"B Helper","role":"helper","salary_paisa":1000000}'::jsonb));
+select public.station_set_attendance(tests.id('staffB'), private.today_pk(), 'present');
+select public.station_add_advance(tests.id('staffB'), 10000);
+select public.payroll_generate(tests.id('B'), private.today_pk());
 -- Station A has one app customer.
 select tests.as_user(tests.id('ownerA'));
 insert into tests.fx values ('custA', public.station_save_customer(tests.id('A'), null, 'A Customer', '03008880000'));

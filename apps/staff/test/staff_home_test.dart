@@ -26,10 +26,21 @@ void main() {
   testWidgets('cashier lands on the quick dashboard (SCR-035)', (tester) async {
     await tester.pumpWidget(home(MemberRole.cashier));
     expect(find.text('Delta'), findsOneWidget);
-    expect(find.textContaining('Quick dashboard'), findsOneWidget);
+    expect(find.textContaining('Quick dashboard'), findsOneWidget);  // no backend in the test
     // REQ-062 / REQ-056: messages to send and notifications on the phone.
     expect(find.text('Messages'), findsOneWidget);
     expect(find.text('Alerts'), findsOneWidget);
+  });
+
+  testWidgets('password can be shown to check what was typed', (tester) async {
+    await tester.pumpWidget(MaterialApp(home: Scaffold(body: StaffLoginForm(onSubmit: (_, _) async {}))));
+    await tester.enterText(find.byKey(const Key('password')), 'Secret123');
+    EditableText field() => tester.widget<EditableText>(find.descendant(of: find.byKey(const Key('password')), matching: find.byType(EditableText)));
+    expect(field().obscureText, isTrue);
+    await tester.tap(find.byKey(const Key('show-password')));
+    await tester.pump();
+    expect(field().obscureText, isFalse);
+    expect(find.text('Secret123'), findsOneWidget);
   });
 
   testWidgets('mechanic has no messages tab', (tester) async {

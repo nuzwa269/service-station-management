@@ -35,7 +35,7 @@ class _SetupStep {
 }
 
 class _DashData {
-  const _DashData({required this.lowStock, required this.pending, this.setup = const [], this.activity = const [], this.names = const {}, this.team = const [], this.jobs = const {}, this.collected});
+  const _DashData({required this.lowStock, required this.pending, this.setup = const [], this.activity = const [], this.names = const {}, this.team = const [], this.jobs = const {}, this.collected, this.totals = const {}});
   final List<Map<String, dynamic>> lowStock;
   final List<ApprovalRequest> pending;
   final List<_SetupStep> setup;
@@ -44,6 +44,9 @@ class _DashData {
   final List<Member> team;
   final Map<JobStage, int> jobs;
   final DaySummary? collected;
+
+  /// REQ-060: customer dues, WhatsApp messages waiting.
+  final Map<String, dynamic> totals;
 }
 
 /// SCR-003 — today at a glance. Balanced two-column layout: work on the left,
@@ -108,6 +111,7 @@ class _DashboardHomeState extends State<DashboardHome> {
       names: {for (final m in team) m.userId: m.name},
       jobs: await s.api.jobCounts(id),
       collected: await s.api.daySummary(id, DateTime.now()),
+      totals: await s.api.dashboardTotals(id),
     );
   }
 
@@ -141,7 +145,7 @@ class _DashboardHomeState extends State<DashboardHome> {
             const SizedBox(height: 2),
             Text(formatDateLong(DateTime.now()), style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w800, letterSpacing: -0.5)),
             const SizedBox(height: 20),
-            _KpiRow(data: d, columns: c.maxWidth >= 900 ? 4 : 2),
+            _KpiRow(data: d, columns: c.maxWidth >= 900 ? 3 : 2),
             const SizedBox(height: 20),
             if (wide)
               Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -221,6 +225,22 @@ class _KpiRow extends StatelessWidget {
         value: pending == null ? '…' : '$pending',
         hint: pending == 0 ? 'Nothing waiting' : 'Waiting for decision',
         onTap: () => context.go('/${MenuItem.approvals.name}'),
+      ),
+      _Kpi(
+        icon: Icons.account_balance_wallet_rounded,
+        color: const Color(0xFF8B5CF6),
+        label: 'Customer dues',
+        value: data == null ? '…' : formatPkr(Money.paisa(((data!.totals['dues_paisa'] as num?) ?? 0).round())),
+        hint: 'Owed on delivered invoices',
+        onTap: () => context.go('/${MenuItem.customers.name}'),
+      ),
+      _Kpi(
+        icon: Icons.chat_rounded,
+        color: const Color(0xFF16A34A),
+        label: 'WhatsApp to send',
+        value: data == null ? '…' : '${data!.totals['messages_to_send'] ?? 0}',
+        hint: (data?.totals['messages_to_send'] ?? 0) == 0 ? 'All sent' : 'Waiting for staff',
+        onTap: () => context.go('/${MenuItem.messages.name}'),
       ),
     ];
     final rows = <Widget>[];

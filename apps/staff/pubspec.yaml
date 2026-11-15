@@ -1,7 +1,7 @@
 name: staff_app
 description: "Car service station SaaS"
 publish_to: 'none'
-version: 0.1.0+1
+version: 1.0.0+1
 
 resolution: workspace
 

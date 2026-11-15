@@ -4,6 +4,7 @@ import 'package:station_core/station_core.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'mechanic/mechanic_screens.dart';
+import 'office/dashboard_tab.dart';
 import 'office/office_screens.dart';
 import 'push.dart';
 import 'sync/own_sync_engine.dart';
@@ -61,6 +62,7 @@ class _StaffRootState extends State<StaffRoot> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => checkForAppUpdate(context, widget.session.api, 'staff'));
     widget.session.api.client.auth.onAuthStateChange.listen((s) {
       if (s.session != null && (s.event == AuthChangeEvent.signedIn || s.event == AuthChangeEvent.initialSession)) {
         widget.session.load();
@@ -159,7 +161,9 @@ class _StaffHomeState extends State<StaffHome> {
         : switch (_tab) {
             1 when api != null && station != null => StaffMessagesTab(api: api, stationId: station),
             2 when api != null && station != null => StaffAlertsTab(api: api, stationId: station),
-            _ => const PlannedScreen(title: 'Quick dashboard & approvals', phase: 'Phase 8'),
+            _ when api != null && station != null =>
+              StaffDashboardTab(api: api, stationId: station, role: widget.role, entitlements: widget.entitlements),
+            _ => const Center(child: Text('Quick dashboard')),
           };
     return Scaffold(
       appBar: AppBar(

@@ -73,7 +73,7 @@ class _AdminHomeState extends State<AdminHome> {
   Widget build(BuildContext context) {
     final s = SessionScope.of(context);
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -83,12 +83,13 @@ class _AdminHomeState extends State<AdminHome> {
             Text('Platform admin', style: TextStyle(fontWeight: FontWeight.w800)),
           ]),
           actions: [IconButton(tooltip: 'Log out', onPressed: s.signOut, icon: const Icon(Icons.logout_rounded))],
-          bottom: const TabBar(tabs: [Tab(text: 'Tenants'), Tab(text: 'Plans'), Tab(text: 'Deleted')]),
+          bottom: const TabBar(tabs: [Tab(text: 'Tenants'), Tab(text: 'Plans'), Tab(text: 'Deleted'), Tab(text: 'App releases')]),
         ),
         body: TabBarView(children: [
           _tenantsTab(context),
           const _PlansTab(),
           const _DeletedTab(),
+          const _ReleasesTab(),
         ]),
       ),
     );
@@ -394,3 +395,100 @@ class _DeletedTab extends StatelessWidget {
         ]),
       );
 }
+
+/// TASK-072: publish a new signed APK so phones offer the update.
+class _ReleasesTab extends StatefulWidget {
+  const _ReleasesTab();
+
+  @override
+  State<_ReleasesTab> createState() => _ReleasesTabState();
+}
+
+class _ReleasesTabState extends State<_ReleasesTab> {
+  late Future<List<Map<String, dynamic>>> _rows;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _reload();
+  }
+
+  void _reload() {
+    final client = SessionScope.of(context).api.client;
+    Future<List<Map<String, dynamic>>> load() async =>
+        List<Map<String, dynamic>>.from(await client.from('app_versions').select().order('app', ascending: true));
+    setState(() => _rows = load());
+  }
+
+  Future<void> _publish(String app, Map<String, dynamic>? current) async {
+    final build = TextEditingController(text: '${((current?['build'] as int?) ?? 0) + 1}');
+    final version = TextEditingController();
+    final url = TextEditingController();
+    final minBuild = TextEditingController(text: '${current?['min_build'] ?? 1}');
+    final notes = TextEditingController();
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('Publish ${app == 'staff' ? 'Staff' : 'Customer'} app'),
+        content: SizedBox(
+          width: 380,
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            TextField(controller: build, decoration: const InputDecoration(labelText: 'Build number (the +N in pubspec)')),
+            TextField(controller: version, decoration: const InputDecoration(labelText: 'Version, e.g. 1.0.1')),
+            TextField(controller: url, decoration: const InputDecoration(labelText: 'APK download link (https)')),
+            TextField(controller: minBuild, decoration: const InputDecoration(labelText: 'Oldest build still allowed')),
+            TextField(controller: notes, decoration: const InputDecoration(labelText: 'What changed (optional)')),
+          ]),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
+          FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Publish')),
+        ],
+      ),
+    );
+    if (ok != true || !mounted) return;
+    final api = SessionScope.of(context).api;
+    try {
+      await api.guard(() => api.client.rpc('admin_publish_app_version', params: {
+        'p_app': app,
+        'p_build': int.tryParse(build.text.trim()) ?? 0,
+        'p_version': version.text.trim(),
+        'p_apk_url': url.text.trim(),
+        'p_min_build': int.tryParse(minBuild.text.trim()),
+        'p_notes': notes.text.trim(),
+      }));
+      _reload();
+    } catch (e) {
+      if (mounted) showError(context, e);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => FutureBuilder<List<Map<String, dynamic>>>(
+        future: _rows,
+        builder: (context, snap) {
+          if (!snap.hasData) return const Center(child: CircularProgressIndicator());
+          final byApp = {for (final r in snap.data!) r['app'] as String: r};
+          return ListView(padding: const EdgeInsets.all(16), children: [
+            for (final app in const ['staff', 'customer'])
+              Card(
+                child: ListTile(
+                  leading: Icon(app == 'staff' ? Icons.engineering_rounded : Icons.directions_car_rounded),
+                  title: Text(app == 'staff' ? 'Staff app' : 'Customer app'),
+                  subtitle: Text(byApp[app] == null
+                      ? 'Nothing published yet'
+                      : 'Version ${byApp[app]!['version']} (build ${byApp[app]!['build']}) · oldest allowed ${byApp[app]!['min_build']}\n${byApp[app]!['apk_url']}'),
+                  isThreeLine: byApp[app] != null,
+                  trailing: FilledButton(onPressed: () => _publish(app, byApp[app]), child: const Text('Publish build')),
+                ),
+              ),
+            const Padding(
+              padding: EdgeInsets.all(8),
+              child: Text('Upload the signed APK somewhere with an https link first (for example a storage bucket), then publish it here. '
+                  'Phones offer the update on their next start; builds below "oldest allowed" must update.'),
+            ),
+          ]);
+        },
+      );
+}
+

@@ -22,6 +22,7 @@ class _CustomerHomeState extends State<CustomerHome> {
     super.initState();
     _reload();
     Push.register(widget.api);
+    WidgetsBinding.instance.addPostFrameCallback((_) => checkForAppUpdate(context, widget.api, 'customer'));
   }
 
   void _reload() => setState(() => _stations = widget.api.myStations());

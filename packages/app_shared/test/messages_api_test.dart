@@ -38,4 +38,11 @@ void main() {
     expect(n.read, isFalse);
     expect(n.kind, 'approval_request');
   });
+
+  test('TASK-072: update offered for an older build, required below the minimum', () {
+    final u = AppUpdate.fromRow({'build': 5, 'version': '1.2.0', 'min_build': 3, 'apk_url': 'https://x/app.apk', 'notes': null});
+    expect(u.needFor(5), UpdateNeed.none);
+    expect(u.needFor(4), UpdateNeed.optional);
+    expect(u.needFor(2), UpdateNeed.required);
+  });
 }
