@@ -63,6 +63,10 @@ class _JobDetailViewState extends State<JobDetailView> {
               ],
               _IntakeCard(d: d),
               const SizedBox(height: 12),
+              if (SessionScope.of(context).role != MemberRole.mechanic && d.job.stage != JobStage.cancelled) ...[
+                _NextServiceCard(d: d, act: _act),
+                const SizedBox(height: 12),
+              ],
               _MechanicsCard(d: d, act: _act),
               const SizedBox(height: 12),
               _HistoryCard(d: d),
@@ -599,6 +603,63 @@ class _IntakeCard extends StatelessWidget {
       ]),
     );
   }
+}
+
+/// REQ-049 — next service date and/or km, set at delivery (default 3 months / 5,000 km).
+class _NextServiceCard extends StatelessWidget {
+  const _NextServiceCard({required this.d, required this.act});
+  final JobDetail d;
+  final Future<void> Function(Future<void> Function(), {String? success}) act;
+
+  Future<void> _edit(BuildContext context) async {
+    final def = defaultNextService(DateTime.now(), d.odometerKm);
+    var date = d.nextServiceDate ?? def.date;
+    final km = TextEditingController(text: '${d.nextServiceKm ?? def.km}');
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx, set) => AlertDialog(
+          title: const Text('Next service'),
+          content: SizedBox(
+            width: 340,
+            child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+              OutlinedButton.icon(
+                icon: const Icon(Icons.event_outlined),
+                label: Text('Date: ${formatDate(date)}'),
+                onPressed: () async {
+                  final p = await showDatePicker(
+                      context: ctx, initialDate: date, firstDate: DateTime.now().add(const Duration(days: 1)), lastDate: DateTime.now().add(const Duration(days: 730)));
+                  if (p != null) set(() => date = p);
+                },
+              ),
+              const SizedBox(height: 12),
+              TextField(controller: km, keyboardType: TextInputType.number, decoration: const InputDecoration(labelText: 'Or at odometer (km)')),
+              const SizedBox(height: 8),
+              const Text('Customers with the app get a reminder 3 days before. On Basic it appears in "Due for service".', style: TextStyle(fontSize: 12)),
+            ]),
+          ),
+          actions: [
+            TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
+            FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Save')),
+          ],
+        ),
+      ),
+    );
+    if (ok != true || !context.mounted) return;
+    await act(() => SessionScope.of(context).api.setNextService(d.job.id, date: date, km: int.tryParse(km.text.trim())), success: 'Next service saved');
+  }
+
+  @override
+  Widget build(BuildContext context) => _Box(
+        title: 'Next service',
+        trailing: TextButton(onPressed: () => _edit(context), child: Text(d.nextServiceDate == null && d.nextServiceKm == null ? 'Set' : 'Change')),
+        child: Text(
+          d.nextServiceDate == null && d.nextServiceKm == null
+              ? 'Not set'
+              : [if (d.nextServiceDate != null) formatDate(d.nextServiceDate!), if (d.nextServiceKm != null) '${d.nextServiceKm} km'].join(' or '),
+          style: const TextStyle(fontWeight: FontWeight.w600),
+        ),
+      );
 }
 
 class _MechanicsCard extends StatefulWidget {

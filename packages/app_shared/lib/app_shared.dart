@@ -3,6 +3,7 @@ library;
 
 export 'src/api.dart';
 export 'src/billing_api.dart';
+export 'src/booking_api.dart';
 export 'src/config.dart';
 export 'src/inventory_api.dart';
 export 'src/jobs_api.dart';

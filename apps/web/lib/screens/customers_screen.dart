@@ -46,7 +46,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
       ),
       Expanded(
         child: _results == null
-            ? const Center(child: Text('Search by phone, number plate or name'))
+            ? DueForServiceList(onOpen: (id) => setState(() => _selected = id))
             : AsyncStateView<List<CustomerHit>>(
                 future: _results!,
                 isEmpty: (l) => l.isEmpty,
@@ -131,10 +131,14 @@ class _CustomerDetailState extends State<CustomerDetail> {
               for (final r in rows)
                 ListTile(
                   dense: true,
+                  leading: Icon(r['kind'] == 'job' ? Icons.build_circle_outlined : Icons.person_outline),
                   title: Text(r['title'] as String),
-                  subtitle: Text(formatDate(DateTime.parse(r['at'] as String).toLocal())),
+                  subtitle: Text([
+                    formatDate(DateTime.parse(r['at'] as String).toLocal()),
+                    if (r['odometer'] != null) '${r['odometer']} km',
+                  ].join(' · ')),
+                  trailing: r['total_paisa'] == null ? null : Text(formatPkr(Money.paisa((r['total_paisa'] as num).toInt()))),
                 ),
-              const ListTile(dense: true, subtitle: Text('Jobs, parts and invoices appear here once job cards are in use (Phase 3–4).')),
             ]),
           ),
         ),
@@ -173,6 +177,10 @@ class _CustomerDetailState extends State<CustomerDetail> {
               ),
             const Divider(height: 32),
             CustomerDuesCard(customerId: widget.customerId),
+            if (SessionScope.of(context).entitlements?.has(Feature.booking) ?? false) ...[
+              const SizedBox(height: 12),
+              NoShowCard(customerId: widget.customerId),
+            ],
           ]);
         },
       );
@@ -420,6 +428,100 @@ class _CustomerDuesCardState extends State<CustomerDuesCard> {
             ),
           ),
         ]);
+      },
+    );
+  }
+}
+
+/// REQ-049 — vehicles due for service in the next 7 days (call list; every plan).
+class DueForServiceList extends StatefulWidget {
+  const DueForServiceList({super.key, required this.onOpen});
+  final void Function(String customerId) onOpen;
+
+  @override
+  State<DueForServiceList> createState() => _DueForServiceListState();
+}
+
+class _DueForServiceListState extends State<DueForServiceList> {
+  late Future<List<Map<String, dynamic>>> _due;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final s = SessionScope.of(context);
+    _due = s.api.dueForService(s.current!.stationId);
+  }
+
+  @override
+  Widget build(BuildContext context) => AsyncStateView<List<Map<String, dynamic>>>(
+        future: _due,
+        isEmpty: (l) => l.isEmpty,
+        emptyText: 'Search by phone, number plate or name.\nNo vehicles are due for service this week.',
+        builder: (context, rows) => ListView(padding: const EdgeInsets.all(16), children: [
+          Text('Due for service (next 7 days)', style: Theme.of(context).textTheme.titleMedium),
+          const SizedBox(height: 4),
+          const Text('Call these customers to book. Search above for anyone else.', style: TextStyle(fontSize: 12)),
+          const SizedBox(height: 8),
+          for (final r in rows)
+            ListTile(
+              leading: const Icon(Icons.notifications_active_outlined),
+              title: Text('${r['plate']} · ${r['customer_name']}'),
+              subtitle: Text([
+                formatPkMobile(r['mobile'] as String),
+                if (r['next_service_date'] != null) 'due ${formatDate(DateTime.parse(r['next_service_date'] as String))}',
+                if (r['next_service_km'] != null) 'or at ${r['next_service_km']} km',
+                if (r['reminder_sent'] == true) 'reminder sent',
+              ].join(' · ')),
+              onTap: () => widget.onOpen(r['customer_id'] as String),
+            ),
+        ]),
+      );
+}
+
+/// REQ-017 — no-show count and app-booking block; owner/manager can unblock.
+class NoShowCard extends StatefulWidget {
+  const NoShowCard({super.key, required this.customerId});
+  final String customerId;
+
+  @override
+  State<NoShowCard> createState() => _NoShowCardState();
+}
+
+class _NoShowCardState extends State<NoShowCard> {
+  late Future<({int noShows, bool blocked})> _st;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _st = SessionScope.of(context).api.noShowStatus(widget.customerId);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final s = SessionScope.of(context);
+    final canUnblock = s.role == MemberRole.owner || s.role == MemberRole.manager;
+    return FutureBuilder<({int noShows, bool blocked})>(
+      future: _st,
+      builder: (context, snap) {
+        final v = snap.data;
+        if (v == null) return const SizedBox.shrink();
+        return Card(
+          child: ListTile(
+            leading: Icon(v.blocked ? Icons.block : Icons.event_available_outlined, color: v.blocked ? const Color(0xFFDC2626) : null),
+            title: Text(v.blocked ? 'App booking blocked' : 'App booking allowed'),
+            subtitle: Text('No-shows: ${v.noShows}'),
+            trailing: v.blocked && canUnblock
+                ? FilledButton(
+                    onPressed: () async {
+                      if (await runAction(context, () => s.api.unblockCustomer(widget.customerId), success: 'Unblocked')) {
+                        setState(() => _st = s.api.noShowStatus(widget.customerId));
+                      }
+                    },
+                    child: const Text('Unblock'),
+                  )
+                : null,
+          ),
+        );
       },
     );
   }

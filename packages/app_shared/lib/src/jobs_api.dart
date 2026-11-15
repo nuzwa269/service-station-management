@@ -111,8 +111,12 @@ class JobDetail {
     this.cancelReason,
     this.parentJobId,
     this.partsFree = false,
+    this.nextServiceDate,
+    this.nextServiceKm,
   });
 
+  final DateTime? nextServiceDate;
+  final int? nextServiceKm;
   final JobSummary job;
   final String customerId;
   final String customerMobile;
@@ -183,6 +187,8 @@ extension JobsApi on StationApi {
           cancelReason: r['cancel_reason'] as String?,
           parentJobId: r['parent_job_id'] as String?,
           partsFree: r['parts_free'] as bool? ?? false,
+          nextServiceDate: r['next_service_date'] == null ? null : DateTime.parse(r['next_service_date'] as String),
+          nextServiceKm: r['next_service_km'] as int?,
           checklist: checklist.map(CheckItem.fromRow).toList(),
           lines: lines.map(JobLine.fromRow).toList(),
           mechanicIds: [for (final a in (r['job_assignments'] as List).cast<Map<String, dynamic>>()) a['user_id'] as String],

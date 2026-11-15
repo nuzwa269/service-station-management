@@ -78,7 +78,19 @@ select public.invoice_record_payment(tests.id('invB'), 100000, 'cash');
 select public.invoice_request_refund(tests.id('invB'), 10000, 'credit', 'Goodwill');
 select public.job_record_advance(tests.id('jobB'), 5000, 'cash');
 select public.station_close_day(tests.id('B'), private.today_pk(), 105000, null);  -- 1,000 + 50 advance
+-- Phase 6: booking settings, hours, off-day, a booking and a customer message.
+select public.station_save_booking_settings(tests.id('B'), 2, 60, 3,
+  (select jsonb_agg(jsonb_build_object('weekday', d, 'opens', '09:00', 'closes', '18:00')) from generate_series(1, 7) d),
+  array[private.today_pk() + 60]);
+select public.station_create_booking(tests.id('B'), tests.id('custB'), tests.id('carB'), null,
+  ((private.today_pk() + 1) + time '10:00') at time zone 'Asia/Karachi');
+select public.job_set_next_service(tests.id('jobB2'), private.today_pk() + 90);
+-- Station A has one app customer.
+select tests.as_user(tests.id('ownerA'));
+insert into tests.fx values ('custA', public.station_save_customer(tests.id('A'), null, 'A Customer', '03008880000'));
 reset role;
+insert into public.no_show_counters (station_id, customer_id, no_shows) values (tests.id('B'), tests.id('custB'), 1);
+insert into tests.fx values ('appA', tests.create_user('923008880000'));
 
 set role service_role;
 select public.admin_add_member(tests.id('ownerA'), tests.id('A'), tests.id('mechA'), 'Mech A', '0300-3333333', 'mechanic');
@@ -137,6 +149,23 @@ begin
   -- Another station's record returns "not found", with no data leaked.
   perform tests.throws(format('select public.station_update_profile(%L, ''X Y'', null, null, null, null, false, 0, 0)', tests.id('A')), 'FORBIDDEN');
   assert (select count(*) from public.profiles where mobile = '03001111111') = 0, 'owner B must not see owner A profile';
+end $$;
+
+-- A customer of station A sees nothing of station B, through tables or customer functions.
+select tests.as_user(tests.id('appA'));
+do $$
+declare r record;
+begin
+  for r in select * from tests.leaks(tests.id('B')) loop
+    assert r.leaked = 0, format('TEST-003: customer of A sees %s rows of station B in %s', r.leaked, r.relation);
+  end loop;
+  assert (select count(*) from public.customer_stations()) = 1, 'TEST-003: customer linked to A only';
+  perform tests.throws(format('select public.customer_job(%L)', tests.id('jobB')), 'NOT_FOUND');
+  perform tests.throws(format('select public.customer_invoice(%L)', tests.id('invB')), 'NOT_FOUND');
+  perform tests.throws(format('select public.customer_station_data(%L)', tests.id('B')), 'NOT_FOUND');
+  perform tests.throws(format('select count(*) from public.booking_slots(%L, %L)', tests.id('B'), private.today_pk() + 1), 'NOT_FOUND');
+  perform tests.throws(format('select count(*) from public.customer_vehicle_history(%L)', tests.id('carB')), 'NOT_FOUND');
+  assert (select count(*) from public.station_vehicle_history(tests.id('carB'))) = 0, 'TEST-003: staff history across stations';
 end $$;
 
 reset role;

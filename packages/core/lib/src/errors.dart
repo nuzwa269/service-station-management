@@ -19,6 +19,10 @@ enum AppErrorCode {
   warrantyExpired('WARRANTY_EXPIRED', 'Warranty has expired.'),
   paymentDue('PAYMENT_DUE', 'Collect the payment or request credit approval.'),
   dayClosed('DAY_CLOSED', 'That day is closed — ask the owner to reopen it.'),
+  slotTaken('SLOT_TAKEN', 'Slot just filled, pick another.'),
+  slotFull('SLOT_FULL', 'This slot is full — book anyway?'),
+  tooLate('TOO_LATE', 'Too late to change online — call the station.'),
+  bookingBlocked('BOOKING_BLOCKED', 'Please call the station.'),
   network('NETWORK', 'No internet connection. Please try again.'),
   unknown('UNKNOWN', 'Something went wrong. Please try again.');
 

@@ -10,6 +10,7 @@ import 'screens/admin_screen.dart';
 import 'screens/approvals_screen.dart';
 import 'screens/audit_screen.dart';
 import 'screens/auth_screens.dart';
+import 'screens/bookings_screen.dart';
 import 'screens/customers_screen.dart';
 import 'screens/dashboard_screen.dart';
 import 'screens/day_closing_screen.dart';
@@ -88,7 +89,7 @@ Widget screenFor(MenuItem m) => switch (m) {
       MenuItem.dashboard => const DashboardHome(),
       MenuItem.users => const UsersScreen(),
       MenuItem.dataImport => const ImportScreen(),
-      MenuItem.bookings => const PlannedScreen(title: 'Bookings', phase: 'Phase 6 (TASK-056)'),
+      MenuItem.bookings => const BookingsScreen(),
       MenuItem.jobCards => const JobCardsScreen(),
       MenuItem.customers => const CustomersScreen(),
       MenuItem.inventory => const InventoryScreen(),

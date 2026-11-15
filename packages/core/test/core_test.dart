@@ -187,4 +187,45 @@ void main() {
       expect(s.overdue(DateTime(2026, 11, 13, 9)), isTrue);
     });
   });
+
+  group('Booking (TASK-053…059)', () {
+    test('TEST-014: 60-minute slots 09:00–18:00 give 9 slots', () {
+      final s = slotStarts(const DayHours(2, 540, 1080), 60);
+      expect(s.length, 9);
+      expect(formatHm(s.first), '09:00');
+      expect(formatHm(s.last), '17:00');
+      expect(slotStarts(null, 60), isEmpty);
+      expect(slotStarts(const DayHours(2, 540, 1080), 45), isEmpty);
+      expect(slotStarts(const DayHours(2, 540, 600), 90), isEmpty);
+    });
+
+    test('hours round-trip', () {
+      expect(parseHm('09:30:00'), 570);
+      expect(DayHours.fromRow({'weekday': 1, 'opens': '09:00:00', 'closes': '18:00:00'}).toJson(),
+          {'weekday': 1, 'opens': '09:00', 'closes': '18:00'});
+    });
+
+    test('TEST-016: online cancel up to 1 hour before', () {
+      final slot = DateTime.utc(2026, 11, 21, 5);
+      expect(customerCanChange(slot, slot.subtract(const Duration(minutes: 61))), isTrue);
+      expect(customerCanChange(slot, slot.subtract(const Duration(minutes: 30))), isFalse);
+    });
+
+    test('status codes and slot label', () {
+      expect(BookingStatus.parse('no_show'), BookingStatus.noShow);
+      expect(BookingStatus.noShow.code, 'no_show');
+      expect(formatSlot(DateTime.utc(2026, 11, 21, 5)), 'Sat 21-11-2026 10:00');
+    });
+
+    test('REQ-049: default next service 3 months / 5,000 km', () {
+      final n = defaultNextService(DateTime(2026, 11, 15), 84200);
+      expect(n.date, DateTime(2027, 2, 15));
+      expect(n.km, 89200);
+    });
+
+    test('booking errors are readable', () {
+      expect(AppError.fromDatabase('SLOT_TAKEN', 'Slot just filled, pick another').code, AppErrorCode.slotTaken);
+      expect(const AppError(AppErrorCode.bookingBlocked).message, 'Please call the station.');
+    });
+  });
 }

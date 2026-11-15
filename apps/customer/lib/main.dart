@@ -2,8 +2,10 @@ import 'package:app_shared/app_shared.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'home.dart';
+
 /// Customer app (Android 8+): phone + one-time code login (REQ-047).
-/// Linked stations, booking and approvals arrive in Phase 6.
+/// Linked stations, booking, approvals, invoices and history (Phase 6).
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initBackend();
@@ -24,13 +26,7 @@ class CustomerRoot extends StatelessWidget {
         stream: api.client.auth.onAuthStateChange,
         builder: (context, _) {
           if (api.client.auth.currentSession == null) return CustomerLoginScreen(api: api);
-          return Scaffold(
-            appBar: AppBar(
-              title: const Text('My vehicles & stations'),
-              actions: [IconButton(tooltip: 'Log out', onPressed: api.signOut, icon: const Icon(Icons.logout))],
-            ),
-            body: const PlannedScreen(title: 'Linked stations, booking and approvals', phase: 'Phase 6 (TASK-054…058)'),
-          );
+          return CustomerHome(api: api);
         },
       );
 }

@@ -25,6 +25,8 @@ jobs:
         working-directory: apps/web
       - run: flutter test
         working-directory: apps/staff
+      - run: flutter test
+        working-directory: packages/app_shared
 
   database:
     runs-on: ubuntu-24.04
