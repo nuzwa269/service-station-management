@@ -37,7 +37,7 @@ class _StaffDashboardTabState extends State<StaffDashboardTab> {
 
   Future<void> _reload() async {
     final f = _load();
-    setState(() => _data = f);
+    setState(() { _data = f; });
     await f;
   }
 
@@ -72,8 +72,13 @@ class _StaffDashboardTabState extends State<StaffDashboardTab> {
                       const SizedBox(width: 10),
                       Expanded(
                         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                          Text(value, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
-                          Text(label, style: const TextStyle(fontSize: 12), maxLines: 1, overflow: TextOverflow.ellipsis),
+                          FittedBox(
+                            fit: BoxFit.scaleDown,
+                            alignment: Alignment.centerLeft,
+                            child: Text(value, maxLines: 1, softWrap: false, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+                          ),
+                          // Full label on up to two lines; tiles grow with the phone's text size.
+                          Text(label, style: const TextStyle(fontSize: 12, height: 1.2), maxLines: 2),
                         ]),
                       ),
                     ]),
@@ -91,15 +96,17 @@ class _StaffDashboardTabState extends State<StaffDashboardTab> {
               tile('WhatsApp to send', '${d.totals['messages_to_send'] ?? 0}', Icons.chat_rounded, const Color(0xFF16A34A)),
             ];
             return ListView(padding: const EdgeInsets.all(12), children: [
-              GridView.count(
-                crossAxisCount: 2,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-                childAspectRatio: 2.3,
-                children: tiles,
-              ),
+              // Two tiles per row, each row as tall as its tallest tile (no fixed height to clip text).
+              for (var i = 0; i < tiles.length; i += 2) ...[
+                if (i > 0) const SizedBox(height: 10),
+                IntrinsicHeight(
+                  child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                    Expanded(child: tiles[i]),
+                    const SizedBox(width: 10),
+                    Expanded(child: i + 1 < tiles.length ? tiles[i + 1] : const SizedBox()),
+                  ]),
+                ),
+              ],
               const SizedBox(height: 12),
               Card(
                 margin: EdgeInsets.zero,

@@ -43,7 +43,7 @@ class _InvoiceCardState extends State<InvoiceCard> {
 
   Future<void> _act(Future<void> Function() action, {String? success}) async {
     if (await runAction(context, action, success: success)) {
-      setState(() => _inv = _load());
+      setState(() { _inv = _load(); });
       widget.onChanged();
     }
   }
@@ -319,7 +319,7 @@ class _PaymentDialogState extends State<PaymentDialog> {
               initialValue: _method,
               decoration: const InputDecoration(labelText: 'Method'),
               items: [for (final m in PayMethod.receivable) DropdownMenuItem(value: m, child: Text(m.label))],
-              onChanged: (m) => setState(() => _method = m!),
+              onChanged: (m) => setState(() { _method = m!; }),
             ),
             const SizedBox(height: 12),
             if (_method.needsReference)
@@ -421,7 +421,7 @@ class _RefundDialogState extends State<_RefundDialog> {
           SegmentedButton<String>(
             segments: const [ButtonSegment(value: 'credit', label: Text('Keep as credit')), ButtonSegment(value: 'cash', label: Text('Give cash back'))],
             selected: {_mode},
-            onSelectionChanged: (v) => setState(() => _mode = v.first),
+            onSelectionChanged: (v) => setState(() { _mode = v.first; }),
           ),
           const SizedBox(height: 12),
           TextField(controller: _reason, decoration: const InputDecoration(labelText: 'Reason')),
@@ -434,7 +434,7 @@ class _RefundDialogState extends State<_RefundDialog> {
                 dense: true,
                 value: _returns.containsKey(l.id),
                 title: Text('${l.description} × ${l.qty - l.returnedQty}'),
-                onChanged: (v) => setState(() => v == true ? _returns[l.id] = l.qty - l.returnedQty : _returns.remove(l.id)),
+                onChanged: (v) => setState(() { v == true ? _returns[l.id] = l.qty - l.returnedQty : _returns.remove(l.id); }),
               ),
           ],
           const SizedBox(height: 8),

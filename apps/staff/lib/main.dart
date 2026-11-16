@@ -178,7 +178,7 @@ class _StaffHomeState extends State<StaffHome> {
           ? null
           : NavigationBar(
               selectedIndex: _tab,
-              onDestinationSelected: (i) => setState(() => _tab = i),
+              onDestinationSelected: (i) => setState(() { _tab = i; }),
               destinations: const [
                 NavigationDestination(icon: Icon(Icons.space_dashboard_outlined), label: 'Dashboard'),
                 NavigationDestination(icon: Icon(Icons.chat_outlined), label: 'Messages'),

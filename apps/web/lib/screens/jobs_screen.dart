@@ -81,9 +81,9 @@ class _JobCardsScreenState extends State<JobCardsScreen> {
   void _reload() {
     final s = SessionScope.of(context);
     final id = s.current!.stationId;
-    setState(() => _jobs = s.api.jobs(id, stages: _filterStages[_filter]));
+    setState(() { _jobs = s.api.jobs(id, stages: _filterStages[_filter]); });
     s.api.jobCounts(id).then((c) {
-      if (mounted) setState(() => _counts = c);
+      if (mounted) setState(() { _counts = c; });
     }).catchError((_) {});
   }
 
@@ -106,7 +106,7 @@ class _JobCardsScreenState extends State<JobCardsScreen> {
         padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
         child: TextField(
           decoration: const InputDecoration(isDense: true, prefixIcon: Icon(Icons.search), hintText: 'Job no, plate or customer'),
-          onChanged: (v) => setState(() => _query = v.trim().toLowerCase()),
+          onChanged: (v) => setState(() { _query = v.trim().toLowerCase(); }),
         ),
       ),
       Expanded(
@@ -127,7 +127,7 @@ class _JobCardsScreenState extends State<JobCardsScreen> {
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
               itemCount: jobs.length,
               separatorBuilder: (_, _) => const SizedBox(height: 10),
-              itemBuilder: (context, i) => _JobTile(job: jobs[i], selected: jobs[i].id == _selected, onTap: () => setState(() => _selected = jobs[i].id)),
+              itemBuilder: (context, i) => _JobTile(job: jobs[i], selected: jobs[i].id == _selected, onTap: () => setState(() { _selected = jobs[i].id; })),
             );
           },
         ),
@@ -140,8 +140,8 @@ class _JobCardsScreenState extends State<JobCardsScreen> {
             key: ValueKey(_selected),
             jobId: _selected!,
             onChanged: _reload,
-            onOpenJob: (id) => setState(() => _selected = id),
-            onClose: wide ? null : () => setState(() => _selected = null),
+            onOpenJob: (id) => setState(() { _selected = id; }),
+            onClose: wide ? null : () => setState(() { _selected = null; }),
           );
 
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -254,7 +254,7 @@ class _NewJobDialogState extends State<NewJobDialog> {
     final s = SessionScope.of(context);
     if (_search.text.trim().length < 2) return;
     final hits = await s.api.searchCustomers(s.current!.stationId, _search.text.trim());
-    if (mounted) setState(() => _hits = hits.where((h) => h.vehicleId != null).toList());
+    if (mounted) setState(() { _hits = hits.where((h) => h.vehicleId != null).toList(); });
   }
 
   Future<void> _addCustomer() async {
@@ -276,7 +276,7 @@ class _NewJobDialogState extends State<NewJobDialog> {
       showError(context, const AppError(AppErrorCode.validation, 'Choose a vehicle and enter the odometer'));
       return;
     }
-    setState(() => _busy = true);
+    setState(() { _busy = true; });
     try {
       final id = await s.api.createJob(s.current!.stationId,
           customerId: _picked!.customerId,
@@ -302,14 +302,14 @@ class _NewJobDialogState extends State<NewJobDialog> {
           ),
         );
         if (yes == true) {
-          setState(() => _busy = false);
+          setState(() { _busy = false; });
           return _save(confirm: true);
         }
       } else {
         showError(context, e);
       }
     } finally {
-      if (mounted) setState(() => _busy = false);
+      if (mounted) setState(() { _busy = false; });
     }
   }
 
@@ -339,7 +339,7 @@ class _NewJobDialogState extends State<NewJobDialog> {
                 h.vehicleId == _picked?.vehicleId ? Icons.radio_button_checked_rounded : Icons.radio_button_unchecked_rounded,
                 color: h.vehicleId == _picked?.vehicleId ? Theme.of(context).colorScheme.primary : null,
               ),
-              onTap: () => setState(() => _picked = h),
+              onTap: () => setState(() { _picked = h; }),
               title: Text('${h.plate} · ${h.name}'),
               subtitle: Text([formatPkMobile(h.mobile), if (h.make != null) '${h.make} ${h.model ?? ''}'].join(' · ')),
               dense: true,
@@ -359,7 +359,7 @@ class _NewJobDialogState extends State<NewJobDialog> {
                   final d = await showDatePicker(context: context, firstDate: now, lastDate: now.add(const Duration(days: 60)), initialDate: now);
                   if (d == null || !context.mounted) return;
                   final t = await showTimePicker(context: context, initialTime: const TimeOfDay(hour: 17, minute: 0));
-                  setState(() => _expected = DateTime(d.year, d.month, d.day, t?.hour ?? 17, t?.minute ?? 0));
+                  setState(() { _expected = DateTime(d.year, d.month, d.day, t?.hour ?? 17, t?.minute ?? 0); });
                 },
                 icon: const Icon(Icons.schedule_rounded),
                 label: Text(_expected == null ? 'Expected delivery' : '${formatDate(_expected!)} ${formatTime(_expected!)}'),
@@ -372,7 +372,7 @@ class _NewJobDialogState extends State<NewJobDialog> {
           SegmentedButton<FuelLevel>(
             segments: [for (final f in FuelLevel.values) ButtonSegment(value: f, label: Text(f.label))],
             selected: {_fuel},
-            onSelectionChanged: (v) => setState(() => _fuel = v.first),
+            onSelectionChanged: (v) => setState(() { _fuel = v.first; }),
           ),
           const SizedBox(height: 12),
           TextField(controller: _complaints, maxLines: 3, decoration: const InputDecoration(labelText: 'Complaints')),

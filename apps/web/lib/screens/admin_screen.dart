@@ -67,7 +67,7 @@ class _AdminHomeState extends State<AdminHome> {
     _reload();
   }
 
-  void _reload() => setState(() => _tenants = SessionScope.of(context).api.tenants());
+  void _reload() => setState(() { _tenants = SessionScope.of(context).api.tenants(); });
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +109,7 @@ class _AdminHomeState extends State<AdminHome> {
               padding: const EdgeInsets.all(12),
               child: TextField(
                 decoration: const InputDecoration(isDense: true, prefixIcon: Icon(Icons.search), hintText: 'Station, city or owner mobile'),
-                onChanged: (v) => setState(() => _q = v.trim().toLowerCase()),
+                onChanged: (v) => setState(() { _q = v.trim().toLowerCase(); }),
               ),
             ),
             SizedBox(
@@ -121,7 +121,7 @@ class _AdminHomeState extends State<AdminHome> {
                     child: ChoiceChip(
                       label: Text('${_filterLabels[f]} ${all.where((t) => _matches(f, t)).length}'),
                       selected: f == _filter,
-                      onSelected: (_) => setState(() => _filter = f),
+                      onSelected: (_) => setState(() { _filter = f; }),
                     ),
                   ),
               ]),
@@ -142,7 +142,7 @@ class _AdminHomeState extends State<AdminHome> {
                             side: BorderSide(color: t.stationId == _selected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.outlineVariant),
                           ),
                           child: ListTile(
-                            onTap: () => setState(() => _selected = t.stationId),
+                            onTap: () => setState(() { _selected = t.stationId; }),
                             title: Text(t.name, style: const TextStyle(fontWeight: FontWeight.w700)),
                             subtitle: Text('${t.city} · ${t.plan} · ${t.users} users · ${t.jobsThisMonth} jobs this month'),
                             trailing: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.end, children: [
@@ -170,7 +170,7 @@ class _AdminHomeState extends State<AdminHome> {
                   : Column(children: [
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: TextButton.icon(onPressed: () => setState(() => _selected = null), icon: const Icon(Icons.arrow_back), label: const Text('Back')),
+                        child: TextButton.icon(onPressed: () => setState(() { _selected = null; }), icon: const Icon(Icons.arrow_back), label: const Text('Back')),
                       ),
                       Expanded(child: detail),
                     ]);
@@ -205,7 +205,7 @@ class _TenantDetailState extends State<_TenantDetail> {
 
   Future<void> _act(Future<void> Function() a, String ok) async {
     if (await runAction(context, a, success: ok)) {
-      setState(() => _payments = SessionScope.of(context).api.subscriptionPayments(widget.tenant.stationId));
+      setState(() { _payments = SessionScope.of(context).api.subscriptionPayments(widget.tenant.stationId); });
       widget.onChanged();
     }
   }
@@ -365,7 +365,7 @@ class _PlansTabState extends State<_PlansTab> {
                   final yy = int.tryParse(y.text.replaceAll(',', ''));
                   if (ok != true || mm == null || yy == null || !context.mounted) return;
                   if (await runAction(context, () => api.updatePlan(p.code, mm, yy), success: 'Prices saved')) {
-                    setState(() => _plans = api.plans());
+                    setState(() { _plans = api.plans(); });
                   }
                 },
                 child: const Text('Edit prices'),
@@ -417,7 +417,7 @@ class _ReleasesTabState extends State<_ReleasesTab> {
     final client = SessionScope.of(context).api.client;
     Future<List<Map<String, dynamic>>> load() async =>
         List<Map<String, dynamic>>.from(await client.from('app_versions').select().order('app', ascending: true));
-    setState(() => _rows = load());
+    setState(() { _rows = load(); });
   }
 
   Future<void> _publish(String app, Map<String, dynamic>? current) async {
@@ -515,7 +515,7 @@ class _SmsGatewayCardState extends State<_SmsGatewayCard> {
     final api = SessionScope.of(context).api;
     Future<Map<String, dynamic>> load() async =>
         Map<String, dynamic>.from(await api.guard(() async => await api.client.rpc('admin_sms_status')) as Map);
-    setState(() => _status = load());
+    setState(() { _status = load(); });
   }
 
   @override

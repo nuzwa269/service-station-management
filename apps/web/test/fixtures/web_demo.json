@@ -1,0 +1,3875 @@
+{
+ "answers": {
+  "GET notifications?select=id%2Ckind%2Ctitle%2Cbody%2Cref_id%2Ccreated_at%2Cread_at&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072&order=created_at.desc.nullslast&limit=50": [
+   {
+    "id": 14,
+    "kind": "low_stock",
+    "title": "Low stock — Battery 55Ah",
+    "body": "2 left (minimum 2)",
+    "ref_id": "5a304690-ed05-4514-8e5c-7f3fe81751a0",
+    "created_at": "2026-11-16T16:08:42.787937+00:00",
+    "read_at": "2026-11-16T16:32:15.765485+00:00"
+   },
+   {
+    "id": 10,
+    "kind": "low_stock",
+    "title": "Low stock — Spark plug iridium",
+    "body": "8 left (minimum 8)",
+    "ref_id": "0b5d04e2-583a-4346-9aa7-e053372b6820",
+    "created_at": "2026-11-16T13:11:14.583382+00:00",
+    "read_at": "2026-11-16T16:00:40.390045+00:00"
+   }
+  ],
+  "GET low_stock_items?select=name%2Cunit%2Con_hand%2Cmin_stock%2Cnegative&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072&order=on_hand.asc.nullslast&limit=50": [
+   {
+    "name": "Battery 55Ah",
+    "unit": "piece",
+    "on_hand": 2,
+    "min_stock": 2,
+    "negative": false
+   },
+   {
+    "name": "Spark plug iridium",
+    "unit": "piece",
+    "on_hand": 8,
+    "min_stock": 8,
+    "negative": false
+   }
+  ],
+  "GET approval_inbox?select=%2A&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072&status=eq.pending&order=created_at.desc.nullslast&limit=200": [],
+  "GET station_members?select=id%2Cuser_id%2Crole%2Cactive%2Cprofile%3Aprofiles%28full_name%2Cmobile%29&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072&order=created_at.asc.nullslast": [
+   {
+    "id": "fa329118-c1b2-4ca0-88d0-475c05f6f84b",
+    "user_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "role": "owner",
+    "active": true,
+    "profile": {
+     "mobile": "03990000003",
+     "full_name": "OTP Owner"
+    }
+   },
+   {
+    "id": "ec611cfa-e05a-42c4-9cda-4553fabd631d",
+    "user_id": "5eb8a49c-b020-437d-8bab-231cbf88ab15",
+    "role": "manager",
+    "active": true,
+    "profile": {
+     "mobile": "03990000111",
+     "full_name": "Imran Manager"
+    }
+   },
+   {
+    "id": "05d6629b-a9a1-4cc8-92b0-208e244f2282",
+    "user_id": "1143395d-c551-4323-a0e6-1055d522e3ff",
+    "role": "cashier",
+    "active": true,
+    "profile": {
+     "mobile": "03990000112",
+     "full_name": "Nadia Cashier"
+    }
+   },
+   {
+    "id": "bbc25659-5d44-4617-a65e-d2f1c4a63511",
+    "user_id": "0b7970df-7426-4442-a427-2f4a0d966aa3",
+    "role": "mechanic",
+    "active": true,
+    "profile": {
+     "mobile": "03990000113",
+     "full_name": "Bilal Mechanic"
+    }
+   },
+   {
+    "id": "fa1b97f0-d925-4043-b91c-35ab05e54b0d",
+    "user_id": "21d44f8f-0890-4e0a-b051-e65850662e0a",
+    "role": "mechanic",
+    "active": true,
+    "profile": {
+     "mobile": "03990000114",
+     "full_name": "Asif Mechanic"
+    }
+   }
+  ],
+  "GET stations?select=%2A&id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072 [single]": {
+   "id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+   "name": "Demo Auto Care",
+   "city": "Lahore",
+   "address": "12-B Main Boulevard, Gulberg III, Lahore",
+   "phone": "0300-0000000",
+   "logo_path": null,
+   "ntn": null,
+   "strn": null,
+   "sales_tax_enabled": false,
+   "parts_tax_pct": 0,
+   "services_tax_pct": 0,
+   "discount_limit_pct": 5,
+   "station_code": "62LDFY",
+   "created_at": "2026-11-12T22:44:26.343634+00:00",
+   "closed_at": null,
+   "manager_can_approve": true,
+   "inspection_fee_paisa": 0,
+   "storage_free_days": 3,
+   "storage_charge_paisa": 0
+  },
+  "GET booking_settings?select=%2A&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072": [
+   {
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "bays": 3,
+    "slot_minutes": 60,
+    "no_show_limit": 3,
+    "days_ahead": 30,
+    "updated_at": "2026-11-16T13:10:23.548671+00:00"
+   }
+  ],
+  "GET booking_hours?select=%2A&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072&order=weekday.asc.nullslast": [
+   {
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "weekday": 1,
+    "opens": "09:00:00",
+    "closes": "19:00:00"
+   },
+   {
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "weekday": 2,
+    "opens": "09:00:00",
+    "closes": "19:00:00"
+   },
+   {
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "weekday": 3,
+    "opens": "09:00:00",
+    "closes": "19:00:00"
+   },
+   {
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "weekday": 4,
+    "opens": "09:00:00",
+    "closes": "19:00:00"
+   },
+   {
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "weekday": 5,
+    "opens": "09:00:00",
+    "closes": "19:00:00"
+   },
+   {
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "weekday": 6,
+    "opens": "09:00:00",
+    "closes": "19:00:00"
+   }
+  ],
+  "GET booking_off_days?select=day&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072&order=day.asc.nullslast": [],
+  "POST rpc/booking_slots? {\"p_station\":\"2b957bee-ffba-4b0e-a677-b8876a2c6072\",\"p_day\":\"2026-11-16\"}": [
+   {
+    "slot_start": "2026-11-16T04:00:00+00:00",
+    "slot_end": "2026-11-16T05:00:00+00:00",
+    "capacity": 3,
+    "booked": 0,
+    "free": 3
+   },
+   {
+    "slot_start": "2026-11-16T05:00:00+00:00",
+    "slot_end": "2026-11-16T06:00:00+00:00",
+    "capacity": 3,
+    "booked": 0,
+    "free": 3
+   },
+   {
+    "slot_start": "2026-11-16T06:00:00+00:00",
+    "slot_end": "2026-11-16T07:00:00+00:00",
+    "capacity": 3,
+    "booked": 0,
+    "free": 3
+   },
+   {
+    "slot_start": "2026-11-16T07:00:00+00:00",
+    "slot_end": "2026-11-16T08:00:00+00:00",
+    "capacity": 3,
+    "booked": 0,
+    "free": 3
+   },
+   {
+    "slot_start": "2026-11-16T08:00:00+00:00",
+    "slot_end": "2026-11-16T09:00:00+00:00",
+    "capacity": 3,
+    "booked": 0,
+    "free": 3
+   },
+   {
+    "slot_start": "2026-11-16T09:00:00+00:00",
+    "slot_end": "2026-11-16T10:00:00+00:00",
+    "capacity": 3,
+    "booked": 0,
+    "free": 3
+   },
+   {
+    "slot_start": "2026-11-16T10:00:00+00:00",
+    "slot_end": "2026-11-16T11:00:00+00:00",
+    "capacity": 3,
+    "booked": 0,
+    "free": 3
+   },
+   {
+    "slot_start": "2026-11-16T11:00:00+00:00",
+    "slot_end": "2026-11-16T12:00:00+00:00",
+    "capacity": 3,
+    "booked": 0,
+    "free": 3
+   },
+   {
+    "slot_start": "2026-11-16T12:00:00+00:00",
+    "slot_end": "2026-11-16T13:00:00+00:00",
+    "capacity": 3,
+    "booked": 0,
+    "free": 3
+   },
+   {
+    "slot_start": "2026-11-16T13:00:00+00:00",
+    "slot_end": "2026-11-16T14:00:00+00:00",
+    "capacity": 3,
+    "booked": 0,
+    "free": 3
+   }
+  ],
+  "GET bookings?select=%2A%2Ccustomer%3Acustomers%28name%2Cmobile%29%2Cvehicle%3Avehicles%28plate%29%2Cservice%3Aservices%28name%29&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072&slot_start=gte.2026-11-15T19%3A00%3A00.000Z&slot_start=lt.2026-11-16T19%3A00%3A00.000Z&order=slot_start.asc.nullslast": [],
+  "GET bookings?select=%2A%2Ccustomer%3Acustomers%28name%2Cmobile%29%2Cvehicle%3Avehicles%28plate%29%2Cservice%3Aservices%28name%29&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072&slot_start=gte.2026-11-08T19%3A00%3A00.000Z&slot_start=lt.2026-11-16T19%3A00%3A00.000Z&order=slot_start.asc.nullslast": [],
+  "POST rpc/station_booking_conflicts? {\"p_station\":\"2b957bee-ffba-4b0e-a677-b8876a2c6072\"}": [],
+  "GET job_cards?select=id%2Cjob_no%2Ckind%2Cstage%2Ccomplaints%2Ccreated_at%2Ccustomer%3Acustomers%28name%29%2Cvehicle%3Avehicles%28plate%2Cmake%2Cmodel%29%2Cjob_assignments%28profile%3Aprofiles%28full_name%29%29&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072&stage=in.%28%22intake%22%2C%22awaiting_approval%22%2C%22approved%22%2C%22in_progress%22%2C%22quality_check%22%2C%22ready%22%29&order=job_no.desc.nullslast&limit=200": [
+   {
+    "id": "6b1f7c78-ec46-48fb-b098-eee6c0ea6779",
+    "job_no": 1008,
+    "kind": "normal",
+    "stage": "intake",
+    "complaints": "Wash and wiper change",
+    "created_at": "2026-11-16T13:11:17.585507+00:00",
+    "customer": {
+     "name": "Zainab Ali"
+    },
+    "vehicle": {
+     "make": "Toyota",
+     "model": "Yaris",
+     "plate": "LEG-1180"
+    },
+    "job_assignments": []
+   },
+   {
+    "id": "8a8262bf-5d2e-4c7e-8473-e315e120372d",
+    "job_no": 1007,
+    "kind": "normal",
+    "stage": "awaiting_approval",
+    "complaints": "Service due, battery weak",
+    "created_at": "2026-11-16T13:11:15.370655+00:00",
+    "customer": {
+     "name": "Ali Raza"
+    },
+    "vehicle": {
+     "make": "Toyota",
+     "model": "Corolla",
+     "plate": "LEA-1234"
+    },
+    "job_assignments": []
+   },
+   {
+    "id": "1b2fc5ef-d98c-4985-9dc9-39cc95a4ad6d",
+    "job_no": 1006,
+    "kind": "normal",
+    "stage": "in_progress",
+    "complaints": "Engine misfiring",
+    "created_at": "2026-11-16T13:11:13.496326+00:00",
+    "customer": {
+     "name": "Hina Shah"
+    },
+    "vehicle": {
+     "make": "Suzuki",
+     "model": "Alto",
+     "plate": "LEE-2290"
+    },
+    "job_assignments": [
+     {
+      "profile": {
+       "full_name": "Bilal Mechanic"
+      }
+     }
+    ]
+   },
+   {
+    "id": "0618a6f4-a61c-4331-b428-bb16e342e8d4",
+    "job_no": 1005,
+    "kind": "normal",
+    "stage": "quality_check",
+    "complaints": "AC not cooling",
+    "created_at": "2026-11-16T13:11:08.81412+00:00",
+    "customer": {
+     "name": "Usman Tariq"
+    },
+    "vehicle": {
+     "make": "Toyota",
+     "model": "Hilux",
+     "plate": "LED-7712"
+    },
+    "job_assignments": [
+     {
+      "profile": {
+       "full_name": "Asif Mechanic"
+      }
+     }
+    ]
+   },
+   {
+    "id": "8fa0c72e-5a06-46c1-86b9-f8b86c27850b",
+    "job_no": 1004,
+    "kind": "normal",
+    "stage": "ready",
+    "complaints": "Brakes squeaking",
+    "created_at": "2026-11-16T13:11:03.510657+00:00",
+    "customer": {
+     "name": "Bilal Ahmed"
+    },
+    "vehicle": {
+     "make": "Suzuki",
+     "model": "Cultus",
+     "plate": "LHR-8890"
+    },
+    "job_assignments": [
+     {
+      "profile": {
+       "full_name": "Bilal Mechanic"
+      }
+     }
+    ]
+   }
+  ],
+  "GET job_cards?select=stage&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072&stage=not.in.%28delivered%2Ccancelled%29": [
+   {
+    "stage": "intake"
+   },
+   {
+    "stage": "awaiting_approval"
+   },
+   {
+    "stage": "in_progress"
+   },
+   {
+    "stage": "quality_check"
+   },
+   {
+    "stage": "ready"
+   }
+  ],
+  "POST rpc/station_due_for_service? {\"p_station\":\"2b957bee-ffba-4b0e-a677-b8876a2c6072\",\"p_days\":7}": [],
+  "GET items?select=%2A&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072&order=name.asc.nullslast": [
+   {
+    "id": "9fa0732e-ccf5-4d9e-8edb-ad500964211f",
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "code": "FIL-AIR-C",
+    "name": "Air filter Corolla",
+    "barcode": null,
+    "category": null,
+    "unit": "piece",
+    "is_bulk": false,
+    "selling_price_paisa": 160000,
+    "min_stock": 4,
+    "warranty_days": 0,
+    "active": true,
+    "created_at": "2026-11-16T13:10:27.537817+00:00"
+   },
+   {
+    "id": "5a304690-ed05-4514-8e5c-7f3fe81751a0",
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "code": "BAT-55AH",
+    "name": "Battery 55Ah",
+    "barcode": null,
+    "category": null,
+    "unit": "piece",
+    "is_bulk": false,
+    "selling_price_paisa": 2150000,
+    "min_stock": 2,
+    "warranty_days": 365,
+    "active": true,
+    "created_at": "2026-11-16T13:10:28.941639+00:00"
+   },
+   {
+    "id": "27adcd42-126a-4205-9efb-9a967d56ecb3",
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "code": "BRK-PAD-F",
+    "name": "Brake pads front set",
+    "barcode": null,
+    "category": null,
+    "unit": "piece",
+    "is_bulk": false,
+    "selling_price_paisa": 480000,
+    "min_stock": 4,
+    "warranty_days": 0,
+    "active": true,
+    "created_at": "2026-11-16T13:10:27.88552+00:00"
+   },
+   {
+    "id": "45502aac-98b6-4b98-8ddd-9a3c59454f41",
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "code": "COOL-1L",
+    "name": "Coolant (per litre)",
+    "barcode": null,
+    "category": null,
+    "unit": "litre",
+    "is_bulk": false,
+    "selling_price_paisa": 90000,
+    "min_stock": 6,
+    "warranty_days": 0,
+    "active": true,
+    "created_at": "2026-11-16T13:10:28.590649+00:00"
+   },
+   {
+    "id": "3e6609e7-9c0f-4563-8684-13d03b989569",
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "code": "OIL-5W30",
+    "name": "Engine oil 5W-30 (per litre)",
+    "barcode": null,
+    "category": null,
+    "unit": "litre",
+    "is_bulk": false,
+    "selling_price_paisa": 110000,
+    "min_stock": 20,
+    "warranty_days": 0,
+    "active": true,
+    "created_at": "2026-11-16T13:10:26.824324+00:00"
+   },
+   {
+    "id": "2eef0147-e868-4c66-8f28-48ad6d78fd2b",
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "code": "FIL-OIL-C",
+    "name": "Oil filter Corolla/City",
+    "barcode": null,
+    "category": null,
+    "unit": "piece",
+    "is_bulk": false,
+    "selling_price_paisa": 95000,
+    "min_stock": 6,
+    "warranty_days": 0,
+    "active": true,
+    "created_at": "2026-11-16T13:10:27.181106+00:00"
+   },
+   {
+    "id": "0b5d04e2-583a-4346-9aa7-e053372b6820",
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "code": "SPK-PLG",
+    "name": "Spark plug iridium",
+    "barcode": null,
+    "category": null,
+    "unit": "piece",
+    "is_bulk": false,
+    "selling_price_paisa": 140000,
+    "min_stock": 8,
+    "warranty_days": 0,
+    "active": true,
+    "created_at": "2026-11-16T13:10:28.236686+00:00"
+   },
+   {
+    "id": "a6a90730-3a83-43f8-b527-7969288bac79",
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "code": "WIP-22",
+    "name": "Wiper blade 22 inch",
+    "barcode": null,
+    "category": null,
+    "unit": "piece",
+    "is_bulk": false,
+    "selling_price_paisa": 130000,
+    "min_stock": 4,
+    "warranty_days": 0,
+    "active": true,
+    "created_at": "2026-11-16T13:10:29.307468+00:00"
+   }
+  ],
+  "GET item_stock?select=item_id%2Con_hand&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072": [
+   {
+    "item_id": "0b5d04e2-583a-4346-9aa7-e053372b6820",
+    "on_hand": 8
+   },
+   {
+    "item_id": "27adcd42-126a-4205-9efb-9a967d56ecb3",
+    "on_hand": 11
+   },
+   {
+    "item_id": "2eef0147-e868-4c66-8f28-48ad6d78fd2b",
+    "on_hand": 9
+   },
+   {
+    "item_id": "3e6609e7-9c0f-4563-8684-13d03b989569",
+    "on_hand": 28.5
+   },
+   {
+    "item_id": "45502aac-98b6-4b98-8ddd-9a3c59454f41",
+    "on_hand": 10
+   },
+   {
+    "item_id": "5a304690-ed05-4514-8e5c-7f3fe81751a0",
+    "on_hand": 2
+   },
+   {
+    "item_id": "9fa0732e-ccf5-4d9e-8edb-ad500964211f",
+    "on_hand": 11
+   },
+   {
+    "item_id": "a6a90730-3a83-43f8-b527-7969288bac79",
+    "on_hand": 9
+   }
+  ],
+  "GET item_costs?select=item_id%2Cavg_cost_paisa&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072": [
+   {
+    "item_id": "3e6609e7-9c0f-4563-8684-13d03b989569",
+    "avg_cost_paisa": 85000
+   },
+   {
+    "item_id": "2eef0147-e868-4c66-8f28-48ad6d78fd2b",
+    "avg_cost_paisa": 60000
+   },
+   {
+    "item_id": "9fa0732e-ccf5-4d9e-8edb-ad500964211f",
+    "avg_cost_paisa": 110000
+   },
+   {
+    "item_id": "27adcd42-126a-4205-9efb-9a967d56ecb3",
+    "avg_cost_paisa": 360000
+   },
+   {
+    "item_id": "0b5d04e2-583a-4346-9aa7-e053372b6820",
+    "avg_cost_paisa": 95000
+   },
+   {
+    "item_id": "45502aac-98b6-4b98-8ddd-9a3c59454f41",
+    "avg_cost_paisa": 65000
+   },
+   {
+    "item_id": "5a304690-ed05-4514-8e5c-7f3fe81751a0",
+    "avg_cost_paisa": 1800000
+   },
+   {
+    "item_id": "a6a90730-3a83-43f8-b527-7969288bac79",
+    "avg_cost_paisa": 80000
+   }
+  ],
+  "GET purchases?select=%2A&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072&order=created_at.desc.nullslast&limit=200": [
+   {
+    "id": "bad191cb-65e2-46aa-b227-a11189de21c8",
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "supplier_id": "01b6d5cc-0429-45ea-9445-550d4d88ed14",
+    "supplier_name": "Al-Madina Auto Parts",
+    "bill_no": "AMP-1043",
+    "bill_date": "2026-11-10",
+    "total_paisa": 18040000,
+    "paid_now_paisa": 10000000,
+    "status": "posted",
+    "reversal_reason": null,
+    "reversed_at": null,
+    "reversed_by": null,
+    "created_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "created_at": "2026-11-16T13:10:30.030826+00:00"
+   }
+  ],
+  "GET supplier_balances?select=%2A&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072&order=name.asc.nullslast": [
+   {
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "supplier_id": "01b6d5cc-0429-45ea-9445-550d4d88ed14",
+    "name": "Al-Madina Auto Parts",
+    "purchases_paisa": 18040000,
+    "payments_paisa": 10000000,
+    "due_paisa": 8040000
+   }
+  ],
+  "GET suppliers?select=id%2Cphone&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072": [
+   {
+    "id": "01b6d5cc-0429-45ea-9445-550d4d88ed14",
+    "phone": "0300-0000001"
+   }
+  ],
+  "GET message_outbox?select=id%2Cevent%2Cchannel%2Cstatus%2Ctitle%2Cbody%2Ccreated_at%2Cto_mobile%2Cmanual_reason%2Cref_id%2Ccustomer%3Acustomers%28name%29&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072&channel=eq.whatsapp&status=in.%28%22manual%22%2C%22opened%22%29&order=created_at.desc.nullslast&limit=200": [
+   {
+    "id": 20,
+    "event": "invoice_issued",
+    "channel": "whatsapp",
+    "status": "manual",
+    "title": "Invoice issued",
+    "body": "Your invoice INV-0005 from Demo Auto Care: Rs 5,300. Thank you!",
+    "created_at": "2026-11-16T16:27:49.337085+00:00",
+    "to_mobile": "03110000105",
+    "manual_reason": "WhatsApp not connected",
+    "ref_id": "e67f0f79-a18e-4e89-ab6e-1f9d7615dbb5",
+    "customer": {
+     "name": "Usman Tariq"
+    }
+   },
+   {
+    "id": 19,
+    "event": "extra_work",
+    "channel": "whatsapp",
+    "status": "manual",
+    "title": "Extra work needs approval",
+    "body": "Extra work is needed on your vehicle LEE-2290 at Demo Auto Care: Rs 26,500. Please confirm before we continue.",
+    "created_at": "2026-11-16T16:08:08.243805+00:00",
+    "to_mobile": "03110000106",
+    "manual_reason": "WhatsApp not connected",
+    "ref_id": "1b2fc5ef-d98c-4985-9dc9-39cc95a4ad6d",
+    "customer": {
+     "name": "Hina Shah"
+    }
+   },
+   {
+    "id": 18,
+    "event": "booking_confirmed",
+    "channel": "whatsapp",
+    "status": "opened",
+    "title": "Booking confirmed",
+    "body": "Your booking at Demo Auto Care is confirmed for 19-11-2026 15:00 (LEB-5521).",
+    "created_at": "2026-11-16T13:11:19.889332+00:00",
+    "to_mobile": "03110000102",
+    "manual_reason": "WhatsApp not connected",
+    "ref_id": "8f1a98e7-b7da-4b37-87a6-6366fdace1b3",
+    "customer": {
+     "name": "Sara Khan"
+    }
+   },
+   {
+    "id": 17,
+    "event": "booking_confirmed",
+    "channel": "whatsapp",
+    "status": "manual",
+    "title": "Booking confirmed",
+    "body": "Your booking at Demo Auto Care is confirmed for 18-11-2026 11:00 (LEG-1180).",
+    "created_at": "2026-11-16T13:11:19.529008+00:00",
+    "to_mobile": "03110000108",
+    "manual_reason": "WhatsApp not connected",
+    "ref_id": "55e0c046-d38f-4cbf-b0a1-11d3952ca3df",
+    "customer": {
+     "name": "Zainab Ali"
+    }
+   },
+   {
+    "id": 16,
+    "event": "booking_confirmed",
+    "channel": "whatsapp",
+    "status": "manual",
+    "title": "Booking confirmed",
+    "body": "Your booking at Demo Auto Care is confirmed for 17-11-2026 12:00 (LEC-3307).",
+    "created_at": "2026-11-16T13:11:19.17746+00:00",
+    "to_mobile": "03110000104",
+    "manual_reason": "WhatsApp not connected",
+    "ref_id": "6a22a329-f7ae-4b7b-a574-6e30aece1574",
+    "customer": {
+     "name": "Ayesha Malik"
+    }
+   },
+   {
+    "id": 15,
+    "event": "booking_confirmed",
+    "channel": "whatsapp",
+    "status": "manual",
+    "title": "Booking confirmed",
+    "body": "Your booking at Demo Auto Care is confirmed for 17-11-2026 10:00 (LEA-1234).",
+    "created_at": "2026-11-16T13:11:18.719504+00:00",
+    "to_mobile": "03001234567",
+    "manual_reason": "WhatsApp not connected",
+    "ref_id": "d3d2011e-d9aa-4b61-a39f-4f06267a2afc",
+    "customer": {
+     "name": "Ali Raza"
+    }
+   },
+   {
+    "id": 14,
+    "event": "estimate_ready",
+    "channel": "whatsapp",
+    "status": "manual",
+    "title": "Estimate ready",
+    "body": "The estimate for your vehicle LEA-1234 at Demo Auto Care is Rs 26,800. Please confirm so we can start the work.",
+    "created_at": "2026-11-16T13:11:17.136315+00:00",
+    "to_mobile": "03001234567",
+    "manual_reason": "WhatsApp not connected",
+    "ref_id": "8a8262bf-5d2e-4c7e-8473-e315e120372d",
+    "customer": {
+     "name": "Ali Raza"
+    }
+   },
+   {
+    "id": 13,
+    "event": "invoice_issued",
+    "channel": "whatsapp",
+    "status": "manual",
+    "title": "Invoice issued",
+    "body": "Your invoice INV-0004 from Demo Auto Care: Rs 6,300. Thank you!",
+    "created_at": "2026-11-16T13:11:08.44022+00:00",
+    "to_mobile": "03110000103",
+    "manual_reason": "WhatsApp not connected",
+    "ref_id": "3be35b60-7332-43c5-aa55-b203fb642678",
+    "customer": {
+     "name": "Bilal Ahmed"
+    }
+   },
+   {
+    "id": 12,
+    "event": "vehicle_ready",
+    "channel": "whatsapp",
+    "status": "manual",
+    "title": "Vehicle ready",
+    "body": "Your vehicle LHR-8890 is ready at Demo Auto Care.",
+    "created_at": "2026-11-16T13:11:08.092255+00:00",
+    "to_mobile": "03110000103",
+    "manual_reason": "WhatsApp not connected",
+    "ref_id": "8fa0c72e-5a06-46c1-86b9-f8b86c27850b",
+    "customer": {
+     "name": "Bilal Ahmed"
+    }
+   },
+   {
+    "id": 11,
+    "event": "invoice_issued",
+    "channel": "whatsapp",
+    "status": "manual",
+    "title": "Invoice issued",
+    "body": "Your invoice INV-0003 from Demo Auto Care: Rs 9,400. Thank you!",
+    "created_at": "2026-11-16T13:11:01.762533+00:00",
+    "to_mobile": "03110000107",
+    "manual_reason": "WhatsApp not connected",
+    "ref_id": "8099e364-a2f9-48b0-bf7d-5bf8627bea12",
+    "customer": {
+     "name": "Kamran Iqbal"
+    }
+   },
+   {
+    "id": 10,
+    "event": "vehicle_ready",
+    "channel": "whatsapp",
+    "status": "manual",
+    "title": "Vehicle ready",
+    "body": "Your vehicle LEF-6643 is ready at Demo Auto Care.",
+    "created_at": "2026-11-16T13:11:01.408943+00:00",
+    "to_mobile": "03110000107",
+    "manual_reason": "WhatsApp not connected",
+    "ref_id": "adb097cf-73b0-46ef-9095-7333fd5f10e5",
+    "customer": {
+     "name": "Kamran Iqbal"
+    }
+   },
+   {
+    "id": 9,
+    "event": "invoice_issued",
+    "channel": "whatsapp",
+    "status": "manual",
+    "title": "Invoice issued",
+    "body": "Your invoice INV-0002 from Demo Auto Care: Rs 5,300. Thank you!",
+    "created_at": "2026-11-16T13:10:53.728529+00:00",
+    "to_mobile": "03110000104",
+    "manual_reason": "WhatsApp not connected",
+    "ref_id": "6681d404-798a-4176-8113-0a8d36f4e5a2",
+    "customer": {
+     "name": "Ayesha Malik"
+    }
+   },
+   {
+    "id": 8,
+    "event": "vehicle_ready",
+    "channel": "whatsapp",
+    "status": "manual",
+    "title": "Vehicle ready",
+    "body": "Your vehicle LEC-3307 is ready at Demo Auto Care.",
+    "created_at": "2026-11-16T13:10:53.379291+00:00",
+    "to_mobile": "03110000104",
+    "manual_reason": "WhatsApp not connected",
+    "ref_id": "a1dc7775-0d9b-470f-b46d-20052b597cb3",
+    "customer": {
+     "name": "Ayesha Malik"
+    }
+   },
+   {
+    "id": 7,
+    "event": "invoice_issued",
+    "channel": "whatsapp",
+    "status": "manual",
+    "title": "Invoice issued",
+    "body": "Your invoice INV-0001 from Demo Auto Care: Rs 5,300. Thank you!",
+    "created_at": "2026-11-16T13:10:46.716776+00:00",
+    "to_mobile": "03110000102",
+    "manual_reason": "WhatsApp not connected",
+    "ref_id": "2d8fd9a2-5cab-440a-bf5c-6b06d4fe61cb",
+    "customer": {
+     "name": "Sara Khan"
+    }
+   },
+   {
+    "id": 6,
+    "event": "vehicle_ready",
+    "channel": "whatsapp",
+    "status": "manual",
+    "title": "Vehicle ready",
+    "body": "Your vehicle LEB-5521 is ready at Demo Auto Care.",
+    "created_at": "2026-11-16T13:10:46.340932+00:00",
+    "to_mobile": "03110000102",
+    "manual_reason": "WhatsApp not connected",
+    "ref_id": "ad4002b9-cd28-4e50-b7d6-68af60f7fdc0",
+    "customer": {
+     "name": "Sara Khan"
+    }
+   }
+  ],
+  "GET message_outbox?select=id%2Cevent%2Cchannel%2Cstatus%2Ctitle%2Cbody%2Ccreated_at%2Cto_mobile%2Cmanual_reason%2Cref_id%2Ccustomer%3Acustomers%28name%29&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072&channel=eq.whatsapp&order=created_at.desc.nullslast&limit=100": [
+   {
+    "id": 20,
+    "event": "invoice_issued",
+    "channel": "whatsapp",
+    "status": "manual",
+    "title": "Invoice issued",
+    "body": "Your invoice INV-0005 from Demo Auto Care: Rs 5,300. Thank you!",
+    "created_at": "2026-11-16T16:27:49.337085+00:00",
+    "to_mobile": "03110000105",
+    "manual_reason": "WhatsApp not connected",
+    "ref_id": "e67f0f79-a18e-4e89-ab6e-1f9d7615dbb5",
+    "customer": {
+     "name": "Usman Tariq"
+    }
+   },
+   {
+    "id": 19,
+    "event": "extra_work",
+    "channel": "whatsapp",
+    "status": "manual",
+    "title": "Extra work needs approval",
+    "body": "Extra work is needed on your vehicle LEE-2290 at Demo Auto Care: Rs 26,500. Please confirm before we continue.",
+    "created_at": "2026-11-16T16:08:08.243805+00:00",
+    "to_mobile": "03110000106",
+    "manual_reason": "WhatsApp not connected",
+    "ref_id": "1b2fc5ef-d98c-4985-9dc9-39cc95a4ad6d",
+    "customer": {
+     "name": "Hina Shah"
+    }
+   },
+   {
+    "id": 18,
+    "event": "booking_confirmed",
+    "channel": "whatsapp",
+    "status": "opened",
+    "title": "Booking confirmed",
+    "body": "Your booking at Demo Auto Care is confirmed for 19-11-2026 15:00 (LEB-5521).",
+    "created_at": "2026-11-16T13:11:19.889332+00:00",
+    "to_mobile": "03110000102",
+    "manual_reason": "WhatsApp not connected",
+    "ref_id": "8f1a98e7-b7da-4b37-87a6-6366fdace1b3",
+    "customer": {
+     "name": "Sara Khan"
+    }
+   },
+   {
+    "id": 17,
+    "event": "booking_confirmed",
+    "channel": "whatsapp",
+    "status": "manual",
+    "title": "Booking confirmed",
+    "body": "Your booking at Demo Auto Care is confirmed for 18-11-2026 11:00 (LEG-1180).",
+    "created_at": "2026-11-16T13:11:19.529008+00:00",
+    "to_mobile": "03110000108",
+    "manual_reason": "WhatsApp not connected",
+    "ref_id": "55e0c046-d38f-4cbf-b0a1-11d3952ca3df",
+    "customer": {
+     "name": "Zainab Ali"
+    }
+   },
+   {
+    "id": 16,
+    "event": "booking_confirmed",
+    "channel": "whatsapp",
+    "status": "manual",
+    "title": "Booking confirmed",
+    "body": "Your booking at Demo Auto Care is confirmed for 17-11-2026 12:00 (LEC-3307).",
+    "created_at": "2026-11-16T13:11:19.17746+00:00",
+    "to_mobile": "03110000104",
+    "manual_reason": "WhatsApp not connected",
+    "ref_id": "6a22a329-f7ae-4b7b-a574-6e30aece1574",
+    "customer": {
+     "name": "Ayesha Malik"
+    }
+   },
+   {
+    "id": 15,
+    "event": "booking_confirmed",
+    "channel": "whatsapp",
+    "status": "manual",
+    "title": "Booking confirmed",
+    "body": "Your booking at Demo Auto Care is confirmed for 17-11-2026 10:00 (LEA-1234).",
+    "created_at": "2026-11-16T13:11:18.719504+00:00",
+    "to_mobile": "03001234567",
+    "manual_reason": "WhatsApp not connected",
+    "ref_id": "d3d2011e-d9aa-4b61-a39f-4f06267a2afc",
+    "customer": {
+     "name": "Ali Raza"
+    }
+   },
+   {
+    "id": 14,
+    "event": "estimate_ready",
+    "channel": "whatsapp",
+    "status": "manual",
+    "title": "Estimate ready",
+    "body": "The estimate for your vehicle LEA-1234 at Demo Auto Care is Rs 26,800. Please confirm so we can start the work.",
+    "created_at": "2026-11-16T13:11:17.136315+00:00",
+    "to_mobile": "03001234567",
+    "manual_reason": "WhatsApp not connected",
+    "ref_id": "8a8262bf-5d2e-4c7e-8473-e315e120372d",
+    "customer": {
+     "name": "Ali Raza"
+    }
+   },
+   {
+    "id": 13,
+    "event": "invoice_issued",
+    "channel": "whatsapp",
+    "status": "manual",
+    "title": "Invoice issued",
+    "body": "Your invoice INV-0004 from Demo Auto Care: Rs 6,300. Thank you!",
+    "created_at": "2026-11-16T13:11:08.44022+00:00",
+    "to_mobile": "03110000103",
+    "manual_reason": "WhatsApp not connected",
+    "ref_id": "3be35b60-7332-43c5-aa55-b203fb642678",
+    "customer": {
+     "name": "Bilal Ahmed"
+    }
+   },
+   {
+    "id": 12,
+    "event": "vehicle_ready",
+    "channel": "whatsapp",
+    "status": "manual",
+    "title": "Vehicle ready",
+    "body": "Your vehicle LHR-8890 is ready at Demo Auto Care.",
+    "created_at": "2026-11-16T13:11:08.092255+00:00",
+    "to_mobile": "03110000103",
+    "manual_reason": "WhatsApp not connected",
+    "ref_id": "8fa0c72e-5a06-46c1-86b9-f8b86c27850b",
+    "customer": {
+     "name": "Bilal Ahmed"
+    }
+   },
+   {
+    "id": 11,
+    "event": "invoice_issued",
+    "channel": "whatsapp",
+    "status": "manual",
+    "title": "Invoice issued",
+    "body": "Your invoice INV-0003 from Demo Auto Care: Rs 9,400. Thank you!",
+    "created_at": "2026-11-16T13:11:01.762533+00:00",
+    "to_mobile": "03110000107",
+    "manual_reason": "WhatsApp not connected",
+    "ref_id": "8099e364-a2f9-48b0-bf7d-5bf8627bea12",
+    "customer": {
+     "name": "Kamran Iqbal"
+    }
+   },
+   {
+    "id": 10,
+    "event": "vehicle_ready",
+    "channel": "whatsapp",
+    "status": "manual",
+    "title": "Vehicle ready",
+    "body": "Your vehicle LEF-6643 is ready at Demo Auto Care.",
+    "created_at": "2026-11-16T13:11:01.408943+00:00",
+    "to_mobile": "03110000107",
+    "manual_reason": "WhatsApp not connected",
+    "ref_id": "adb097cf-73b0-46ef-9095-7333fd5f10e5",
+    "customer": {
+     "name": "Kamran Iqbal"
+    }
+   },
+   {
+    "id": 9,
+    "event": "invoice_issued",
+    "channel": "whatsapp",
+    "status": "manual",
+    "title": "Invoice issued",
+    "body": "Your invoice INV-0002 from Demo Auto Care: Rs 5,300. Thank you!",
+    "created_at": "2026-11-16T13:10:53.728529+00:00",
+    "to_mobile": "03110000104",
+    "manual_reason": "WhatsApp not connected",
+    "ref_id": "6681d404-798a-4176-8113-0a8d36f4e5a2",
+    "customer": {
+     "name": "Ayesha Malik"
+    }
+   },
+   {
+    "id": 8,
+    "event": "vehicle_ready",
+    "channel": "whatsapp",
+    "status": "manual",
+    "title": "Vehicle ready",
+    "body": "Your vehicle LEC-3307 is ready at Demo Auto Care.",
+    "created_at": "2026-11-16T13:10:53.379291+00:00",
+    "to_mobile": "03110000104",
+    "manual_reason": "WhatsApp not connected",
+    "ref_id": "a1dc7775-0d9b-470f-b46d-20052b597cb3",
+    "customer": {
+     "name": "Ayesha Malik"
+    }
+   },
+   {
+    "id": 7,
+    "event": "invoice_issued",
+    "channel": "whatsapp",
+    "status": "manual",
+    "title": "Invoice issued",
+    "body": "Your invoice INV-0001 from Demo Auto Care: Rs 5,300. Thank you!",
+    "created_at": "2026-11-16T13:10:46.716776+00:00",
+    "to_mobile": "03110000102",
+    "manual_reason": "WhatsApp not connected",
+    "ref_id": "2d8fd9a2-5cab-440a-bf5c-6b06d4fe61cb",
+    "customer": {
+     "name": "Sara Khan"
+    }
+   },
+   {
+    "id": 6,
+    "event": "vehicle_ready",
+    "channel": "whatsapp",
+    "status": "manual",
+    "title": "Vehicle ready",
+    "body": "Your vehicle LEB-5521 is ready at Demo Auto Care.",
+    "created_at": "2026-11-16T13:10:46.340932+00:00",
+    "to_mobile": "03110000102",
+    "manual_reason": "WhatsApp not connected",
+    "ref_id": "ad4002b9-cd28-4e50-b7d6-68af60f7fdc0",
+    "customer": {
+     "name": "Sara Khan"
+    }
+   }
+  ],
+  "GET whatsapp_accounts?select=%2A&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072": [],
+  "POST rpc/station_day_summary? {\"p_station\":\"2b957bee-ffba-4b0e-a677-b8876a2c6072\",\"p_day\":\"2026-11-16\"}": {
+   "day": "2026-11-16",
+   "count": 4,
+   "closed": false,
+   "closing": null,
+   "expected": {
+    "card": 940000,
+    "cash": 830000,
+    "jazzcash": 530000
+   }
+  },
+  "GET day_closings?select=%2A&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072&order=day.desc.nullslast&limit=14": [],
+  "POST rpc/report_revenue? {\"p_station\":\"2b957bee-ffba-4b0e-a677-b8876a2c6072\",\"p_from\":\"2026-11-01\",\"p_to\":\"2026-11-16\"}": [
+   {
+    "invoices": 5,
+    "parts_paisa": 2260000,
+    "labour_paisa": 900000,
+    "discount_paisa": 0,
+    "tax_paisa": 0,
+    "refunds_paisa": 0,
+    "net_paisa": 3160000,
+    "total_paisa": 3160000
+   }
+  ],
+  "GET staff?select=id%2Cuser_id%2Cname%2Cmobile%2Crole%2Cjoined_on%2Cactive&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072&order=active.desc.nullslast%2Cname.asc.nullslast": [
+   {
+    "id": "cd83fe4a-8e93-4840-913a-4f2a5e950897",
+    "user_id": "21d44f8f-0890-4e0a-b051-e65850662e0a",
+    "name": "Asif Mechanic",
+    "mobile": null,
+    "role": "mechanic",
+    "joined_on": "2026-04-30",
+    "active": true
+   },
+   {
+    "id": "0f825a36-d381-4e8b-980f-976e24a19f2a",
+    "user_id": "0b7970df-7426-4442-a427-2f4a0d966aa3",
+    "name": "Bilal Mechanic",
+    "mobile": null,
+    "role": "mechanic",
+    "joined_on": "2026-04-30",
+    "active": true
+   },
+   {
+    "id": "90f64d6d-b35a-47ac-95f5-8172b6c58120",
+    "user_id": "5eb8a49c-b020-437d-8bab-231cbf88ab15",
+    "name": "Imran Manager",
+    "mobile": null,
+    "role": "manager",
+    "joined_on": "2026-04-30",
+    "active": true
+   },
+   {
+    "id": "5ac73819-136f-4519-9b69-586fa955a51c",
+    "user_id": null,
+    "name": "Javed Helper",
+    "mobile": null,
+    "role": "helper",
+    "joined_on": "2026-04-30",
+    "active": true
+   },
+   {
+    "id": "60f1611c-92b3-4401-8714-552f598c04cd",
+    "user_id": "1143395d-c551-4323-a0e6-1055d522e3ff",
+    "name": "Nadia Cashier",
+    "mobile": null,
+    "role": "cashier",
+    "joined_on": "2026-04-30",
+    "active": true
+   }
+  ],
+  "POST rpc/station_staff_pay? {\"p_station\":\"2b957bee-ffba-4b0e-a677-b8876a2c6072\"}": [
+   {
+    "staff_id": "5ac73819-136f-4519-9b69-586fa955a51c",
+    "salary_paisa": 2500000,
+    "commission_pct": 0
+   },
+   {
+    "staff_id": "90f64d6d-b35a-47ac-95f5-8172b6c58120",
+    "salary_paisa": 6000000,
+    "commission_pct": 0
+   },
+   {
+    "staff_id": "60f1611c-92b3-4401-8714-552f598c04cd",
+    "salary_paisa": 4000000,
+    "commission_pct": 0
+   },
+   {
+    "staff_id": "0f825a36-d381-4e8b-980f-976e24a19f2a",
+    "salary_paisa": 4500000,
+    "commission_pct": 10
+   },
+   {
+    "staff_id": "cd83fe4a-8e93-4840-913a-4f2a5e950897",
+    "salary_paisa": 3800000,
+    "commission_pct": 8
+   }
+  ],
+  "GET attendance?select=staff_id%2Cstatus&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072&day=eq.2026-11-16": [
+   {
+    "staff_id": "5ac73819-136f-4519-9b69-586fa955a51c",
+    "status": "absent"
+   },
+   {
+    "staff_id": "cd83fe4a-8e93-4840-913a-4f2a5e950897",
+    "status": "half_day"
+   }
+  ],
+  "GET salary_advances?select=id%2Cgiven_on%2Camount_paisa%2Cmethod%2Cmonths%2Cnote%2Cstaff%3Astaff%28name%29&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072&order=given_on.desc.nullslast&limit=50": [
+   {
+    "id": "0ea5d605-a5d4-4b93-9ffa-e0de91e8f2c9",
+    "given_on": "2026-11-16",
+    "amount_paisa": 500000,
+    "method": "cash",
+    "months": 1,
+    "note": "Family need",
+    "staff": {
+     "name": "Bilal Mechanic"
+    }
+   }
+  ],
+  "GET checklist_templates?select=name&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072&active=eq.true&order=sort_order.asc.nullslast": [
+   {
+    "name": "Brakes"
+   },
+   {
+    "name": "Tyres"
+   },
+   {
+    "name": "Lights"
+   },
+   {
+    "name": "Battery"
+   },
+   {
+    "name": "Engine oil level"
+   },
+   {
+    "name": "Coolant"
+   }
+  ],
+  "GET services?select=%2A&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072&order=name.asc.nullslast": [
+   {
+    "id": "a9cca50b-522b-405d-848b-a0b2641252cb",
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "name": "AC service",
+    "rate_paisa": 350000,
+    "warranty_days": 0,
+    "active": true,
+    "bookable": true
+   },
+   {
+    "id": "56344b80-5b58-4d21-9377-ccdf152c7ba9",
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "name": "Brake service",
+    "rate_paisa": 150000,
+    "warranty_days": 0,
+    "active": true,
+    "bookable": false
+   },
+   {
+    "id": "d2b09f46-f6e6-4cfe-92fd-66195cc4db77",
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "name": "Engine tuning",
+    "rate_paisa": 250000,
+    "warranty_days": 0,
+    "active": true,
+    "bookable": true
+   },
+   {
+    "id": "3782ff83-4c9a-48cc-a850-8466e48a14a4",
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "name": "Oil change labour",
+    "rate_paisa": 50000,
+    "warranty_days": 0,
+    "active": true,
+    "bookable": true
+   },
+   {
+    "id": "220c7519-6c28-45ba-85eb-af2caee43483",
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "name": "Wash & polish",
+    "rate_paisa": 120000,
+    "warranty_days": 0,
+    "active": true,
+    "bookable": false
+   }
+  ],
+  "GET audit_log?select=%2A&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072&order=created_at.desc.nullslast&limit=100": [
+   {
+    "id": 433,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": null,
+    "table_name": "stations",
+    "record_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "action": "update",
+    "changes": {
+     "city": {
+      "new": "Lahore",
+      "old": "Karachi"
+     }
+    },
+    "created_at": "2026-11-16T16:44:22.917091+00:00"
+   },
+   {
+    "id": 431,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "invoices",
+    "record_id": "e67f0f79-a18e-4e89-ab6e-1f9d7615dbb5",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "e67f0f79-a18e-4e89-ab6e-1f9d7615dbb5",
+      "job_id": "0618a6f4-a61c-4331-b428-bb16e342e8d4",
+      "locked": false,
+      "issued_at": "2026-11-16T16:27:49.337085+00:00",
+      "on_credit": false,
+      "created_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "invoice_no": 5,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "vehicle_id": "88162b36-5fd2-468b-b17a-2567edcbdf62",
+      "customer_id": "57a31506-9c73-4b03-8892-6f1a64393068",
+      "parts_paisa": 0,
+      "total_paisa": 0,
+      "labour_paisa": 0,
+      "discount_paisa": 0,
+      "discount_state": "none",
+      "discount_reason": null,
+      "tax_parts_paisa": 0,
+      "tax_services_paisa": 0
+     }
+    },
+    "created_at": "2026-11-16T16:27:49.337085+00:00"
+   },
+   {
+    "id": 432,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "invoices",
+    "record_id": "e67f0f79-a18e-4e89-ab6e-1f9d7615dbb5",
+    "action": "update",
+    "changes": {
+     "parts_paisa": {
+      "new": 180000,
+      "old": 0
+     },
+     "total_paisa": {
+      "new": 530000,
+      "old": 0
+     },
+     "labour_paisa": {
+      "new": 350000,
+      "old": 0
+     }
+    },
+    "created_at": "2026-11-16T16:27:49.337085+00:00"
+   },
+   {
+    "id": 430,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "payments",
+    "record_id": "b366abeb-7d81-428f-ad54-beabb6b7f23b",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "b366abeb-7d81-428f-ad54-beabb6b7f23b",
+      "kind": "advance",
+      "job_id": "0618a6f4-a61c-4331-b428-bb16e342e8d4",
+      "method": "cash",
+      "reason": null,
+      "paid_on": "2026-11-16",
+      "reference": null,
+      "created_at": "2026-11-16T16:27:43.599001+00:00",
+      "created_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "invoice_id": null,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "customer_id": "57a31506-9c73-4b03-8892-6f1a64393068",
+      "reverses_id": null,
+      "amount_paisa": 300000
+     }
+    },
+    "created_at": "2026-11-16T16:27:43.599001+00:00"
+   },
+   {
+    "id": 428,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "0b7970df-7426-4442-a427-2f4a0d966aa3",
+    "table_name": "stock_movements",
+    "record_id": "41",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": 41,
+      "qty": -1,
+      "kind": "job_use",
+      "note": null,
+      "ref_id": "1b2fc5ef-d98c-4985-9dc9-39cc95a4ad6d",
+      "item_id": "5a304690-ed05-4514-8e5c-7f3fe81751a0",
+      "created_at": "2026-11-16T16:08:42.787937+00:00",
+      "created_by": "0b7970df-7426-4442-a427-2f4a0d966aa3",
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "unit_cost_paisa": null
+     }
+    },
+    "created_at": "2026-11-16T16:08:42.787937+00:00"
+   },
+   {
+    "id": 429,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "0b7970df-7426-4442-a427-2f4a0d966aa3",
+    "table_name": "job_lines",
+    "record_id": "b95d2657-bd75-48d3-ab94-76a4d4b164b7",
+    "action": "update",
+    "changes": {
+     "stock_applied": {
+      "new": 1,
+      "old": 0
+     }
+    },
+    "created_at": "2026-11-16T16:08:42.787937+00:00"
+   },
+   {
+    "id": 427,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "0b7970df-7426-4442-a427-2f4a0d966aa3",
+    "table_name": "job_lines",
+    "record_id": "b95d2657-bd75-48d3-ab94-76a4d4b164b7",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "b95d2657-bd75-48d3-ab94-76a4d4b164b7",
+      "qty": 1,
+      "kind": "part",
+      "job_id": "1b2fc5ef-d98c-4985-9dc9-39cc95a4ad6d",
+      "status": "extra_pending",
+      "item_id": "5a304690-ed05-4514-8e5c-7f3fe81751a0",
+      "added_by": "0b7970df-7426-4442-a427-2f4a0d966aa3",
+      "created_at": "2026-11-16T16:08:42.787937+00:00",
+      "service_id": null,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "description": "Battery 55Ah",
+      "stock_applied": 0,
+      "warranty_days": 365,
+      "unit_price_paisa": 2150000,
+      "warranty_of_line": null,
+      "checklist_item_id": null
+     }
+    },
+    "created_at": "2026-11-16T16:08:42.787937+00:00"
+   },
+   {
+    "id": 425,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "0b7970df-7426-4442-a427-2f4a0d966aa3",
+    "table_name": "stock_movements",
+    "record_id": "40",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": 40,
+      "qty": -3,
+      "kind": "job_use",
+      "note": null,
+      "ref_id": "1b2fc5ef-d98c-4985-9dc9-39cc95a4ad6d",
+      "item_id": "a6a90730-3a83-43f8-b527-7969288bac79",
+      "created_at": "2026-11-16T16:08:27.90215+00:00",
+      "created_by": "0b7970df-7426-4442-a427-2f4a0d966aa3",
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "unit_cost_paisa": null
+     }
+    },
+    "created_at": "2026-11-16T16:08:27.90215+00:00"
+   },
+   {
+    "id": 426,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "0b7970df-7426-4442-a427-2f4a0d966aa3",
+    "table_name": "job_lines",
+    "record_id": "4083c757-437f-4f61-ae4f-4d8701e7eede",
+    "action": "update",
+    "changes": {
+     "stock_applied": {
+      "new": 3,
+      "old": 0
+     }
+    },
+    "created_at": "2026-11-16T16:08:27.90215+00:00"
+   },
+   {
+    "id": 424,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "0b7970df-7426-4442-a427-2f4a0d966aa3",
+    "table_name": "job_lines",
+    "record_id": "4083c757-437f-4f61-ae4f-4d8701e7eede",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "4083c757-437f-4f61-ae4f-4d8701e7eede",
+      "qty": 3,
+      "kind": "part",
+      "job_id": "1b2fc5ef-d98c-4985-9dc9-39cc95a4ad6d",
+      "status": "extra_pending",
+      "item_id": "a6a90730-3a83-43f8-b527-7969288bac79",
+      "added_by": "0b7970df-7426-4442-a427-2f4a0d966aa3",
+      "created_at": "2026-11-16T16:08:27.90215+00:00",
+      "service_id": null,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "description": "Wiper blade 22 inch",
+      "stock_applied": 0,
+      "warranty_days": 0,
+      "unit_price_paisa": 130000,
+      "warranty_of_line": null,
+      "checklist_item_id": null
+     }
+    },
+    "created_at": "2026-11-16T16:08:27.90215+00:00"
+   },
+   {
+    "id": 421,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "0b7970df-7426-4442-a427-2f4a0d966aa3",
+    "table_name": "job_lines",
+    "record_id": "2224ae78-c5f0-457b-8719-2f0ff20299b1",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "2224ae78-c5f0-457b-8719-2f0ff20299b1",
+      "qty": 1,
+      "kind": "part",
+      "job_id": "1b2fc5ef-d98c-4985-9dc9-39cc95a4ad6d",
+      "status": "extra_pending",
+      "item_id": "3e6609e7-9c0f-4563-8684-13d03b989569",
+      "added_by": "0b7970df-7426-4442-a427-2f4a0d966aa3",
+      "created_at": "2026-11-16T16:08:08.243805+00:00",
+      "service_id": null,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "description": "Engine oil 5W-30 (per litre)",
+      "stock_applied": 0,
+      "warranty_days": 0,
+      "unit_price_paisa": 110000,
+      "warranty_of_line": null,
+      "checklist_item_id": null
+     }
+    },
+    "created_at": "2026-11-16T16:08:08.243805+00:00"
+   },
+   {
+    "id": 423,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "0b7970df-7426-4442-a427-2f4a0d966aa3",
+    "table_name": "job_lines",
+    "record_id": "2224ae78-c5f0-457b-8719-2f0ff20299b1",
+    "action": "update",
+    "changes": {
+     "stock_applied": {
+      "new": 1,
+      "old": 0
+     }
+    },
+    "created_at": "2026-11-16T16:08:08.243805+00:00"
+   },
+   {
+    "id": 422,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "0b7970df-7426-4442-a427-2f4a0d966aa3",
+    "table_name": "stock_movements",
+    "record_id": "39",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": 39,
+      "qty": -1,
+      "kind": "job_use",
+      "note": null,
+      "ref_id": "1b2fc5ef-d98c-4985-9dc9-39cc95a4ad6d",
+      "item_id": "3e6609e7-9c0f-4563-8684-13d03b989569",
+      "created_at": "2026-11-16T16:08:08.243805+00:00",
+      "created_by": "0b7970df-7426-4442-a427-2f4a0d966aa3",
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "unit_cost_paisa": null
+     }
+    },
+    "created_at": "2026-11-16T16:08:08.243805+00:00"
+   },
+   {
+    "id": 416,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "staff",
+    "record_id": "cd83fe4a-8e93-4840-913a-4f2a5e950897",
+    "action": "update",
+    "changes": {
+     "user_id": {
+      "new": "21d44f8f-0890-4e0a-b051-e65850662e0a",
+      "old": null
+     },
+     "updated_at": {
+      "new": "2026-11-16T13:16:57.435601+00:00",
+      "old": "2026-11-16T13:10:39.591517+00:00"
+     }
+    },
+    "created_at": "2026-11-16T13:16:57.435601+00:00"
+   },
+   {
+    "id": 415,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "station_members",
+    "record_id": "fa1b97f0-d925-4043-b91c-35ab05e54b0d",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "fa1b97f0-d925-4043-b91c-35ab05e54b0d",
+      "role": "mechanic",
+      "active": true,
+      "user_id": "21d44f8f-0890-4e0a-b051-e65850662e0a",
+      "created_at": "2026-11-16T13:16:57.019122+00:00",
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "deactivated_at": null
+     }
+    },
+    "created_at": "2026-11-16T13:16:57.019122+00:00"
+   },
+   {
+    "id": 414,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "staff",
+    "record_id": "0f825a36-d381-4e8b-980f-976e24a19f2a",
+    "action": "update",
+    "changes": {
+     "user_id": {
+      "new": "0b7970df-7426-4442-a427-2f4a0d966aa3",
+      "old": null
+     },
+     "updated_at": {
+      "new": "2026-11-16T13:16:55.43552+00:00",
+      "old": "2026-11-16T13:10:39.254663+00:00"
+     }
+    },
+    "created_at": "2026-11-16T13:16:55.43552+00:00"
+   },
+   {
+    "id": 413,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "station_members",
+    "record_id": "bbc25659-5d44-4617-a65e-d2f1c4a63511",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "bbc25659-5d44-4617-a65e-d2f1c4a63511",
+      "role": "mechanic",
+      "active": true,
+      "user_id": "0b7970df-7426-4442-a427-2f4a0d966aa3",
+      "created_at": "2026-11-16T13:16:55.016461+00:00",
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "deactivated_at": null
+     }
+    },
+    "created_at": "2026-11-16T13:16:55.016461+00:00"
+   },
+   {
+    "id": 412,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "staff",
+    "record_id": "60f1611c-92b3-4401-8714-552f598c04cd",
+    "action": "update",
+    "changes": {
+     "user_id": {
+      "new": "1143395d-c551-4323-a0e6-1055d522e3ff",
+      "old": null
+     },
+     "updated_at": {
+      "new": "2026-11-16T13:16:52.840879+00:00",
+      "old": "2026-11-16T13:10:38.903296+00:00"
+     }
+    },
+    "created_at": "2026-11-16T13:16:52.840879+00:00"
+   },
+   {
+    "id": 411,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "station_members",
+    "record_id": "05d6629b-a9a1-4cc8-92b0-208e244f2282",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "05d6629b-a9a1-4cc8-92b0-208e244f2282",
+      "role": "cashier",
+      "active": true,
+      "user_id": "1143395d-c551-4323-a0e6-1055d522e3ff",
+      "created_at": "2026-11-16T13:16:52.416241+00:00",
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "deactivated_at": null
+     }
+    },
+    "created_at": "2026-11-16T13:16:52.416241+00:00"
+   },
+   {
+    "id": 410,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "staff",
+    "record_id": "90f64d6d-b35a-47ac-95f5-8172b6c58120",
+    "action": "update",
+    "changes": {
+     "user_id": {
+      "new": "5eb8a49c-b020-437d-8bab-231cbf88ab15",
+      "old": null
+     },
+     "updated_at": {
+      "new": "2026-11-16T13:16:50.167312+00:00",
+      "old": "2026-11-16T13:10:38.549822+00:00"
+     }
+    },
+    "created_at": "2026-11-16T13:16:50.167312+00:00"
+   },
+   {
+    "id": 409,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "station_members",
+    "record_id": "ec611cfa-e05a-42c4-9cda-4553fabd631d",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "ec611cfa-e05a-42c4-9cda-4553fabd631d",
+      "role": "manager",
+      "active": true,
+      "user_id": "5eb8a49c-b020-437d-8bab-231cbf88ab15",
+      "created_at": "2026-11-16T13:16:49.69854+00:00",
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "deactivated_at": null
+     }
+    },
+    "created_at": "2026-11-16T13:16:49.69854+00:00"
+   },
+   {
+    "id": 408,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "payroll_runs",
+    "record_id": "e255fd86-b630-4db2-b939-d75f682efb96",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "e255fd86-b630-4db2-b939-d75f682efb96",
+      "month": "2026-11-01",
+      "status": "draft",
+      "created_at": "2026-11-16T13:11:20.247811+00:00",
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "finalized_at": null,
+      "finalized_by": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:20.247811+00:00"
+   },
+   {
+    "id": 407,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "bookings",
+    "record_id": "8f1a98e7-b7da-4b37-87a6-6366fdace1b3",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "8f1a98e7-b7da-4b37-87a6-6366fdace1b3",
+      "note": null,
+      "job_id": null,
+      "source": "staff",
+      "status": "booked",
+      "slot_end": "2026-11-19T11:00:00+00:00",
+      "created_at": "2026-11-16T13:11:19.889332+00:00",
+      "created_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "overbooked": false,
+      "service_id": "3782ff83-4c9a-48cc-a850-8466e48a14a4",
+      "slot_start": "2026-11-19T10:00:00+00:00",
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "updated_at": "2026-11-16T13:11:19.889332+00:00",
+      "vehicle_id": "74bd23c4-c481-40f0-a903-7cbc8fa885f0",
+      "customer_id": "0e34a3e3-cdab-46ce-9830-2e3f370fd00e",
+      "cancel_reason": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:19.889332+00:00"
+   },
+   {
+    "id": 406,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "bookings",
+    "record_id": "55e0c046-d38f-4cbf-b0a1-11d3952ca3df",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "55e0c046-d38f-4cbf-b0a1-11d3952ca3df",
+      "note": null,
+      "job_id": null,
+      "source": "staff",
+      "status": "booked",
+      "slot_end": "2026-11-18T07:00:00+00:00",
+      "created_at": "2026-11-16T13:11:19.529008+00:00",
+      "created_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "overbooked": false,
+      "service_id": "d2b09f46-f6e6-4cfe-92fd-66195cc4db77",
+      "slot_start": "2026-11-18T06:00:00+00:00",
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "updated_at": "2026-11-16T13:11:19.529008+00:00",
+      "vehicle_id": "cdac7ee2-b666-4cd3-8744-1e18c4875eb2",
+      "customer_id": "eff595b6-2142-48e6-a0f1-a1e5b8a8a858",
+      "cancel_reason": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:19.529008+00:00"
+   },
+   {
+    "id": 405,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "bookings",
+    "record_id": "6a22a329-f7ae-4b7b-a574-6e30aece1574",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "6a22a329-f7ae-4b7b-a574-6e30aece1574",
+      "note": null,
+      "job_id": null,
+      "source": "staff",
+      "status": "booked",
+      "slot_end": "2026-11-17T08:00:00+00:00",
+      "created_at": "2026-11-16T13:11:19.17746+00:00",
+      "created_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "overbooked": false,
+      "service_id": "a9cca50b-522b-405d-848b-a0b2641252cb",
+      "slot_start": "2026-11-17T07:00:00+00:00",
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "updated_at": "2026-11-16T13:11:19.17746+00:00",
+      "vehicle_id": "a4cc2300-9076-41f6-ae3a-e676655ca42d",
+      "customer_id": "0f051265-c1c4-46cb-acbb-7011784be619",
+      "cancel_reason": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:19.17746+00:00"
+   },
+   {
+    "id": 404,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "bookings",
+    "record_id": "d3d2011e-d9aa-4b61-a39f-4f06267a2afc",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "d3d2011e-d9aa-4b61-a39f-4f06267a2afc",
+      "note": null,
+      "job_id": null,
+      "source": "staff",
+      "status": "booked",
+      "slot_end": "2026-11-17T06:00:00+00:00",
+      "created_at": "2026-11-16T13:11:18.719504+00:00",
+      "created_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "overbooked": false,
+      "service_id": "3782ff83-4c9a-48cc-a850-8466e48a14a4",
+      "slot_start": "2026-11-17T05:00:00+00:00",
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "updated_at": "2026-11-16T13:11:18.719504+00:00",
+      "vehicle_id": "c18bbe2a-de92-4e3b-883e-ed5532610053",
+      "customer_id": "c91ca2bc-6af9-48dd-a7cb-57bf01b76f82",
+      "cancel_reason": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:18.719504+00:00"
+   },
+   {
+    "id": 403,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "93e5a953-31d4-424d-a47e-06e8001d1d4b",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "93e5a953-31d4-424d-a47e-06e8001d1d4b",
+      "qty": 2,
+      "kind": "part",
+      "job_id": "6b1f7c78-ec46-48fb-b098-eee6c0ea6779",
+      "status": "estimate",
+      "item_id": "a6a90730-3a83-43f8-b527-7969288bac79",
+      "added_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "created_at": "2026-11-16T13:11:18.354202+00:00",
+      "service_id": null,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "description": "Wiper blade 22 inch",
+      "stock_applied": 0,
+      "warranty_days": 0,
+      "unit_price_paisa": 130000,
+      "warranty_of_line": null,
+      "checklist_item_id": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:18.354202+00:00"
+   },
+   {
+    "id": 402,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "af37f104-0e94-4818-9a8c-b1c9cf161769",
+    "action": "update",
+    "changes": {
+     "service_id": {
+      "new": "220c7519-6c28-45ba-85eb-af2caee43483",
+      "old": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:18.003831+00:00"
+   },
+   {
+    "id": 401,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "af37f104-0e94-4818-9a8c-b1c9cf161769",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "af37f104-0e94-4818-9a8c-b1c9cf161769",
+      "qty": 1,
+      "kind": "labour",
+      "job_id": "6b1f7c78-ec46-48fb-b098-eee6c0ea6779",
+      "status": "estimate",
+      "item_id": null,
+      "added_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "created_at": "2026-11-16T13:11:18.003831+00:00",
+      "service_id": null,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "description": "Wash & polish",
+      "stock_applied": 0,
+      "warranty_days": 0,
+      "unit_price_paisa": 120000,
+      "warranty_of_line": null,
+      "checklist_item_id": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:18.003831+00:00"
+   },
+   {
+    "id": 400,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_cards",
+    "record_id": "6b1f7c78-ec46-48fb-b098-eee6c0ea6779",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "6b1f7c78-ec46-48fb-b098-eee6c0ea6779",
+      "kind": "normal",
+      "stage": "intake",
+      "job_no": 1008,
+      "qc_note": null,
+      "ready_at": null,
+      "booking_id": null,
+      "complaints": "Wash and wiper change",
+      "created_at": "2026-11-16T13:11:17.585507+00:00",
+      "created_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "fuel_level": "H",
+      "parts_free": false,
+      "started_at": null,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "updated_at": "2026-11-16T13:11:17.585507+00:00",
+      "vehicle_id": "cdac7ee2-b666-4cd3-8744-1e18c4875eb2",
+      "approved_at": null,
+      "customer_id": "eff595b6-2142-48e6-a0f1-a1e5b8a8a858",
+      "odometer_km": 39800,
+      "approved_via": null,
+      "delivered_at": null,
+      "cancel_reason": null,
+      "parent_job_id": null,
+      "next_service_km": null,
+      "approved_by_name": null,
+      "reminder_sent_at": null,
+      "expected_delivery": null,
+      "next_service_date": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:17.585507+00:00"
+   },
+   {
+    "id": 399,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_cards",
+    "record_id": "8a8262bf-5d2e-4c7e-8473-e315e120372d",
+    "action": "update",
+    "changes": {
+     "stage": {
+      "new": "awaiting_approval",
+      "old": "intake"
+     },
+     "updated_at": {
+      "new": "2026-11-16T13:11:17.136315+00:00",
+      "old": "2026-11-16T13:11:15.370655+00:00"
+     }
+    },
+    "created_at": "2026-11-16T13:11:17.136315+00:00"
+   },
+   {
+    "id": 398,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "cffc9928-9e82-4a7a-9f71-8fd22bfa8017",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "cffc9928-9e82-4a7a-9f71-8fd22bfa8017",
+      "qty": 1,
+      "kind": "part",
+      "job_id": "8a8262bf-5d2e-4c7e-8473-e315e120372d",
+      "status": "estimate",
+      "item_id": "5a304690-ed05-4514-8e5c-7f3fe81751a0",
+      "added_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "created_at": "2026-11-16T13:11:16.783477+00:00",
+      "service_id": null,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "description": "Battery 55Ah",
+      "stock_applied": 0,
+      "warranty_days": 365,
+      "unit_price_paisa": 2150000,
+      "warranty_of_line": null,
+      "checklist_item_id": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:16.783477+00:00"
+   },
+   {
+    "id": 396,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "daf6972e-bf15-4e34-a07c-4f8afaf758ca",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "daf6972e-bf15-4e34-a07c-4f8afaf758ca",
+      "qty": 1,
+      "kind": "labour",
+      "job_id": "8a8262bf-5d2e-4c7e-8473-e315e120372d",
+      "status": "estimate",
+      "item_id": null,
+      "added_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "created_at": "2026-11-16T13:11:16.430706+00:00",
+      "service_id": null,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "description": "Oil change labour",
+      "stock_applied": 0,
+      "warranty_days": 0,
+      "unit_price_paisa": 50000,
+      "warranty_of_line": null,
+      "checklist_item_id": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:16.430706+00:00"
+   },
+   {
+    "id": 397,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "daf6972e-bf15-4e34-a07c-4f8afaf758ca",
+    "action": "update",
+    "changes": {
+     "service_id": {
+      "new": "3782ff83-4c9a-48cc-a850-8466e48a14a4",
+      "old": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:16.430706+00:00"
+   },
+   {
+    "id": 395,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "80183f57-641e-43e3-8e64-eb0857875c5f",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "80183f57-641e-43e3-8e64-eb0857875c5f",
+      "qty": 1,
+      "kind": "part",
+      "job_id": "8a8262bf-5d2e-4c7e-8473-e315e120372d",
+      "status": "estimate",
+      "item_id": "2eef0147-e868-4c66-8f28-48ad6d78fd2b",
+      "added_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "created_at": "2026-11-16T13:11:16.079245+00:00",
+      "service_id": null,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "description": "Oil filter Corolla/City",
+      "stock_applied": 0,
+      "warranty_days": 0,
+      "unit_price_paisa": 95000,
+      "warranty_of_line": null,
+      "checklist_item_id": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:16.079245+00:00"
+   },
+   {
+    "id": 394,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "0d60ef0d-71eb-43d5-9b14-37ef043facaf",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "0d60ef0d-71eb-43d5-9b14-37ef043facaf",
+      "qty": 3.5,
+      "kind": "part",
+      "job_id": "8a8262bf-5d2e-4c7e-8473-e315e120372d",
+      "status": "estimate",
+      "item_id": "3e6609e7-9c0f-4563-8684-13d03b989569",
+      "added_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "created_at": "2026-11-16T13:11:15.72472+00:00",
+      "service_id": null,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "description": "Engine oil 5W-30 (per litre)",
+      "stock_applied": 0,
+      "warranty_days": 0,
+      "unit_price_paisa": 110000,
+      "warranty_of_line": null,
+      "checklist_item_id": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:15.72472+00:00"
+   },
+   {
+    "id": 393,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_cards",
+    "record_id": "8a8262bf-5d2e-4c7e-8473-e315e120372d",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "8a8262bf-5d2e-4c7e-8473-e315e120372d",
+      "kind": "normal",
+      "stage": "intake",
+      "job_no": 1007,
+      "qc_note": null,
+      "ready_at": null,
+      "booking_id": null,
+      "complaints": "Service due, battery weak",
+      "created_at": "2026-11-16T13:11:15.370655+00:00",
+      "created_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "fuel_level": "H",
+      "parts_free": false,
+      "started_at": null,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "updated_at": "2026-11-16T13:11:15.370655+00:00",
+      "vehicle_id": "c18bbe2a-de92-4e3b-883e-ed5532610053",
+      "approved_at": null,
+      "customer_id": "c91ca2bc-6af9-48dd-a7cb-57bf01b76f82",
+      "odometer_km": 84200,
+      "approved_via": null,
+      "delivered_at": null,
+      "cancel_reason": null,
+      "parent_job_id": null,
+      "next_service_km": null,
+      "approved_by_name": null,
+      "reminder_sent_at": null,
+      "expected_delivery": null,
+      "next_service_date": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:15.370655+00:00"
+   },
+   {
+    "id": 392,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_cards",
+    "record_id": "1b2fc5ef-d98c-4985-9dc9-39cc95a4ad6d",
+    "action": "update",
+    "changes": {
+     "stage": {
+      "new": "in_progress",
+      "old": "approved"
+     },
+     "started_at": {
+      "new": "2026-11-16T13:11:14.959771+00:00",
+      "old": null
+     },
+     "updated_at": {
+      "new": "2026-11-16T13:11:14.959771+00:00",
+      "old": "2026-11-16T13:11:14.583382+00:00"
+     }
+    },
+    "created_at": "2026-11-16T13:11:14.959771+00:00"
+   },
+   {
+    "id": 389,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_cards",
+    "record_id": "1b2fc5ef-d98c-4985-9dc9-39cc95a4ad6d",
+    "action": "update",
+    "changes": {
+     "stage": {
+      "new": "approved",
+      "old": "intake"
+     },
+     "updated_at": {
+      "new": "2026-11-16T13:11:14.583382+00:00",
+      "old": "2026-11-16T13:11:13.496326+00:00"
+     },
+     "approved_at": {
+      "new": "2026-11-16T13:11:14.583382+00:00",
+      "old": null
+     },
+     "approved_via": {
+      "new": "phone",
+      "old": null
+     },
+     "approved_by_name": {
+      "new": "Customer",
+      "old": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:14.583382+00:00"
+   },
+   {
+    "id": 388,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "4b238ebc-915f-494a-8a0c-65130aa432fe",
+    "action": "update",
+    "changes": {
+     "status": {
+      "new": "approved",
+      "old": "estimate"
+     }
+    },
+    "created_at": "2026-11-16T13:11:14.583382+00:00"
+   },
+   {
+    "id": 387,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "7644e072-a775-410f-a613-7b3f40f2ffdf",
+    "action": "update",
+    "changes": {
+     "status": {
+      "new": "approved",
+      "old": "estimate"
+     }
+    },
+    "created_at": "2026-11-16T13:11:14.583382+00:00"
+   },
+   {
+    "id": 391,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "7644e072-a775-410f-a613-7b3f40f2ffdf",
+    "action": "update",
+    "changes": {
+     "stock_applied": {
+      "new": 4,
+      "old": 0
+     }
+    },
+    "created_at": "2026-11-16T13:11:14.583382+00:00"
+   },
+   {
+    "id": 390,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "stock_movements",
+    "record_id": "38",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": 38,
+      "qty": -4,
+      "kind": "job_use",
+      "note": null,
+      "ref_id": "1b2fc5ef-d98c-4985-9dc9-39cc95a4ad6d",
+      "item_id": "0b5d04e2-583a-4346-9aa7-e053372b6820",
+      "created_at": "2026-11-16T13:11:14.583382+00:00",
+      "created_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "unit_cost_paisa": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:14.583382+00:00"
+   },
+   {
+    "id": 386,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "4b238ebc-915f-494a-8a0c-65130aa432fe",
+    "action": "update",
+    "changes": {
+     "service_id": {
+      "new": "d2b09f46-f6e6-4cfe-92fd-66195cc4db77",
+      "old": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:14.206455+00:00"
+   },
+   {
+    "id": 385,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "4b238ebc-915f-494a-8a0c-65130aa432fe",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "4b238ebc-915f-494a-8a0c-65130aa432fe",
+      "qty": 1,
+      "kind": "labour",
+      "job_id": "1b2fc5ef-d98c-4985-9dc9-39cc95a4ad6d",
+      "status": "estimate",
+      "item_id": null,
+      "added_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "created_at": "2026-11-16T13:11:14.206455+00:00",
+      "service_id": null,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "description": "Engine tuning",
+      "stock_applied": 0,
+      "warranty_days": 0,
+      "unit_price_paisa": 250000,
+      "warranty_of_line": null,
+      "checklist_item_id": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:14.206455+00:00"
+   },
+   {
+    "id": 384,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "7644e072-a775-410f-a613-7b3f40f2ffdf",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "7644e072-a775-410f-a613-7b3f40f2ffdf",
+      "qty": 4,
+      "kind": "part",
+      "job_id": "1b2fc5ef-d98c-4985-9dc9-39cc95a4ad6d",
+      "status": "estimate",
+      "item_id": "0b5d04e2-583a-4346-9aa7-e053372b6820",
+      "added_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "created_at": "2026-11-16T13:11:13.848977+00:00",
+      "service_id": null,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "description": "Spark plug iridium",
+      "stock_applied": 0,
+      "warranty_days": 0,
+      "unit_price_paisa": 140000,
+      "warranty_of_line": null,
+      "checklist_item_id": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:13.848977+00:00"
+   },
+   {
+    "id": 383,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_cards",
+    "record_id": "1b2fc5ef-d98c-4985-9dc9-39cc95a4ad6d",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "1b2fc5ef-d98c-4985-9dc9-39cc95a4ad6d",
+      "kind": "normal",
+      "stage": "intake",
+      "job_no": 1006,
+      "qc_note": null,
+      "ready_at": null,
+      "booking_id": null,
+      "complaints": "Engine misfiring",
+      "created_at": "2026-11-16T13:11:13.496326+00:00",
+      "created_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "fuel_level": "H",
+      "parts_free": false,
+      "started_at": null,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "updated_at": "2026-11-16T13:11:13.496326+00:00",
+      "vehicle_id": "03544469-f9c7-4392-8ce7-9cb85079b2fe",
+      "approved_at": null,
+      "customer_id": "9f1493ea-036d-4cd8-913d-604cca5faaa6",
+      "odometer_km": 70500,
+      "approved_via": null,
+      "delivered_at": null,
+      "cancel_reason": null,
+      "parent_job_id": null,
+      "next_service_km": null,
+      "approved_by_name": null,
+      "reminder_sent_at": null,
+      "expected_delivery": null,
+      "next_service_date": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:13.496326+00:00"
+   },
+   {
+    "id": 382,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_cards",
+    "record_id": "0618a6f4-a61c-4331-b428-bb16e342e8d4",
+    "action": "update",
+    "changes": {
+     "stage": {
+      "new": "quality_check",
+      "old": "in_progress"
+     },
+     "updated_at": {
+      "new": "2026-11-16T13:11:13.105105+00:00",
+      "old": "2026-11-16T13:11:10.224469+00:00"
+     }
+    },
+    "created_at": "2026-11-16T13:11:13.105105+00:00"
+   },
+   {
+    "id": 381,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_cards",
+    "record_id": "0618a6f4-a61c-4331-b428-bb16e342e8d4",
+    "action": "update",
+    "changes": {
+     "stage": {
+      "new": "in_progress",
+      "old": "approved"
+     },
+     "started_at": {
+      "new": "2026-11-16T13:11:10.224469+00:00",
+      "old": null
+     },
+     "updated_at": {
+      "new": "2026-11-16T13:11:10.224469+00:00",
+      "old": "2026-11-16T13:11:09.868927+00:00"
+     }
+    },
+    "created_at": "2026-11-16T13:11:10.224469+00:00"
+   },
+   {
+    "id": 376,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "64f4deae-9cc1-4fa2-9a0e-4b28f07d543c",
+    "action": "update",
+    "changes": {
+     "status": {
+      "new": "approved",
+      "old": "estimate"
+     }
+    },
+    "created_at": "2026-11-16T13:11:09.868927+00:00"
+   },
+   {
+    "id": 380,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "6378775a-3acb-4850-b3f9-935e66bbdc75",
+    "action": "update",
+    "changes": {
+     "stock_applied": {
+      "new": 2,
+      "old": 0
+     }
+    },
+    "created_at": "2026-11-16T13:11:09.868927+00:00"
+   },
+   {
+    "id": 379,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "stock_movements",
+    "record_id": "37",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": 37,
+      "qty": -2,
+      "kind": "job_use",
+      "note": null,
+      "ref_id": "0618a6f4-a61c-4331-b428-bb16e342e8d4",
+      "item_id": "45502aac-98b6-4b98-8ddd-9a3c59454f41",
+      "created_at": "2026-11-16T13:11:09.868927+00:00",
+      "created_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "unit_cost_paisa": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:09.868927+00:00"
+   },
+   {
+    "id": 378,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_cards",
+    "record_id": "0618a6f4-a61c-4331-b428-bb16e342e8d4",
+    "action": "update",
+    "changes": {
+     "stage": {
+      "new": "approved",
+      "old": "intake"
+     },
+     "updated_at": {
+      "new": "2026-11-16T13:11:09.868927+00:00",
+      "old": "2026-11-16T13:11:08.81412+00:00"
+     },
+     "approved_at": {
+      "new": "2026-11-16T13:11:09.868927+00:00",
+      "old": null
+     },
+     "approved_via": {
+      "new": "phone",
+      "old": null
+     },
+     "approved_by_name": {
+      "new": "Customer",
+      "old": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:09.868927+00:00"
+   },
+   {
+    "id": 377,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "6378775a-3acb-4850-b3f9-935e66bbdc75",
+    "action": "update",
+    "changes": {
+     "status": {
+      "new": "approved",
+      "old": "estimate"
+     }
+    },
+    "created_at": "2026-11-16T13:11:09.868927+00:00"
+   },
+   {
+    "id": 375,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "6378775a-3acb-4850-b3f9-935e66bbdc75",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "6378775a-3acb-4850-b3f9-935e66bbdc75",
+      "qty": 2,
+      "kind": "part",
+      "job_id": "0618a6f4-a61c-4331-b428-bb16e342e8d4",
+      "status": "estimate",
+      "item_id": "45502aac-98b6-4b98-8ddd-9a3c59454f41",
+      "added_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "created_at": "2026-11-16T13:11:09.501208+00:00",
+      "service_id": null,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "description": "Coolant (per litre)",
+      "stock_applied": 0,
+      "warranty_days": 0,
+      "unit_price_paisa": 90000,
+      "warranty_of_line": null,
+      "checklist_item_id": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:09.501208+00:00"
+   },
+   {
+    "id": 373,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "64f4deae-9cc1-4fa2-9a0e-4b28f07d543c",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "64f4deae-9cc1-4fa2-9a0e-4b28f07d543c",
+      "qty": 1,
+      "kind": "labour",
+      "job_id": "0618a6f4-a61c-4331-b428-bb16e342e8d4",
+      "status": "estimate",
+      "item_id": null,
+      "added_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "created_at": "2026-11-16T13:11:09.156669+00:00",
+      "service_id": null,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "description": "AC service",
+      "stock_applied": 0,
+      "warranty_days": 0,
+      "unit_price_paisa": 350000,
+      "warranty_of_line": null,
+      "checklist_item_id": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:09.156669+00:00"
+   },
+   {
+    "id": 374,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "64f4deae-9cc1-4fa2-9a0e-4b28f07d543c",
+    "action": "update",
+    "changes": {
+     "service_id": {
+      "new": "a9cca50b-522b-405d-848b-a0b2641252cb",
+      "old": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:09.156669+00:00"
+   },
+   {
+    "id": 372,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_cards",
+    "record_id": "0618a6f4-a61c-4331-b428-bb16e342e8d4",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "0618a6f4-a61c-4331-b428-bb16e342e8d4",
+      "kind": "normal",
+      "stage": "intake",
+      "job_no": 1005,
+      "qc_note": null,
+      "ready_at": null,
+      "booking_id": null,
+      "complaints": "AC not cooling",
+      "created_at": "2026-11-16T13:11:08.81412+00:00",
+      "created_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "fuel_level": "H",
+      "parts_free": false,
+      "started_at": null,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "updated_at": "2026-11-16T13:11:08.81412+00:00",
+      "vehicle_id": "88162b36-5fd2-468b-b17a-2567edcbdf62",
+      "approved_at": null,
+      "customer_id": "57a31506-9c73-4b03-8892-6f1a64393068",
+      "odometer_km": 152000,
+      "approved_via": null,
+      "delivered_at": null,
+      "cancel_reason": null,
+      "parent_job_id": null,
+      "next_service_km": null,
+      "approved_by_name": null,
+      "reminder_sent_at": null,
+      "expected_delivery": null,
+      "next_service_date": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:08.81412+00:00"
+   },
+   {
+    "id": 371,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "invoices",
+    "record_id": "3be35b60-7332-43c5-aa55-b203fb642678",
+    "action": "update",
+    "changes": {
+     "parts_paisa": {
+      "new": 480000,
+      "old": 0
+     },
+     "total_paisa": {
+      "new": 630000,
+      "old": 0
+     },
+     "labour_paisa": {
+      "new": 150000,
+      "old": 0
+     }
+    },
+    "created_at": "2026-11-16T13:11:08.44022+00:00"
+   },
+   {
+    "id": 370,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "invoices",
+    "record_id": "3be35b60-7332-43c5-aa55-b203fb642678",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "3be35b60-7332-43c5-aa55-b203fb642678",
+      "job_id": "8fa0c72e-5a06-46c1-86b9-f8b86c27850b",
+      "locked": false,
+      "issued_at": "2026-11-16T13:11:08.44022+00:00",
+      "on_credit": false,
+      "created_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "invoice_no": 4,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "vehicle_id": "ee1ac494-7cdc-4b25-84d1-e07c4b6377ad",
+      "customer_id": "ce7646e3-7a90-4d77-b74e-913afa3a5278",
+      "parts_paisa": 0,
+      "total_paisa": 0,
+      "labour_paisa": 0,
+      "discount_paisa": 0,
+      "discount_state": "none",
+      "discount_reason": null,
+      "tax_parts_paisa": 0,
+      "tax_services_paisa": 0
+     }
+    },
+    "created_at": "2026-11-16T13:11:08.44022+00:00"
+   },
+   {
+    "id": 369,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_cards",
+    "record_id": "8fa0c72e-5a06-46c1-86b9-f8b86c27850b",
+    "action": "update",
+    "changes": {
+     "stage": {
+      "new": "ready",
+      "old": "quality_check"
+     },
+     "ready_at": {
+      "new": "2026-11-16T13:11:08.092255+00:00",
+      "old": null
+     },
+     "updated_at": {
+      "new": "2026-11-16T13:11:08.092255+00:00",
+      "old": "2026-11-16T13:11:07.749654+00:00"
+     }
+    },
+    "created_at": "2026-11-16T13:11:08.092255+00:00"
+   },
+   {
+    "id": 368,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_cards",
+    "record_id": "8fa0c72e-5a06-46c1-86b9-f8b86c27850b",
+    "action": "update",
+    "changes": {
+     "stage": {
+      "new": "quality_check",
+      "old": "in_progress"
+     },
+     "updated_at": {
+      "new": "2026-11-16T13:11:07.749654+00:00",
+      "old": "2026-11-16T13:11:04.916542+00:00"
+     }
+    },
+    "created_at": "2026-11-16T13:11:07.749654+00:00"
+   },
+   {
+    "id": 367,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_cards",
+    "record_id": "8fa0c72e-5a06-46c1-86b9-f8b86c27850b",
+    "action": "update",
+    "changes": {
+     "stage": {
+      "new": "in_progress",
+      "old": "approved"
+     },
+     "started_at": {
+      "new": "2026-11-16T13:11:04.916542+00:00",
+      "old": null
+     },
+     "updated_at": {
+      "new": "2026-11-16T13:11:04.916542+00:00",
+      "old": "2026-11-16T13:11:04.571634+00:00"
+     }
+    },
+    "created_at": "2026-11-16T13:11:04.916542+00:00"
+   },
+   {
+    "id": 364,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_cards",
+    "record_id": "8fa0c72e-5a06-46c1-86b9-f8b86c27850b",
+    "action": "update",
+    "changes": {
+     "stage": {
+      "new": "approved",
+      "old": "intake"
+     },
+     "updated_at": {
+      "new": "2026-11-16T13:11:04.571634+00:00",
+      "old": "2026-11-16T13:11:03.510657+00:00"
+     },
+     "approved_at": {
+      "new": "2026-11-16T13:11:04.571634+00:00",
+      "old": null
+     },
+     "approved_via": {
+      "new": "phone",
+      "old": null
+     },
+     "approved_by_name": {
+      "new": "Customer",
+      "old": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:04.571634+00:00"
+   },
+   {
+    "id": 366,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "4fb54bf8-150d-4a14-87d0-edc35190ae8b",
+    "action": "update",
+    "changes": {
+     "stock_applied": {
+      "new": 1,
+      "old": 0
+     }
+    },
+    "created_at": "2026-11-16T13:11:04.571634+00:00"
+   },
+   {
+    "id": 363,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "5e45791c-91ca-488d-9137-1bd5e3b26ccd",
+    "action": "update",
+    "changes": {
+     "status": {
+      "new": "approved",
+      "old": "estimate"
+     }
+    },
+    "created_at": "2026-11-16T13:11:04.571634+00:00"
+   },
+   {
+    "id": 362,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "4fb54bf8-150d-4a14-87d0-edc35190ae8b",
+    "action": "update",
+    "changes": {
+     "status": {
+      "new": "approved",
+      "old": "estimate"
+     }
+    },
+    "created_at": "2026-11-16T13:11:04.571634+00:00"
+   },
+   {
+    "id": 365,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "stock_movements",
+    "record_id": "36",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": 36,
+      "qty": -1,
+      "kind": "job_use",
+      "note": null,
+      "ref_id": "8fa0c72e-5a06-46c1-86b9-f8b86c27850b",
+      "item_id": "27adcd42-126a-4205-9efb-9a967d56ecb3",
+      "created_at": "2026-11-16T13:11:04.571634+00:00",
+      "created_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "unit_cost_paisa": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:04.571634+00:00"
+   },
+   {
+    "id": 360,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "5e45791c-91ca-488d-9137-1bd5e3b26ccd",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "5e45791c-91ca-488d-9137-1bd5e3b26ccd",
+      "qty": 1,
+      "kind": "labour",
+      "job_id": "8fa0c72e-5a06-46c1-86b9-f8b86c27850b",
+      "status": "estimate",
+      "item_id": null,
+      "added_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "created_at": "2026-11-16T13:11:04.208052+00:00",
+      "service_id": null,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "description": "Brake service",
+      "stock_applied": 0,
+      "warranty_days": 0,
+      "unit_price_paisa": 150000,
+      "warranty_of_line": null,
+      "checklist_item_id": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:04.208052+00:00"
+   },
+   {
+    "id": 361,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "5e45791c-91ca-488d-9137-1bd5e3b26ccd",
+    "action": "update",
+    "changes": {
+     "service_id": {
+      "new": "56344b80-5b58-4d21-9377-ccdf152c7ba9",
+      "old": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:04.208052+00:00"
+   },
+   {
+    "id": 359,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "4fb54bf8-150d-4a14-87d0-edc35190ae8b",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "4fb54bf8-150d-4a14-87d0-edc35190ae8b",
+      "qty": 1,
+      "kind": "part",
+      "job_id": "8fa0c72e-5a06-46c1-86b9-f8b86c27850b",
+      "status": "estimate",
+      "item_id": "27adcd42-126a-4205-9efb-9a967d56ecb3",
+      "added_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "created_at": "2026-11-16T13:11:03.864317+00:00",
+      "service_id": null,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "description": "Brake pads front set",
+      "stock_applied": 0,
+      "warranty_days": 0,
+      "unit_price_paisa": 480000,
+      "warranty_of_line": null,
+      "checklist_item_id": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:03.864317+00:00"
+   },
+   {
+    "id": 358,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_cards",
+    "record_id": "8fa0c72e-5a06-46c1-86b9-f8b86c27850b",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "8fa0c72e-5a06-46c1-86b9-f8b86c27850b",
+      "kind": "normal",
+      "stage": "intake",
+      "job_no": 1004,
+      "qc_note": null,
+      "ready_at": null,
+      "booking_id": null,
+      "complaints": "Brakes squeaking",
+      "created_at": "2026-11-16T13:11:03.510657+00:00",
+      "created_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "fuel_level": "H",
+      "parts_free": false,
+      "started_at": null,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "updated_at": "2026-11-16T13:11:03.510657+00:00",
+      "vehicle_id": "ee1ac494-7cdc-4b25-84d1-e07c4b6377ad",
+      "approved_at": null,
+      "customer_id": "ce7646e3-7a90-4d77-b74e-913afa3a5278",
+      "odometer_km": 120400,
+      "approved_via": null,
+      "delivered_at": null,
+      "cancel_reason": null,
+      "parent_job_id": null,
+      "next_service_km": null,
+      "approved_by_name": null,
+      "reminder_sent_at": null,
+      "expected_delivery": null,
+      "next_service_date": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:03.510657+00:00"
+   },
+   {
+    "id": 357,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_cards",
+    "record_id": "adb097cf-73b0-46ef-9095-7333fd5f10e5",
+    "action": "update",
+    "changes": {
+     "updated_at": {
+      "new": "2026-11-16T13:11:03.15941+00:00",
+      "old": "2026-11-16T13:11:02.792906+00:00"
+     },
+     "next_service_km": {
+      "new": 93200,
+      "old": null
+     },
+     "next_service_date": {
+      "new": "2027-02-14",
+      "old": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:03.15941+00:00"
+   },
+   {
+    "id": 356,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_cards",
+    "record_id": "adb097cf-73b0-46ef-9095-7333fd5f10e5",
+    "action": "update",
+    "changes": {
+     "stage": {
+      "new": "delivered",
+      "old": "ready"
+     },
+     "updated_at": {
+      "new": "2026-11-16T13:11:02.792906+00:00",
+      "old": "2026-11-16T13:11:01.408943+00:00"
+     },
+     "delivered_at": {
+      "new": "2026-11-16T13:11:02.792906+00:00",
+      "old": null
+     }
+    },
+    "created_at": "2026-11-16T13:11:02.792906+00:00"
+   },
+   {
+    "id": 355,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "invoices",
+    "record_id": "8099e364-a2f9-48b0-bf7d-5bf8627bea12",
+    "action": "update",
+    "changes": {
+     "locked": {
+      "new": true,
+      "old": false
+     }
+    },
+    "created_at": "2026-11-16T13:11:02.448661+00:00"
+   },
+   {
+    "id": 354,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "payments",
+    "record_id": "3239385e-0147-4c9f-a377-35f456f1081f",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "3239385e-0147-4c9f-a377-35f456f1081f",
+      "kind": "payment",
+      "job_id": "adb097cf-73b0-46ef-9095-7333fd5f10e5",
+      "method": "card",
+      "reason": null,
+      "paid_on": "2026-11-16",
+      "reference": "POS-2231",
+      "created_at": "2026-11-16T13:11:02.448661+00:00",
+      "created_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "invoice_id": "8099e364-a2f9-48b0-bf7d-5bf8627bea12",
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "customer_id": "94fc3eca-9e79-486f-bdd0-ecc669693a23",
+      "reverses_id": null,
+      "amount_paisa": 940000
+     }
+    },
+    "created_at": "2026-11-16T13:11:02.448661+00:00"
+   },
+   {
+    "id": 352,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "invoices",
+    "record_id": "8099e364-a2f9-48b0-bf7d-5bf8627bea12",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "8099e364-a2f9-48b0-bf7d-5bf8627bea12",
+      "job_id": "adb097cf-73b0-46ef-9095-7333fd5f10e5",
+      "locked": false,
+      "issued_at": "2026-11-16T13:11:01.762533+00:00",
+      "on_credit": false,
+      "created_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "invoice_no": 3,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "vehicle_id": "c171fdae-9892-4b85-9ac3-7cb24d4011d7",
+      "customer_id": "94fc3eca-9e79-486f-bdd0-ecc669693a23",
+      "parts_paisa": 0,
+      "total_paisa": 0,
+      "labour_paisa": 0,
+      "discount_paisa": 0,
+      "discount_state": "none",
+      "discount_reason": null,
+      "tax_parts_paisa": 0,
+      "tax_services_paisa": 0
+     }
+    },
+    "created_at": "2026-11-16T13:11:01.762533+00:00"
+   },
+   {
+    "id": 353,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "invoices",
+    "record_id": "8099e364-a2f9-48b0-bf7d-5bf8627bea12",
+    "action": "update",
+    "changes": {
+     "parts_paisa": {
+      "new": 640000,
+      "old": 0
+     },
+     "total_paisa": {
+      "new": 940000,
+      "old": 0
+     },
+     "labour_paisa": {
+      "new": 300000,
+      "old": 0
+     }
+    },
+    "created_at": "2026-11-16T13:11:01.762533+00:00"
+   },
+   {
+    "id": 351,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_cards",
+    "record_id": "adb097cf-73b0-46ef-9095-7333fd5f10e5",
+    "action": "update",
+    "changes": {
+     "stage": {
+      "new": "ready",
+      "old": "quality_check"
+     },
+     "ready_at": {
+      "new": "2026-11-16T13:11:01.408943+00:00",
+      "old": null
+     },
+     "updated_at": {
+      "new": "2026-11-16T13:11:01.408943+00:00",
+      "old": "2026-11-16T13:11:01.063486+00:00"
+     }
+    },
+    "created_at": "2026-11-16T13:11:01.408943+00:00"
+   },
+   {
+    "id": 350,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_cards",
+    "record_id": "adb097cf-73b0-46ef-9095-7333fd5f10e5",
+    "action": "update",
+    "changes": {
+     "stage": {
+      "new": "quality_check",
+      "old": "in_progress"
+     },
+     "updated_at": {
+      "new": "2026-11-16T13:11:01.063486+00:00",
+      "old": "2026-11-16T13:10:58.321006+00:00"
+     }
+    },
+    "created_at": "2026-11-16T13:11:01.063486+00:00"
+   },
+   {
+    "id": 349,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_cards",
+    "record_id": "adb097cf-73b0-46ef-9095-7333fd5f10e5",
+    "action": "update",
+    "changes": {
+     "stage": {
+      "new": "in_progress",
+      "old": "approved"
+     },
+     "started_at": {
+      "new": "2026-11-16T13:10:58.321006+00:00",
+      "old": null
+     },
+     "updated_at": {
+      "new": "2026-11-16T13:10:58.321006+00:00",
+      "old": "2026-11-16T13:10:57.973659+00:00"
+     }
+    },
+    "created_at": "2026-11-16T13:10:58.321006+00:00"
+   },
+   {
+    "id": 345,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "stock_movements",
+    "record_id": "34",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": 34,
+      "qty": -1,
+      "kind": "job_use",
+      "note": null,
+      "ref_id": "adb097cf-73b0-46ef-9095-7333fd5f10e5",
+      "item_id": "2eef0147-e868-4c66-8f28-48ad6d78fd2b",
+      "created_at": "2026-11-16T13:10:57.973659+00:00",
+      "created_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "unit_cost_paisa": null
+     }
+    },
+    "created_at": "2026-11-16T13:10:57.973659+00:00"
+   },
+   {
+    "id": 341,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "26d90ee3-b41e-4335-bf05-b0be9620d892",
+    "action": "update",
+    "changes": {
+     "status": {
+      "new": "approved",
+      "old": "estimate"
+     }
+    },
+    "created_at": "2026-11-16T13:10:57.973659+00:00"
+   },
+   {
+    "id": 346,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "485d248a-3b4a-4bea-bb0f-879843e90be7",
+    "action": "update",
+    "changes": {
+     "stock_applied": {
+      "new": 1,
+      "old": 0
+     }
+    },
+    "created_at": "2026-11-16T13:10:57.973659+00:00"
+   },
+   {
+    "id": 337,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "05ab8675-cf47-43d0-a12c-325a038705b8",
+    "action": "update",
+    "changes": {
+     "status": {
+      "new": "approved",
+      "old": "estimate"
+     }
+    },
+    "created_at": "2026-11-16T13:10:57.973659+00:00"
+   },
+   {
+    "id": 344,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "05ab8675-cf47-43d0-a12c-325a038705b8",
+    "action": "update",
+    "changes": {
+     "stock_applied": {
+      "new": 3.5,
+      "old": 0
+     }
+    },
+    "created_at": "2026-11-16T13:10:57.973659+00:00"
+   },
+   {
+    "id": 343,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "stock_movements",
+    "record_id": "33",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": 33,
+      "qty": -3.5,
+      "kind": "job_use",
+      "note": null,
+      "ref_id": "adb097cf-73b0-46ef-9095-7333fd5f10e5",
+      "item_id": "3e6609e7-9c0f-4563-8684-13d03b989569",
+      "created_at": "2026-11-16T13:10:57.973659+00:00",
+      "created_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "unit_cost_paisa": null
+     }
+    },
+    "created_at": "2026-11-16T13:10:57.973659+00:00"
+   },
+   {
+    "id": 342,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_cards",
+    "record_id": "adb097cf-73b0-46ef-9095-7333fd5f10e5",
+    "action": "update",
+    "changes": {
+     "stage": {
+      "new": "approved",
+      "old": "intake"
+     },
+     "updated_at": {
+      "new": "2026-11-16T13:10:57.973659+00:00",
+      "old": "2026-11-16T13:10:55.916133+00:00"
+     },
+     "approved_at": {
+      "new": "2026-11-16T13:10:57.973659+00:00",
+      "old": null
+     },
+     "approved_via": {
+      "new": "phone",
+      "old": null
+     },
+     "approved_by_name": {
+      "new": "Customer",
+      "old": null
+     }
+    },
+    "created_at": "2026-11-16T13:10:57.973659+00:00"
+   },
+   {
+    "id": 348,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "47236778-3b71-42b4-bf35-29afec340298",
+    "action": "update",
+    "changes": {
+     "stock_applied": {
+      "new": 1,
+      "old": 0
+     }
+    },
+    "created_at": "2026-11-16T13:10:57.973659+00:00"
+   },
+   {
+    "id": 340,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "47236778-3b71-42b4-bf35-29afec340298",
+    "action": "update",
+    "changes": {
+     "status": {
+      "new": "approved",
+      "old": "estimate"
+     }
+    },
+    "created_at": "2026-11-16T13:10:57.973659+00:00"
+   },
+   {
+    "id": 339,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "e69fa1f4-ad8a-432e-904a-d4e531a48c41",
+    "action": "update",
+    "changes": {
+     "status": {
+      "new": "approved",
+      "old": "estimate"
+     }
+    },
+    "created_at": "2026-11-16T13:10:57.973659+00:00"
+   },
+   {
+    "id": 338,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "485d248a-3b4a-4bea-bb0f-879843e90be7",
+    "action": "update",
+    "changes": {
+     "status": {
+      "new": "approved",
+      "old": "estimate"
+     }
+    },
+    "created_at": "2026-11-16T13:10:57.973659+00:00"
+   },
+   {
+    "id": 347,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "stock_movements",
+    "record_id": "35",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": 35,
+      "qty": -1,
+      "kind": "job_use",
+      "note": null,
+      "ref_id": "adb097cf-73b0-46ef-9095-7333fd5f10e5",
+      "item_id": "9fa0732e-ccf5-4d9e-8edb-ad500964211f",
+      "created_at": "2026-11-16T13:10:57.973659+00:00",
+      "created_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "unit_cost_paisa": null
+     }
+    },
+    "created_at": "2026-11-16T13:10:57.973659+00:00"
+   },
+   {
+    "id": 335,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "26d90ee3-b41e-4335-bf05-b0be9620d892",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "26d90ee3-b41e-4335-bf05-b0be9620d892",
+      "qty": 1,
+      "kind": "labour",
+      "job_id": "adb097cf-73b0-46ef-9095-7333fd5f10e5",
+      "status": "estimate",
+      "item_id": null,
+      "added_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "created_at": "2026-11-16T13:10:57.631443+00:00",
+      "service_id": null,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "description": "Engine tuning",
+      "stock_applied": 0,
+      "warranty_days": 0,
+      "unit_price_paisa": 250000,
+      "warranty_of_line": null,
+      "checklist_item_id": null
+     }
+    },
+    "created_at": "2026-11-16T13:10:57.631443+00:00"
+   },
+   {
+    "id": 336,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "26d90ee3-b41e-4335-bf05-b0be9620d892",
+    "action": "update",
+    "changes": {
+     "service_id": {
+      "new": "d2b09f46-f6e6-4cfe-92fd-66195cc4db77",
+      "old": null
+     }
+    },
+    "created_at": "2026-11-16T13:10:57.631443+00:00"
+   },
+   {
+    "id": 334,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "47236778-3b71-42b4-bf35-29afec340298",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "47236778-3b71-42b4-bf35-29afec340298",
+      "qty": 1,
+      "kind": "part",
+      "job_id": "adb097cf-73b0-46ef-9095-7333fd5f10e5",
+      "status": "estimate",
+      "item_id": "9fa0732e-ccf5-4d9e-8edb-ad500964211f",
+      "added_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "created_at": "2026-11-16T13:10:57.284207+00:00",
+      "service_id": null,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "description": "Air filter Corolla",
+      "stock_applied": 0,
+      "warranty_days": 0,
+      "unit_price_paisa": 160000,
+      "warranty_of_line": null,
+      "checklist_item_id": null
+     }
+    },
+    "created_at": "2026-11-16T13:10:57.284207+00:00"
+   },
+   {
+    "id": 333,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "e69fa1f4-ad8a-432e-904a-d4e531a48c41",
+    "action": "update",
+    "changes": {
+     "service_id": {
+      "new": "3782ff83-4c9a-48cc-a850-8466e48a14a4",
+      "old": null
+     }
+    },
+    "created_at": "2026-11-16T13:10:56.944795+00:00"
+   },
+   {
+    "id": 332,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "e69fa1f4-ad8a-432e-904a-d4e531a48c41",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "e69fa1f4-ad8a-432e-904a-d4e531a48c41",
+      "qty": 1,
+      "kind": "labour",
+      "job_id": "adb097cf-73b0-46ef-9095-7333fd5f10e5",
+      "status": "estimate",
+      "item_id": null,
+      "added_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "created_at": "2026-11-16T13:10:56.944795+00:00",
+      "service_id": null,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "description": "Oil change labour",
+      "stock_applied": 0,
+      "warranty_days": 0,
+      "unit_price_paisa": 50000,
+      "warranty_of_line": null,
+      "checklist_item_id": null
+     }
+    },
+    "created_at": "2026-11-16T13:10:56.944795+00:00"
+   },
+   {
+    "id": 331,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "485d248a-3b4a-4bea-bb0f-879843e90be7",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "485d248a-3b4a-4bea-bb0f-879843e90be7",
+      "qty": 1,
+      "kind": "part",
+      "job_id": "adb097cf-73b0-46ef-9095-7333fd5f10e5",
+      "status": "estimate",
+      "item_id": "2eef0147-e868-4c66-8f28-48ad6d78fd2b",
+      "added_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "created_at": "2026-11-16T13:10:56.601009+00:00",
+      "service_id": null,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "description": "Oil filter Corolla/City",
+      "stock_applied": 0,
+      "warranty_days": 0,
+      "unit_price_paisa": 95000,
+      "warranty_of_line": null,
+      "checklist_item_id": null
+     }
+    },
+    "created_at": "2026-11-16T13:10:56.601009+00:00"
+   },
+   {
+    "id": 330,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "job_lines",
+    "record_id": "05ab8675-cf47-43d0-a12c-325a038705b8",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "05ab8675-cf47-43d0-a12c-325a038705b8",
+      "qty": 3.5,
+      "kind": "part",
+      "job_id": "adb097cf-73b0-46ef-9095-7333fd5f10e5",
+      "status": "estimate",
+      "item_id": "3e6609e7-9c0f-4563-8684-13d03b989569",
+      "added_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "created_at": "2026-11-16T13:10:56.257917+00:00",
+      "service_id": null,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "description": "Engine oil 5W-30 (per litre)",
+      "stock_applied": 0,
+      "warranty_days": 0,
+      "unit_price_paisa": 110000,
+      "warranty_of_line": null,
+      "checklist_item_id": null
+     }
+    },
+    "created_at": "2026-11-16T13:10:56.257917+00:00"
+   }
+  ],
+  "GET plans?select=code%2Cname%2Cmonthly_price_pkr%2Cyearly_price_pkr%2Cplan_features%28feature_code%29&order=sort_order.asc.nullslast": [
+   {
+    "code": "basic",
+    "name": "Basic",
+    "monthly_price_pkr": 2500,
+    "yearly_price_pkr": 25000,
+    "plan_features": [
+     {
+      "feature_code": "core"
+     }
+    ]
+   },
+   {
+    "code": "standard",
+    "name": "Standard",
+    "monthly_price_pkr": 5000,
+    "yearly_price_pkr": 50000,
+    "plan_features": [
+     {
+      "feature_code": "core"
+     },
+     {
+      "feature_code": "supplier_ledger"
+     },
+     {
+      "feature_code": "booking"
+     },
+     {
+      "feature_code": "whatsapp_auto"
+     },
+     {
+      "feature_code": "approvals_inbox"
+     },
+     {
+      "feature_code": "audit_log_view"
+     }
+    ]
+   },
+   {
+    "code": "premium",
+    "name": "Premium",
+    "monthly_price_pkr": 8000,
+    "yearly_price_pkr": 80000,
+    "plan_features": [
+     {
+      "feature_code": "core"
+     },
+     {
+      "feature_code": "supplier_ledger"
+     },
+     {
+      "feature_code": "booking"
+     },
+     {
+      "feature_code": "whatsapp_auto"
+     },
+     {
+      "feature_code": "approvals_inbox"
+     },
+     {
+      "feature_code": "audit_log_view"
+     },
+     {
+      "feature_code": "payroll"
+     },
+     {
+      "feature_code": "profit_reports"
+     }
+    ]
+   }
+  ],
+  "GET subscription_payments?select=%2A&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072&order=created_at.desc.nullslast&limit=50": [],
+  "POST rpc/station_subscription_quote? {\"p_station\":\"2b957bee-ffba-4b0e-a677-b8876a2c6072\",\"p_plan\":\"premium\",\"p_cycle\":\"monthly\"}": {
+   "cycle": "monthly",
+   "state": "trial",
+   "current_plan": "premium",
+   "pending_plan": null,
+   "renewal_date": "2027-01-26",
+   "renewal_amount": 800000,
+   "upgrade_amount": null
+  },
+  "GET station_entitlements?select=%2A&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072 [single]": {
+   "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+   "plan_code": "premium",
+   "effective_plan": "premium",
+   "status": "trial",
+   "renews_at": "2027-01-25T22:44:26.343634+00:00",
+   "features": [
+    "approvals_inbox",
+    "audit_log_view",
+    "booking",
+    "core",
+    "payroll",
+    "profit_reports",
+    "supplier_ledger",
+    "whatsapp_auto"
+   ]
+  },
+  "GET support_grants?select=%2A&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072&order=starts_at.desc.nullslast&limit=10": [],
+  "GET message_events?select=code%2Clabel%2Csort&order=sort.asc.nullslast": [
+   {
+    "code": "booking_confirmed",
+    "label": "Booking confirmed",
+    "sort": 1
+   },
+   {
+    "code": "booking_changed",
+    "label": "Booking changed",
+    "sort": 2
+   },
+   {
+    "code": "booking_cancelled",
+    "label": "Booking cancelled",
+    "sort": 3
+   },
+   {
+    "code": "estimate_ready",
+    "label": "Estimate ready",
+    "sort": 4
+   },
+   {
+    "code": "extra_work",
+    "label": "Extra work needs approval",
+    "sort": 5
+   },
+   {
+    "code": "vehicle_ready",
+    "label": "Vehicle ready",
+    "sort": 6
+   },
+   {
+    "code": "invoice_issued",
+    "label": "Invoice issued",
+    "sort": 7
+   },
+   {
+    "code": "dues_reminder",
+    "label": "Dues reminder",
+    "sort": 8
+   },
+   {
+    "code": "service_reminder",
+    "label": "Next-service reminder",
+    "sort": 9
+   },
+   {
+    "code": "storage_started",
+    "label": "Storage charge started",
+    "sort": 10
+   }
+  ],
+  "GET message_event_settings?select=event%2Cenabled&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072": [],
+  "GET items?select=id&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072&limit=1": [
+   {
+    "id": "3e6609e7-9c0f-4563-8684-13d03b989569"
+   }
+  ],
+  "GET customers?select=id&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072&limit=1": [
+   {
+    "id": "c91ca2bc-6af9-48dd-a7cb-57bf01b76f82"
+   }
+  ],
+  "GET audit_log?select=%2A&station_id=eq.2b957bee-ffba-4b0e-a677-b8876a2c6072&order=created_at.desc.nullslast&limit=6": [
+   {
+    "id": 433,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": null,
+    "table_name": "stations",
+    "record_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "action": "update",
+    "changes": {
+     "city": {
+      "new": "Lahore",
+      "old": "Karachi"
+     }
+    },
+    "created_at": "2026-11-16T16:44:22.917091+00:00"
+   },
+   {
+    "id": 432,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "invoices",
+    "record_id": "e67f0f79-a18e-4e89-ab6e-1f9d7615dbb5",
+    "action": "update",
+    "changes": {
+     "parts_paisa": {
+      "new": 180000,
+      "old": 0
+     },
+     "total_paisa": {
+      "new": 530000,
+      "old": 0
+     },
+     "labour_paisa": {
+      "new": 350000,
+      "old": 0
+     }
+    },
+    "created_at": "2026-11-16T16:27:49.337085+00:00"
+   },
+   {
+    "id": 431,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "invoices",
+    "record_id": "e67f0f79-a18e-4e89-ab6e-1f9d7615dbb5",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "e67f0f79-a18e-4e89-ab6e-1f9d7615dbb5",
+      "job_id": "0618a6f4-a61c-4331-b428-bb16e342e8d4",
+      "locked": false,
+      "issued_at": "2026-11-16T16:27:49.337085+00:00",
+      "on_credit": false,
+      "created_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "invoice_no": 5,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "vehicle_id": "88162b36-5fd2-468b-b17a-2567edcbdf62",
+      "customer_id": "57a31506-9c73-4b03-8892-6f1a64393068",
+      "parts_paisa": 0,
+      "total_paisa": 0,
+      "labour_paisa": 0,
+      "discount_paisa": 0,
+      "discount_state": "none",
+      "discount_reason": null,
+      "tax_parts_paisa": 0,
+      "tax_services_paisa": 0
+     }
+    },
+    "created_at": "2026-11-16T16:27:49.337085+00:00"
+   },
+   {
+    "id": 430,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+    "table_name": "payments",
+    "record_id": "b366abeb-7d81-428f-ad54-beabb6b7f23b",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "b366abeb-7d81-428f-ad54-beabb6b7f23b",
+      "kind": "advance",
+      "job_id": "0618a6f4-a61c-4331-b428-bb16e342e8d4",
+      "method": "cash",
+      "reason": null,
+      "paid_on": "2026-11-16",
+      "reference": null,
+      "created_at": "2026-11-16T16:27:43.599001+00:00",
+      "created_by": "13cf401b-a47f-4c5d-ac68-f16d333b1826",
+      "invoice_id": null,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "customer_id": "57a31506-9c73-4b03-8892-6f1a64393068",
+      "reverses_id": null,
+      "amount_paisa": 300000
+     }
+    },
+    "created_at": "2026-11-16T16:27:43.599001+00:00"
+   },
+   {
+    "id": 428,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "0b7970df-7426-4442-a427-2f4a0d966aa3",
+    "table_name": "stock_movements",
+    "record_id": "41",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": 41,
+      "qty": -1,
+      "kind": "job_use",
+      "note": null,
+      "ref_id": "1b2fc5ef-d98c-4985-9dc9-39cc95a4ad6d",
+      "item_id": "5a304690-ed05-4514-8e5c-7f3fe81751a0",
+      "created_at": "2026-11-16T16:08:42.787937+00:00",
+      "created_by": "0b7970df-7426-4442-a427-2f4a0d966aa3",
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "unit_cost_paisa": null
+     }
+    },
+    "created_at": "2026-11-16T16:08:42.787937+00:00"
+   },
+   {
+    "id": 427,
+    "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+    "actor_id": "0b7970df-7426-4442-a427-2f4a0d966aa3",
+    "table_name": "job_lines",
+    "record_id": "b95d2657-bd75-48d3-ab94-76a4d4b164b7",
+    "action": "insert",
+    "changes": {
+     "new": {
+      "id": "b95d2657-bd75-48d3-ab94-76a4d4b164b7",
+      "qty": 1,
+      "kind": "part",
+      "job_id": "1b2fc5ef-d98c-4985-9dc9-39cc95a4ad6d",
+      "status": "extra_pending",
+      "item_id": "5a304690-ed05-4514-8e5c-7f3fe81751a0",
+      "added_by": "0b7970df-7426-4442-a427-2f4a0d966aa3",
+      "created_at": "2026-11-16T16:08:42.787937+00:00",
+      "service_id": null,
+      "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072",
+      "description": "Battery 55Ah",
+      "stock_applied": 0,
+      "warranty_days": 365,
+      "unit_price_paisa": 2150000,
+      "warranty_of_line": null,
+      "checklist_item_id": null
+     }
+    },
+    "created_at": "2026-11-16T16:08:42.787937+00:00"
+   }
+  ],
+  "POST rpc/station_dashboard_totals? {\"p_station\":\"2b957bee-ffba-4b0e-a677-b8876a2c6072\"}": {
+   "low_stock": 2,
+   "dues_paisa": 0,
+   "jobs_by_stage": {
+    "ready": 1,
+    "intake": 1,
+    "in_progress": 1,
+    "quality_check": 1,
+    "awaiting_approval": 1
+   },
+   "messages_to_send": 15,
+   "pending_approvals": 0
+  }
+ },
+ "station_id": "2b957bee-ffba-4b0e-a677-b8876a2c6072"
+}

@@ -52,14 +52,14 @@ class _CustomerLoginScreenState extends State<CustomerLoginScreen> {
   }
 
   Future<void> _send() async {
-    setState(() => _busy = true);
+    setState(() { _busy = true; });
     try {
       await widget.api.sendCustomerCode(_mobile.text);
-      setState(() => _sent = true);
+      setState(() { _sent = true; });
     } catch (e) {
       if (mounted) showError(context, e);
     } finally {
-      if (mounted) setState(() => _busy = false);
+      if (mounted) setState(() { _busy = false; });
     }
   }
 

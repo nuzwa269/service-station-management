@@ -29,7 +29,7 @@ class _JobDetailViewState extends State<JobDetailView> {
     _reload();
   }
 
-  void _reload() => setState(() => _job = SessionScope.of(context).api.job(widget.jobId));
+  void _reload() => setState(() { _job = SessionScope.of(context).api.job(widget.jobId); });
 
   Future<void> _act(Future<void> Function() action, {String? success}) async {
     if (await runAction(context, action, success: success)) {
@@ -106,7 +106,7 @@ class _MessagesCardState extends State<_MessagesCard> {
     _reload();
   }
 
-  void _reload() => setState(() => _messages = SessionScope.of(context).api.messagesForJob(widget.jobId));
+  void _reload() => setState(() { _messages = SessionScope.of(context).api.messagesForJob(widget.jobId); });
 
   @override
   Widget build(BuildContext context) => _Box(
@@ -472,7 +472,7 @@ class _AddLineDialogState extends State<AddLineDialog> {
               if (widget.checkId == null) const ButtonSegment(value: LineKind.customerPart, label: Text('Customer part')),
             ],
             selected: {_kind},
-            onSelectionChanged: (v) => setState(() => _kind = v.first),
+            onSelectionChanged: (v) => setState(() { _kind = v.first; }),
           ),
           const SizedBox(height: 12),
           if (_kind == LineKind.part)

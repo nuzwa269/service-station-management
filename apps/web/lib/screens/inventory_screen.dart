@@ -26,7 +26,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
 
   void _reload() {
     final s = SessionScope.of(context);
-    setState(() => _items = s.api.items(s.current!.stationId, withCost: s.role == MemberRole.owner));
+    setState(() { _items = s.api.items(s.current!.stationId, withCost: s.role == MemberRole.owner); });
   }
 
   Future<void> _edit(List<Item> all, [Item? item]) async {
@@ -80,13 +80,13 @@ class _InventoryScreenState extends State<InventoryScreen> {
               width: 260,
               child: TextField(
                 decoration: const InputDecoration(isDense: true, prefixIcon: Icon(Icons.search), hintText: 'Name, code or barcode'),
-                onChanged: (v) => setState(() => _query = v.trim()),
+                onChanged: (v) => setState(() { _query = v.trim(); }),
               ),
             ),
             FilterChip(
               label: Text('Low stock (${low.length})'),
               selected: _lowOnly,
-              onSelected: (v) => setState(() => _lowOnly = v),
+              onSelected: (v) => setState(() { _lowOnly = v; }),
             ),
           ]),
           Expanded(
@@ -199,7 +199,7 @@ class _ItemDialogState extends State<ItemDialog> {
     }
     if (!mounted) return;
     final s = SessionScope.of(context);
-    setState(() => _busy = true);
+    setState(() { _busy = true; });
     final ok = await runAction(context, () => s.api.saveItem(
           s.current!.stationId,
           {
@@ -220,7 +220,7 @@ class _ItemDialogState extends State<ItemDialog> {
               : null,
         ));
     if (!mounted) return;
-    setState(() => _busy = false);
+    setState(() { _busy = false; });
     if (ok) Navigator.pop(context, true);
   }
 
@@ -261,7 +261,7 @@ class _ItemDialogState extends State<ItemDialog> {
               CheckboxListTile(
                 contentPadding: EdgeInsets.zero,
                 value: _bulk,
-                onChanged: (v) => setState(() => _bulk = v!),
+                onChanged: (v) => setState(() { _bulk = v!; }),
                 title: const Text('Bulk container (drum) — sold in part litres'),
               ),
             const SizedBox(height: 12),
@@ -279,7 +279,7 @@ class _ItemDialogState extends State<ItemDialog> {
               Expanded(child: TextFormField(controller: _warranty, decoration: const InputDecoration(labelText: 'Warranty days'))),
             ]),
             if (widget.item != null)
-              SwitchListTile(contentPadding: EdgeInsets.zero, value: _active, onChanged: (v) => setState(() => _active = v), title: const Text('Active')),
+              SwitchListTile(contentPadding: EdgeInsets.zero, value: _active, onChanged: (v) => setState(() { _active = v; }), title: const Text('Active')),
             if (_unit == ItemUnit.kit) ...[
               const Divider(),
               const Text('Kit components'),
@@ -290,17 +290,17 @@ class _ItemDialogState extends State<ItemDialog> {
                     child: DropdownButtonFormField<String>(
                       initialValue: candidates.any((c) => c.id == _components[i].itemId) ? _components[i].itemId : null,
                       items: candidates.map((c) => DropdownMenuItem(value: c.id, child: Text(c.name, overflow: TextOverflow.ellipsis))).toList(),
-                      onChanged: (v) => setState(() => _components[i] = (itemId: v!, qty: _components[i].qty)),
+                      onChanged: (v) => setState(() { _components[i] = (itemId: v!, qty: _components[i].qty); }),
                     ),
                   ),
                   const SizedBox(width: 8),
                   Expanded(child: TextFormField(controller: _components[i].qty, decoration: const InputDecoration(labelText: 'Qty'))),
-                  IconButton(onPressed: () => setState(() => _components.removeAt(i)), icon: const Icon(Icons.close)),
+                  IconButton(onPressed: () => setState(() { _components.removeAt(i); }), icon: const Icon(Icons.close)),
                 ]),
               TextButton.icon(
                 onPressed: candidates.isEmpty
                     ? null
-                    : () => setState(() => _components.add((itemId: candidates.first.id, qty: TextEditingController(text: '1')))),
+                    : () => setState(() { _components.add((itemId: candidates.first.id, qty: TextEditingController(text: '1'))); }),
                 icon: const Icon(Icons.add),
                 label: const Text('Add component'),
               ),
@@ -355,7 +355,7 @@ class _AdjustStockDialogState extends State<AdjustStockDialog> {
               initialValue: _reason,
               decoration: const InputDecoration(labelText: 'Reason'),
               items: AdjustmentReason.values.map((r) => DropdownMenuItem(value: r, child: Text(r.label))).toList(),
-              onChanged: (r) => setState(() => _reason = r!),
+              onChanged: (r) => setState(() { _reason = r!; }),
             ),
             const SizedBox(height: 12),
             TextFormField(
@@ -375,14 +375,14 @@ class _AdjustStockDialogState extends State<AdjustStockDialog> {
               ? null
               : () async {
                   if (!_form.currentState!.validate()) return;
-                  setState(() => _busy = true);
+                  setState(() { _busy = true; });
                   final ok = await runAction(
                     context,
                     () => s.api.requestAdjustment(s.current!.stationId, widget.item.id, num.parse(_qty.text.trim()), _reason, _note.text.trim()),
                     success: owner ? 'Stock adjusted' : 'Sent for approval',
                   );
                   if (!context.mounted) return;
-                  setState(() => _busy = false);
+                  setState(() { _busy = false; });
                   if (ok) Navigator.pop(context, true);
                 },
           child: Text(owner ? 'Adjust' : 'Request approval'),

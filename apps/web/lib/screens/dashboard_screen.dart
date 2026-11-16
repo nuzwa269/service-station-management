@@ -534,13 +534,14 @@ class _PlanCard extends StatelessWidget {
         ]),
         const SizedBox(height: 12),
         if (trial && daysLeft != null) ...[
-          Text('$daysLeft of 14 days left · all Premium features',
+          // A trial can be extended by the platform admin, so don't assume 14 days in total.
+          Text('$daysLeft ${daysLeft == 1 ? 'day' : 'days'} left · all Premium features',
               style: TextStyle(color: Colors.white.withValues(alpha: 0.9), fontSize: 13)),
           const SizedBox(height: 10),
           ClipRRect(
             borderRadius: BorderRadius.circular(6),
             child: LinearProgressIndicator(
-              value: (daysLeft / 14).clamp(0, 1).toDouble(),
+              value: (daysLeft / (daysLeft > 14 ? daysLeft : 14)).clamp(0, 1).toDouble(),
               minHeight: 6,
               backgroundColor: Colors.white24,
               valueColor: const AlwaysStoppedAnimation(Colors.white),

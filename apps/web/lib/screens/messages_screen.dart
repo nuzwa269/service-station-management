@@ -37,14 +37,14 @@ class _MessagesScreenState extends State<MessagesScreen> {
     final s = SessionScope.of(context);
     final station = s.current!.stationId;
     final canSeeAccount = s.role == MemberRole.owner || s.role == MemberRole.manager;
-    setState(() => _data = () async {
+    setState(() { _data = () async {
           final r = await Future.wait([
             s.api.messagesToSend(station),
             s.api.recentMessages(station),
             if (canSeeAccount) s.api.whatsAppAccount(station),
           ]);
           return _MessagesData(r[0] as List<OutboxMessage>, r[1] as List<OutboxMessage>, canSeeAccount ? r[2] as WhatsAppAccount : null);
-        }());
+        }(); });
   }
 
   @override
@@ -56,7 +56,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
           SegmentedButton<bool>(
             segments: const [ButtonSegment(value: false, label: Text('To send')), ButtonSegment(value: true, label: Text('All recent'))],
             selected: {_showSent},
-            onSelectionChanged: (v) => setState(() => _showSent = v.first),
+            onSelectionChanged: (v) => setState(() { _showSent = v.first; }),
           ),
           IconButton(tooltip: 'Refresh', onPressed: _reload, icon: const Icon(Icons.refresh)),
         ]);
@@ -64,7 +64,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
         if (!snap.hasData) return Column(children: [header, const Expanded(child: Center(child: CircularProgressIndicator()))]);
         final d = snap.data!;
         final list = _showSent ? d.recent : d.toSend;
-        final main = list.isEmpty
+        // embedded: inside the phone layout's single page list (no scrolling of its own).
+        Widget mainList({bool embedded = false}) => list.isEmpty
             ? Center(
                 child: Column(mainAxisSize: MainAxisSize.min, children: [
                   const Icon(Icons.mark_chat_read_outlined, size: 48),
@@ -72,9 +73,12 @@ class _MessagesScreenState extends State<MessagesScreen> {
                   Text(_showSent ? 'No messages yet' : 'Nothing to send — all caught up'),
                 ]),
               )
-            : ListView(padding: const EdgeInsets.fromLTRB(16, 0, 16, 16), children: [
-                for (final m in list) MessageTile(message: m, onChanged: _reload),
-              ]);
+            : ListView(
+                shrinkWrap: embedded,
+                physics: embedded ? const NeverScrollableScrollPhysics() : null,
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                children: [for (final m in list) MessageTile(message: m, onChanged: _reload)],
+              );
         final side = _MessagesSide(data: d);
         return LayoutBuilder(builder: (context, c) {
           final wide = c.maxWidth >= 1000;
@@ -82,8 +86,11 @@ class _MessagesScreenState extends State<MessagesScreen> {
             header,
             Expanded(
               child: wide
-                  ? Row(crossAxisAlignment: CrossAxisAlignment.start, children: [Expanded(child: main), SizedBox(width: 360, child: side)])
-                  : ListView(children: [SizedBox(height: 520, child: main), side]),
+                  ? Row(crossAxisAlignment: CrossAxisAlignment.start, children: [Expanded(child: mainList()), SizedBox(width: 360, child: side)])
+                  : ListView(children: [
+                      if (list.isEmpty) Padding(padding: const EdgeInsets.symmetric(vertical: 32), child: mainList()) else mainList(embedded: true),
+                      _MessagesSide(data: d, embedded: true),
+                    ]),
             ),
           ]);
         });
@@ -202,8 +209,11 @@ class MessageTile extends StatelessWidget {
 }
 
 class _MessagesSide extends StatelessWidget {
-  const _MessagesSide({required this.data});
+  const _MessagesSide({required this.data, this.embedded = false});
   final _MessagesData data;
+
+  /// Inside another scrolling list (narrow screens): no scrolling of its own.
+  final bool embedded;
 
   @override
   Widget build(BuildContext context) {
@@ -229,7 +239,7 @@ class _MessagesSide extends StatelessWidget {
         );
     final account = data.account;
     final autoPlan = s.entitlements?.has(Feature.whatsappAuto) ?? false;
-    return ListView(children: [
+    return ListView(shrinkWrap: embedded, physics: embedded ? const NeverScrollableScrollPhysics() : null, children: [
       card(
         'Today',
         Wrap(spacing: 20, runSpacing: 8, children: [

@@ -70,7 +70,7 @@ class _StationProfileFormState extends State<StationProfileForm> {
     } on AppError catch (e) {
       _error = e;
     }
-    if (mounted) setState(() => _loaded = true);
+    if (mounted) setState(() { _loaded = true; });
   }
 
   @override
@@ -92,23 +92,23 @@ class _StationProfileFormState extends State<StationProfileForm> {
     final session = SessionScope.of(context);
     final f = await FilePicker.pickFile(type: FileType.custom, allowedExtensions: ['png', 'jpg', 'jpeg']);
     if (f == null) return;
-    setState(() => _busy = true);
+    setState(() { _busy = true; });
     try {
       final bytes = await f.readAsBytes();
       final ext = f.name.split('.').last;
       final path = await session.api.uploadLogo(session.current!.stationId, bytes, ext);
-      setState(() => _logoPath = path);
+      setState(() { _logoPath = path; });
     } catch (e) {
       if (mounted) showError(context, e);
     } finally {
-      if (mounted) setState(() => _busy = false);
+      if (mounted) setState(() { _busy = false; });
     }
   }
 
   Future<void> _save() async {
     if (!_form.currentState!.validate()) return;
     final session = SessionScope.of(context);
-    setState(() => _busy = true);
+    setState(() { _busy = true; });
     try {
       await session.api.updateProfile(session.current!.stationId, {
         'name': _c['name']!.text,
@@ -127,7 +127,7 @@ class _StationProfileFormState extends State<StationProfileForm> {
     } catch (e) {
       if (mounted) showError(context, e);
     } finally {
-      if (mounted) setState(() => _busy = false);
+      if (mounted) setState(() { _busy = false; });
     }
   }
 
@@ -175,7 +175,7 @@ class _StationProfileFormState extends State<StationProfileForm> {
           title: const Text('Charge sales tax'),
           subtitle: const Text('Tax lines print on invoices only when on'),
           value: _taxOn,
-          onChanged: widget.readOnly ? null : (v) => setState(() => _taxOn = v),
+          onChanged: widget.readOnly ? null : (v) => setState(() { _taxOn = v; }),
         ),
         Row(children: [
           Expanded(child: _field('parts_tax_pct', 'Parts tax %', validator: _pct, keyboard: TextInputType.number)),
@@ -208,7 +208,7 @@ class _SupportAccessSectionState extends State<SupportAccessSection> {
 
   void _reload() {
     final s = SessionScope.of(context);
-    setState(() => _grants = s.api.supportGrants(s.current!.stationId));
+    setState(() { _grants = s.api.supportGrants(s.current!.stationId); });
   }
 
   Future<void> _run(Future<void> Function() action) async {
@@ -231,7 +231,7 @@ class _SupportAccessSectionState extends State<SupportAccessSection> {
         DropdownButton<int>(
           value: _hours,
           items: const [1, 24, 72].map((h) => DropdownMenuItem(value: h, child: Text('$h hours'))).toList(),
-          onChanged: (v) => setState(() => _hours = v!),
+          onChanged: (v) => setState(() { _hours = v!; }),
         ),
         const SizedBox(width: 12),
         FilledButton.tonal(
@@ -389,7 +389,7 @@ class _BillingSettingsSectionState extends State<BillingSettingsSection> {
     final r = parsePkr(rate.text);
     if (ok != true || r == null || !mounted) return;
     if (await runAction(context, () => s.api.saveService(s.current!.stationId, id: sv?.id, name: name.text, rate: r, warrantyDays: int.tryParse(warranty.text) ?? 0))) {
-      setState(() => _services = s.api.services(s.current!.stationId));
+      setState(() { _services = s.api.services(s.current!.stationId); });
     }
   }
 

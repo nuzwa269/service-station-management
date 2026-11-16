@@ -91,9 +91,12 @@ class _BookingsScreenState extends State<BookingsScreen> {
       onRetry: _reload,
       builder: (context, d) {
         final header = PageHeader(title: 'Bookings', actions: [
-          IconButton(tooltip: 'Previous day', onPressed: () => _go(-1), icon: const Icon(Icons.chevron_left)),
-          OutlinedButton.icon(onPressed: _pickDay, icon: const Icon(Icons.event_outlined), label: Text('${weekdayNames[_day.weekday - 1]} ${formatDate(_day)}')),
-          IconButton(tooltip: 'Next day', onPressed: () => _go(1), icon: const Icon(Icons.chevron_right)),
+          // Previous / day / next stay together when the header wraps on a phone.
+          Row(mainAxisSize: MainAxisSize.min, children: [
+            IconButton(tooltip: 'Previous day', onPressed: () => _go(-1), icon: const Icon(Icons.chevron_left)),
+            OutlinedButton.icon(onPressed: _pickDay, icon: const Icon(Icons.event_outlined), label: Text('${weekdayNames[_day.weekday - 1]} ${formatDate(_day)}')),
+            IconButton(tooltip: 'Next day', onPressed: () => _go(1), icon: const Icon(Icons.chevron_right)),
+          ]),
           TextButton(
               onPressed: () {
                 _day = _pkToday();
@@ -134,7 +137,10 @@ class _BookingsScreenState extends State<BookingsScreen> {
                       Expanded(flex: 3, child: calendar),
                       SizedBox(width: 360, child: side),
                     ])
-                  : ListView(children: [SizedBox(height: 600, child: calendar), side]),
+                  : ListView(children: [
+                      _DayCalendar(data: d, onNew: _newBooking, onChanged: _reload, embedded: true),
+                      _SidePanel(data: d, onChanged: _reload, embedded: true),
+                    ]),
             ),
           ]);
         });
@@ -144,8 +150,11 @@ class _BookingsScreenState extends State<BookingsScreen> {
 }
 
 class _DayCalendar extends StatelessWidget {
-  const _DayCalendar({required this.data, required this.onNew, required this.onChanged});
+  const _DayCalendar({required this.data, required this.onNew, required this.onChanged, this.embedded = false});
   final _DayData data;
+
+  /// Inside the phone layout's single page list: no scrolling of its own.
+  final bool embedded;
   final void Function(DateTime slot) onNew;
   final VoidCallback onChanged;
 
@@ -157,7 +166,7 @@ class _DayCalendar extends StatelessWidget {
     // Bookings outside today's slots (e.g. after a settings change) still show.
     final starts = data.slots.map((s) => s.start).toSet();
     final orphans = data.bookings.where((b) => !starts.contains(b.slotStart)).toList();
-    return ListView(padding: const EdgeInsets.fromLTRB(16, 0, 16, 16), children: [
+    return ListView(shrinkWrap: embedded, physics: embedded ? const NeverScrollableScrollPhysics() : null, padding: const EdgeInsets.fromLTRB(16, 0, 16, 16), children: [
       for (final slot in data.slots)
         _SlotCard(
           slot: slot,
@@ -332,7 +341,7 @@ class _ArrivedDialogState extends State<_ArrivedDialog> {
             SegmentedButton<FuelLevel>(
               segments: [for (final f in FuelLevel.values) ButtonSegment(value: f, label: Text(f.label))],
               selected: {_fuel},
-              onSelectionChanged: (v) => setState(() => _fuel = v.first),
+              onSelectionChanged: (v) => setState(() { _fuel = v.first; }),
             ),
             const SizedBox(height: 8),
             const Text('A job card opens with the booked service as the complaint.', style: TextStyle(fontSize: 12)),
@@ -347,9 +356,12 @@ class _ArrivedDialogState extends State<_ArrivedDialog> {
 
 /// Right column: day summary, no-shows of the last 7 days, and settings conflicts.
 class _SidePanel extends StatelessWidget {
-  const _SidePanel({required this.data, required this.onChanged});
+  const _SidePanel({required this.data, required this.onChanged, this.embedded = false});
   final _DayData data;
   final VoidCallback onChanged;
+
+  /// Inside another scrolling list (narrow screens): no scrolling of its own.
+  final bool embedded;
 
   @override
   Widget build(BuildContext context) {
@@ -368,7 +380,7 @@ class _SidePanel extends StatelessWidget {
             ]),
           ),
         );
-    return ListView(children: [
+    return ListView(shrinkWrap: embedded, physics: embedded ? const NeverScrollableScrollPhysics() : null, children: [
       card(
         'This day',
         Wrap(spacing: 20, runSpacing: 8, children: [
@@ -452,7 +464,7 @@ class _BookingDialogState extends State<BookingDialog> {
     final s = SessionScope.of(context);
     if (widget.existing == null && _services.isEmpty) {
       s.api.services(s.current!.stationId).then((l) {
-        if (mounted) setState(() => _services = l.where((x) => x.active).toList());
+        if (mounted) setState(() { _services = l.where((x) => x.active).toList(); });
       }).catchError((_) {});
     }
     _loadSlots();
@@ -461,15 +473,15 @@ class _BookingDialogState extends State<BookingDialog> {
   void _loadSlots() {
     final s = SessionScope.of(context);
     s.api.slots(s.current!.stationId, _day).then((l) {
-      if (mounted) setState(() => _slots = l);
+      if (mounted) setState(() { _slots = l; });
     }).catchError((_) {});
   }
 
   Future<void> _find(String q) async {
     final s = SessionScope.of(context);
-    if (q.trim().length < 2) return setState(() => _hits = const []);
+    if (q.trim().length < 2) return setState(() { _hits = const []; });
     final hits = await s.api.searchCustomers(s.current!.stationId, q);
-    if (mounted) setState(() => _hits = hits.where((h) => h.vehicleId != null).toList());
+    if (mounted) setState(() { _hits = hits.where((h) => h.vehicleId != null).toList(); });
   }
 
   Future<void> _save({bool overbook = false}) async {
@@ -525,7 +537,7 @@ class _BookingDialogState extends State<BookingDialog> {
                     dense: true,
                     title: Text('${h.plate} · ${h.name}'),
                     subtitle: Text(formatPkMobile(h.mobile)),
-                    onTap: () => setState(() => _who = h),
+                    onTap: () => setState(() { _who = h; }),
                   ),
                 if (_search.text.trim().length >= 2 && _hits.isEmpty)
                   const Padding(padding: EdgeInsets.only(top: 8), child: Text('No customer with a vehicle found — add them on the Customers page first.')),
@@ -535,7 +547,7 @@ class _BookingDialogState extends State<BookingDialog> {
                   leading: const Icon(Icons.directions_car_outlined),
                   title: Text('${_who!.plate} · ${_who!.name}'),
                   subtitle: Text(formatPkMobile(_who!.mobile)),
-                  trailing: TextButton(onPressed: () => setState(() => _who = null), child: const Text('Change')),
+                  trailing: TextButton(onPressed: () => setState(() { _who = null; }), child: const Text('Change')),
                 ),
               const SizedBox(height: 12),
               DropdownButtonFormField<String?>(
@@ -545,7 +557,7 @@ class _BookingDialogState extends State<BookingDialog> {
                   const DropdownMenuItem<String?>(value: null, child: Text('—')),
                   for (final sv in _services) DropdownMenuItem<String?>(value: sv.id, child: Text(sv.name)),
                 ],
-                onChanged: (v) => setState(() => _serviceId = v),
+                onChanged: (v) => setState(() { _serviceId = v; }),
               ),
               const SizedBox(height: 12),
             ],
@@ -572,7 +584,7 @@ class _BookingDialogState extends State<BookingDialog> {
                   ChoiceChip(
                     label: Text('${formatHm(toPkt(sl.start).hour * 60 + toPkt(sl.start).minute)}  ${sl.free}/${sl.capacity}'),
                     selected: _slot == sl.start,
-                    onSelected: (_) => setState(() => _slot = sl.start),
+                    onSelected: (_) => setState(() { _slot = sl.start; }),
                   ),
               ]),
             if (!moving) ...[
@@ -694,7 +706,7 @@ class _BookingSettingsDialogState extends State<BookingSettingsDialog> {
                     initialValue: _slot,
                     decoration: const InputDecoration(labelText: 'Slot length'),
                     items: [for (final m in slotLengths) DropdownMenuItem(value: m, child: Text('$m min'))],
-                    onChanged: (v) => setState(() => _slot = v!),
+                    onChanged: (v) => setState(() { _slot = v!; }),
                   ),
                 ),
               ]),
@@ -716,13 +728,13 @@ class _BookingSettingsDialogState extends State<BookingSettingsDialog> {
                       controlAffinity: ListTileControlAffinity.leading,
                       title: Text(weekdayNames[d - 1]),
                       value: _hours[d] != null,
-                      onChanged: (v) => setState(() => _hours[d] = v == true ? (540, 1080) : null),
+                      onChanged: (v) => setState(() { _hours[d] = v == true ? (540, 1080) : null; }),
                     ),
                   ),
                   if (_hours[d] != null) ...[
-                    _timeBox(_hours[d]!.$1, (v) => setState(() => _hours[d] = (v, _hours[d]!.$2))),
+                    _timeBox(_hours[d]!.$1, (v) => setState(() { _hours[d] = (v, _hours[d]!.$2); })),
                     const Text('  to  '),
-                    _timeBox(_hours[d]!.$2, (v) => setState(() => _hours[d] = (_hours[d]!.$1, v))),
+                    _timeBox(_hours[d]!.$2, (v) => setState(() { _hours[d] = (_hours[d]!.$1, v); })),
                   ] else
                     const Text('Closed'),
                 ]),
@@ -734,12 +746,12 @@ class _BookingSettingsDialogState extends State<BookingSettingsDialog> {
                   label: const Text('Add day'),
                   onPressed: () async {
                     final p = await showDatePicker(context: context, initialDate: _pkToday(), firstDate: _pkToday(), lastDate: DateTime.now().add(const Duration(days: 365)));
-                    if (p != null && !_off.contains(p)) setState(() => _off.add(p));
+                    if (p != null && !_off.contains(p)) setState(() { _off.add(p); });
                   },
                 ),
               ]),
               Wrap(spacing: 6, runSpacing: 6, children: [
-                for (final d in _off..sort()) InputChip(label: Text(formatDate(d)), onDeleted: () => setState(() => _off.remove(d))),
+                for (final d in _off..sort()) InputChip(label: Text(formatDate(d)), onDeleted: () => setState(() { _off.remove(d); })),
                 if (_off.isEmpty) const Text('None'),
               ]),
               const SizedBox(height: 12),
@@ -752,7 +764,7 @@ class _BookingSettingsDialogState extends State<BookingSettingsDialog> {
                   controlAffinity: ListTileControlAffinity.leading,
                   title: Text(sv.name),
                   value: _bookable[sv.id] ?? false,
-                  onChanged: (v) => setState(() => _bookable[sv.id] = v == true),
+                  onChanged: (v) => setState(() { _bookable[sv.id] = v == true; }),
                 ),
               const SizedBox(height: 8),
               const Text('Changing settings never cancels existing bookings.', style: TextStyle(fontSize: 12)),

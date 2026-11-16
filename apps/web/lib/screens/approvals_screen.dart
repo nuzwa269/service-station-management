@@ -26,10 +26,10 @@ class _ApprovalsScreenState extends State<ApprovalsScreen> {
 
   void _reload() {
     final s = SessionScope.of(context);
-    setState(() => _requests = s.api.approvals(s.current!.stationId, pendingOnly: _pendingOnly));
+    setState(() { _requests = s.api.approvals(s.current!.stationId, pendingOnly: _pendingOnly); });
     if (s.role == MemberRole.owner && _managerCanApprove == null) {
       s.api.station(s.current!.stationId).then((st) {
-        if (mounted) setState(() => _managerCanApprove = st['manager_can_approve'] as bool? ?? true);
+        if (mounted) setState(() { _managerCanApprove = st['manager_can_approve'] as bool? ?? true; });
       });
     }
   }
@@ -63,7 +63,7 @@ class _ApprovalsScreenState extends State<ApprovalsScreen> {
             selected: _managerCanApprove!,
             onSelected: (v) async {
               if (await runAction(context, () => s.api.setManagerCanApprove(s.current!.stationId, v))) {
-                setState(() => _managerCanApprove = v);
+                setState(() { _managerCanApprove = v; });
               }
             },
           ),

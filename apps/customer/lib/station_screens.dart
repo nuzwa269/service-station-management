@@ -24,7 +24,7 @@ class _StationHomeState extends State<StationHome> {
     _reload();
   }
 
-  void _reload() => setState(() => _data = widget.api.myStationData(widget.station.stationId));
+  void _reload() => setState(() { _data = widget.api.myStationData(widget.station.stationId); });
 
   @override
   Widget build(BuildContext context) => DefaultTabController(
@@ -32,11 +32,12 @@ class _StationHomeState extends State<StationHome> {
         child: Scaffold(
           appBar: AppBar(
             title: Text(widget.station.name),
-            bottom: const TabBar(isScrollable: true, tabs: [
-              Tab(text: 'Bookings'),
-              Tab(text: 'Jobs'),
-              Tab(text: 'Invoices'),
-              Tab(text: 'Vehicles'),
+            // All four tabs share the width (no tab pushed off the screen); tight padding for big text.
+            bottom: const TabBar(labelPadding: EdgeInsets.symmetric(horizontal: 4), tabs: [
+              Tab(child: FittedBox(fit: BoxFit.scaleDown, child: Text('Bookings'))),
+              Tab(child: FittedBox(fit: BoxFit.scaleDown, child: Text('Jobs'))),
+              Tab(child: FittedBox(fit: BoxFit.scaleDown, child: Text('Invoices'))),
+              Tab(child: FittedBox(fit: BoxFit.scaleDown, child: Text('Vehicles'))),
             ]),
           ),
           body: AsyncStateView<Map<String, dynamic>>(
@@ -238,7 +239,7 @@ class _BookSlotScreenState extends State<BookSlotScreen> {
 
   Future<void> _confirm() async {
     if (_slot == null) return;
-    setState(() => _busy = true);
+    setState(() { _busy = true; });
     try {
       if (widget.rescheduleId != null) {
         await widget.api.rescheduleMyBooking(widget.rescheduleId!, _slot!);
@@ -253,7 +254,7 @@ class _BookSlotScreenState extends State<BookSlotScreen> {
       showError(context, e);
       if (e.code == AppErrorCode.slotTaken) _loadSlots(); // "Slot just filled, pick another"
     } finally {
-      if (mounted) setState(() => _busy = false);
+      if (mounted) setState(() { _busy = false; });
     }
   }
 
@@ -270,7 +271,7 @@ class _BookSlotScreenState extends State<BookSlotScreen> {
                 initialValue: _vehicle,
                 decoration: const InputDecoration(labelText: 'Vehicle'),
                 items: [for (final v in _vehicles) DropdownMenuItem(value: v['id'] as String, child: Text(v['plate'] as String))],
-                onChanged: (v) => setState(() => _vehicle = v),
+                onChanged: (v) => setState(() { _vehicle = v; }),
               ),
             ),
             IconButton(tooltip: 'Add vehicle', onPressed: _addVehicle, icon: const Icon(Icons.add)),
@@ -284,7 +285,7 @@ class _BookSlotScreenState extends State<BookSlotScreen> {
                 const DropdownMenuItem<String?>(value: null, child: Text('Not sure / inspection')),
                 for (final s in _services) DropdownMenuItem<String?>(value: s['id'] as String, child: Text('${s['name']} · ${formatPkr(_m(s['rate_paisa']))}')),
               ],
-              onChanged: (v) => setState(() => _service = v),
+              onChanged: (v) => setState(() { _service = v; }),
             ),
           const SizedBox(height: 12),
         ],
@@ -312,7 +313,7 @@ class _BookSlotScreenState extends State<BookSlotScreen> {
                 ChoiceChip(
                   label: Text(formatHm(toPkt(s.start).hour * 60 + toPkt(s.start).minute)),
                   selected: _slot == s.start,
-                  onSelected: (_) => setState(() => _slot = s.start),
+                  onSelected: (_) => setState(() { _slot = s.start; }),
                 ),
             ]);
           },
@@ -384,7 +385,7 @@ class _JobTrackScreenState extends State<JobTrackScreen> {
     _reload();
   }
 
-  void _reload() => setState(() => _job = widget.api.myJob(widget.jobId));
+  void _reload() => setState(() { _job = widget.api.myJob(widget.jobId); });
 
   Future<void> _decide(bool approve, bool extra, Money total) async {
     final what = extra ? 'extra work' : 'estimate';

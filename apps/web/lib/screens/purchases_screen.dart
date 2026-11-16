@@ -258,7 +258,7 @@ class _PurchaseDialogState extends State<PurchaseDialog> {
   Future<void> _save() async {
     if (!_form.currentState!.validate() || _lines.isEmpty) return;
     final s = SessionScope.of(context);
-    setState(() => _busy = true);
+    setState(() { _busy = true; });
     final ok = await runAction(
       context,
       () => s.api.postPurchase(
@@ -273,7 +273,7 @@ class _PurchaseDialogState extends State<PurchaseDialog> {
       success: 'Bill saved — stock updated',
     );
     if (!mounted) return;
-    setState(() => _busy = false);
+    setState(() { _busy = false; });
     if (ok) Navigator.pop(context, true);
   }
 
@@ -294,7 +294,7 @@ class _PurchaseDialogState extends State<PurchaseDialog> {
                         initialValue: _supplierId,
                         decoration: const InputDecoration(labelText: 'Supplier'),
                         items: widget.suppliers.map((s) => DropdownMenuItem(value: s.id, child: Text(s.name))).toList(),
-                        onChanged: (v) => setState(() => _supplierId = v),
+                        onChanged: (v) => setState(() { _supplierId = v; }),
                         validator: (v) => v == null ? 'Choose a supplier (add one in the Suppliers tab)' : null,
                       )
                     : TextFormField(
@@ -317,7 +317,7 @@ class _PurchaseDialogState extends State<PurchaseDialog> {
                       initialValue: l.itemId,
                       isExpanded: true,
                       items: widget.items.map((i) => DropdownMenuItem(value: i.id, child: Text('${i.code} · ${i.name}', overflow: TextOverflow.ellipsis))).toList(),
-                      onChanged: (v) => setState(() => l.itemId = v!),
+                      onChanged: (v) => setState(() { l.itemId = v!; }),
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -331,13 +331,13 @@ class _PurchaseDialogState extends State<PurchaseDialog> {
                   ),
                   const SizedBox(width: 8),
                   Expanded(flex: 2, child: TextFormField(controller: l.cost, decoration: const InputDecoration(labelText: 'Price each (Rs)'), validator: moneyValidator)),
-                  IconButton(onPressed: () => setState(() => _lines.remove(l)), icon: const Icon(Icons.close)),
+                  IconButton(onPressed: () => setState(() { _lines.remove(l); }), icon: const Icon(Icons.close)),
                 ]),
               ),
             Align(
               alignment: Alignment.centerLeft,
               child: TextButton.icon(
-                onPressed: widget.items.isEmpty ? null : () => setState(() => _lines.add(_Line(widget.items.first.id))),
+                onPressed: widget.items.isEmpty ? null : () => setState(() { _lines.add(_Line(widget.items.first.id)); }),
                 icon: const Icon(Icons.add),
                 label: Text(widget.items.isEmpty ? 'Add items in Inventory first' : 'Add line'),
               ),

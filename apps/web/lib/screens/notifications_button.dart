@@ -52,7 +52,7 @@ class _NotificationsButtonState extends State<NotificationsButton> {
   Future<void> _load() async {
     try {
       final list = await SessionScope.of(context).api.notifications(widget.stationId);
-      if (mounted) setState(() => _items = list);
+      if (mounted) setState(() { _items = list; });
     } catch (_) {/* the bell stays as it was */}
   }
 

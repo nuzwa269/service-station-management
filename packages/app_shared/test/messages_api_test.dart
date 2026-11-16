@@ -45,4 +45,13 @@ void main() {
     expect(u.needFor(4), UpdateNeed.optional);
     expect(u.needFor(2), UpdateNeed.required);
   });
+
+  test('split APK version codes map back to the published build', () {
+    expect(buildFromVersionCode(2003), 3);
+    expect(buildFromVersionCode(1003), 3);
+    expect(buildFromVersionCode(3), 3);
+    final u = AppUpdate.fromRow({'build': 4, 'version': '1.0.3', 'min_build': 1, 'apk_url': 'https://x/a.apk', 'notes': null});
+    expect(u.needFor(buildFromVersionCode(2003)), UpdateNeed.optional);
+  });
 }
+

@@ -31,14 +31,19 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   late Future<List<SubPayment>> _payments;
   late Future<Map<String, dynamic>> _quote;
   String _cycle = 'monthly';
+  bool _loaded = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _reload();
+    // Load once. refreshEntitlements() notifies the session, which calls this method again —
+    // reloading here every time made the page request data from the server in an endless loop.
+    if (_loaded) return;
+    _loaded = true;
+    _reload(refreshPlan: false);
   }
 
-  void _reload() {
+  void _reload({bool refreshPlan = true}) {
     final s = SessionScope.of(context);
     final id = s.current!.stationId;
     setState(() {
@@ -46,7 +51,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       _payments = s.api.subscriptionPayments(id);
       _quote = s.api.subscriptionQuote(id, s.entitlements!.planCode, _cycle);
     });
-    s.refreshEntitlements();
+    if (refreshPlan) s.refreshEntitlements();
   }
 
   Future<void> _pay(PlanInfo plan, {required String kind, required Money amount}) async {
@@ -95,18 +100,23 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     if (q?['pending_plan'] != null) Text('Changes to ${q!['pending_plan']} at the next renewal', style: const TextStyle(color: Color(0xFFF59E0B))),
                   ]),
                 ),
-                SegmentedButton<String>(
-                  segments: const [ButtonSegment(value: 'monthly', label: Text('Monthly')), ButtonSegment(value: 'yearly', label: Text('Yearly · 2 months free'))],
-                  selected: {_cycle},
-                  onSelectionChanged: (v) {
-                    _cycle = v.first;
-                    _reload();
-                  },
-                ),
               ]),
             ),
           );
         },
+      ),
+      const SizedBox(height: 12),
+      // Billing cycle on its own line so it never squeezes the plan summary on small screens.
+      Align(
+        alignment: Alignment.centerLeft,
+        child: SegmentedButton<String>(
+          segments: const [ButtonSegment(value: 'monthly', label: Text('Monthly')), ButtonSegment(value: 'yearly', label: Text('Yearly · 2 months free'))],
+          selected: {_cycle},
+          onSelectionChanged: (v) {
+            _cycle = v.first;
+            _reload();
+          },
+        ),
       ),
       const SizedBox(height: 20),
       FutureBuilder<List<PlanInfo>>(
@@ -120,6 +130,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                   plan: p,
                   cycle: _cycle,
                   current: e.status != StationStatus.trial && p.code == e.planCode,
+                  sideBySide: c.maxWidth >= 900,
                   onChoose: !isOwner
                       ? null
                       : () async {
@@ -226,8 +237,11 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 }
 
 class _PlanCard extends StatelessWidget {
-  const _PlanCard({required this.plan, required this.cycle, required this.current, this.onChoose});
+  const _PlanCard({required this.plan, required this.cycle, required this.current, this.onChoose, this.sideBySide = false});
   final PlanInfo plan;
+
+  /// Cards in one row share a height; the button then sits at the bottom of each card.
+  final bool sideBySide;
   final String cycle;
   final bool current;
   final VoidCallback? onChoose;
@@ -264,7 +278,7 @@ class _PlanCard extends StatelessWidget {
                 Expanded(child: Text(f.value, style: TextStyle(color: plan.features.contains(f.key) ? null : scheme.outline))),
               ]),
             ),
-          const Spacer(),
+          if (sideBySide) const Spacer(),
           const SizedBox(height: 14),
           SizedBox(
             width: double.infinity,
@@ -313,7 +327,7 @@ class _PayDialogState extends State<_PayDialog> {
               ButtonSegment(value: 'wallet', label: Text('JazzCash / Easypaisa / Card')),
             ],
             selected: {_method},
-            onSelectionChanged: (v) => setState(() => _method = v.first),
+            onSelectionChanged: (v) => setState(() { _method = v.first; }),
           ),
           const SizedBox(height: 12),
           if (_method == 'wallet')
@@ -333,7 +347,7 @@ class _PayDialogState extends State<_PayDialog> {
                   if (!context.mounted) return;
                   await runAction(context, () async {
                     _receipt = await s.api.uploadReceipt(s.current!.stationId, bytes, f.name.split('.').last);
-                    setState(() => _receiptName = f.name);
+                    setState(() { _receiptName = f.name; });
                   });
                 },
                 icon: const Icon(Icons.upload_file_rounded),
@@ -351,7 +365,7 @@ class _PayDialogState extends State<_PayDialog> {
           onPressed: _busy || _method == 'wallet'
               ? null
               : () async {
-                  setState(() => _busy = true);
+                  setState(() { _busy = true; });
                   final ok = await runAction(
                     context,
                     () => s.api.submitManualPayment(s.current!.stationId,
@@ -359,7 +373,7 @@ class _PayDialogState extends State<_PayDialog> {
                     success: 'Sent for verification',
                   );
                   if (!context.mounted) return;
-                  setState(() => _busy = false);
+                  setState(() { _busy = false; });
                   if (ok) Navigator.pop(context, true);
                 },
           child: const Text('Submit'),

@@ -29,12 +29,12 @@ class _WhatsAppSettingsSectionState extends State<WhatsAppSettingsSection> {
     final s = SessionScope.of(context);
     final id = s.current!.stationId;
     Future<(WhatsAppAccount, List<MessageEventSetting>)> load() async => (await s.api.whatsAppAccount(id), await s.api.messageEvents(id));
-    setState(() => _data = load());
+    setState(() { _data = load(); });
   }
 
   Future<void> _connect() async {
     final s = SessionScope.of(context);
-    setState(() => _busy = true);
+    setState(() { _busy = true; });
     try {
       final r = await startWhatsAppSignup(AppConfig.metaAppId, AppConfig.metaConfigId);
       if (r == null || !mounted) return;
@@ -45,7 +45,7 @@ class _WhatsAppSettingsSectionState extends State<WhatsAppSettingsSection> {
       );
     } finally {
       if (mounted) {
-        setState(() => _busy = false);
+        setState(() { _busy = false; });
         _reload();
       }
     }

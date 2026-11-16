@@ -29,6 +29,8 @@ jobs:
         working-directory: packages/app_shared
       - run: flutter test
         working-directory: apps/sms_gateway
+      - run: flutter test
+        working-directory: apps/customer
 
   database:
     runs-on: ubuntu-24.04

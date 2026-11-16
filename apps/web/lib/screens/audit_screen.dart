@@ -27,7 +27,7 @@ class _AuditLogScreenState extends State<AuditLogScreen> {
 
   void _reload() {
     final s = SessionScope.of(context);
-    setState(() => _entries = s.api.auditLog(s.current!.stationId, table: _table));
+    setState(() { _entries = s.api.auditLog(s.current!.stationId, table: _table); });
   }
 
   static String _value(Object? v) => v == null ? '—' : (v is String ? v : jsonEncode(v));

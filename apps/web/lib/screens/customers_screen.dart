@@ -21,12 +21,12 @@ class _CustomersScreenState extends State<CustomersScreen> {
   void _run() {
     final s = SessionScope.of(context);
     final q = _search.text.trim();
-    setState(() => _results = q.length < 2 ? null : s.api.searchCustomers(s.current!.stationId, q));
+    setState(() { _results = q.length < 2 ? null : s.api.searchCustomers(s.current!.stationId, q); });
   }
 
   Future<void> _addCustomer() async {
     final id = await showDialog<String>(context: context, builder: (_) => const CustomerDialog());
-    if (id != null) setState(() => _selected = id);
+    if (id != null) setState(() { _selected = id; });
   }
 
   @override
@@ -46,7 +46,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
       ),
       Expanded(
         child: _results == null
-            ? DueForServiceList(onOpen: (id) => setState(() => _selected = id))
+            ? DueForServiceList(onOpen: (id) => setState(() { _selected = id; }))
             : AsyncStateView<List<CustomerHit>>(
                 future: _results!,
                 isEmpty: (l) => l.isEmpty,
@@ -58,7 +58,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
                       leading: Icon(h.plate == null ? Icons.person_outline : Icons.directions_car_outlined),
                       title: Text(h.plate == null ? h.name : '${h.plate} · ${h.name}'),
                       subtitle: Text([formatPkMobile(h.mobile), if (h.make != null) '${h.make} ${h.model ?? ''}'].join(' · ')),
-                      onTap: () => setState(() => _selected = h.customerId),
+                      onTap: () => setState(() { _selected = h.customerId; }),
                     ),
                 ]),
               ),
@@ -73,7 +73,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
     return _selected == null
         ? list
         : Column(children: [
-            Align(alignment: Alignment.centerLeft, child: TextButton.icon(onPressed: () => setState(() => _selected = null), icon: const Icon(Icons.arrow_back), label: const Text('Back'))),
+            Align(alignment: Alignment.centerLeft, child: TextButton.icon(onPressed: () => setState(() { _selected = null; }), icon: const Icon(Icons.arrow_back), label: const Text('Back'))),
             Expanded(child: detail),
           ]);
   }
@@ -97,7 +97,7 @@ class _CustomerDetailState extends State<CustomerDetail> {
     _reload();
   }
 
-  void _reload() => setState(() => _customer = SessionScope.of(context).api.customer(widget.customerId));
+  void _reload() => setState(() { _customer = SessionScope.of(context).api.customer(widget.customerId); });
 
   Future<void> _editCustomer(Map<String, dynamic> c) async {
     final id = await showDialog<String>(context: context, builder: (_) => CustomerDialog(existing: c));
@@ -405,7 +405,7 @@ class _CustomerDuesCardState extends State<CustomerDuesCard> {
                         final m = parsePkr(amount.text);
                         if (ok != true || m == null || !context.mounted) return;
                         if (await runAction(context, () => api.collectDues(widget.customerId, m, method, reference: ref.text), success: 'Dues collected')) {
-                          setState(() => _bal = api.customerBalance(widget.customerId));
+                          setState(() { _bal = api.customerBalance(widget.customerId); });
                         }
                       },
                       child: const Text('Collect dues'),
@@ -514,7 +514,7 @@ class _NoShowCardState extends State<NoShowCard> {
                 ? FilledButton(
                     onPressed: () async {
                       if (await runAction(context, () => s.api.unblockCustomer(widget.customerId), success: 'Unblocked')) {
-                        setState(() => _st = s.api.noShowStatus(widget.customerId));
+                        setState(() { _st = s.api.noShowStatus(widget.customerId); });
                       }
                     },
                     child: const Text('Unblock'),

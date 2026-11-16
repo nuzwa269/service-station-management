@@ -29,7 +29,7 @@ class _MechanicHomeState extends State<MechanicHome> {
   void initState() {
     super.initState();
     _sub = e.status.listen((s) {
-      if (mounted) setState(() => _status = s);
+      if (mounted) setState(() { _status = s; });
     });
     e.start().then((_) => e.syncNow());
     if (widget.autoSync) {
@@ -52,41 +52,45 @@ class _MechanicHomeState extends State<MechanicHome> {
     final job = _openJob == null ? null : jobs.where((j) => j['id'] == _openJob).firstOrNull;
     return Scaffold(
       appBar: AppBar(
-        leading: job == null ? null : IconButton(icon: const Icon(Icons.arrow_back_rounded), onPressed: () => setState(() => _openJob = null)),
+        leading: job == null ? null : IconButton(icon: const Icon(Icons.arrow_back_rounded), onPressed: () => setState(() { _openJob = null; })),
         title: Text(job == null ? 'My jobs' : 'Job #${job['job_no']}'),
         actions: [
           SyncBadge(status: _status, onTap: () => _showSync(context)),
           if (job == null) IconButton(tooltip: 'Log out', onPressed: widget.onSignOut, icon: const Icon(Icons.logout_rounded)),
         ],
       ),
-      body: Column(children: [
-        if (_status != null && _status!.overdue(DateTime.now()))
-          MaterialBanner(
-            backgroundColor: const Color(0xFFFFF7ED),
-            content: const Text('Connect to sync — changes older than 24 h are at risk'),
-            actions: [TextButton(onPressed: e.syncNow, child: const Text('Sync now'))],
+      body: Column(
+        children: [
+          if (_status != null && _status!.overdue(DateTime.now()))
+            MaterialBanner(
+              backgroundColor: const Color(0xFFFFF7ED),
+              content: const Text('Connect to sync — changes older than 24 h are at risk'),
+              actions: [TextButton(onPressed: e.syncNow, child: const Text('Sync now'))],
+            ),
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: () async {
+                await e.syncNow();
+                if (mounted) setState(() {});
+              },
+              child: job == null ? _jobsList(jobs) : JobWorkView(engine: e, job: job, onChanged: () => setState(() {})),
+            ),
           ),
-        Expanded(
-          child: RefreshIndicator(
-            onRefresh: () async {
-              await e.syncNow();
-              if (mounted) setState(() {});
-            },
-            child: job == null ? _jobsList(jobs) : JobWorkView(engine: e, job: job, onChanged: () => setState(() {})),
-          ),
-        ),
-      ]),
+        ],
+      ),
     );
   }
 
   Widget _jobsList(List<Map<String, dynamic>> jobs) {
     if (jobs.isEmpty) {
-      return ListView(children: const [
-        SizedBox(height: 120),
-        Icon(Icons.assignment_turned_in_rounded, size: 48, color: Color(0xFF94A3B8)),
-        SizedBox(height: 12),
-        Center(child: Text('No jobs assigned to you right now')),
-      ]);
+      return ListView(
+        children: const [
+          SizedBox(height: 120),
+          Icon(Icons.assignment_turned_in_rounded, size: 48, color: Color(0xFF94A3B8)),
+          SizedBox(height: 12),
+          Center(child: Text('No jobs assigned to you right now')),
+        ],
+      );
     }
     return ListView.separated(
       padding: const EdgeInsets.all(12),
@@ -100,12 +104,14 @@ class _MechanicHomeState extends State<MechanicHome> {
             key: Key('job-${j['job_no']}'),
             contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             title: Text('#${j['job_no']} · ${j['plate']}', style: const TextStyle(fontWeight: FontWeight.w700)),
-            subtitle: Text([
-              [j['make'], j['model']].whereType<String>().join(' '),
-              if ((j['complaints'] as String?)?.isNotEmpty ?? false) j['complaints'],
-            ].join('\n')),
+            subtitle: Text(
+              [
+                [j['make'], j['model']].whereType<String>().join(' '),
+                if ((j['complaints'] as String?)?.isNotEmpty ?? false) j['complaints'],
+              ].join('\n'),
+            ),
             trailing: _StagePill(stage),
-            onTap: () => setState(() => _openJob = j['id'] as String),
+            onTap: () => setState(() { _openJob = j['id'] as String; }),
           ),
         );
       },
@@ -120,22 +126,28 @@ class _MechanicHomeState extends State<MechanicHome> {
       builder: (_) => SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
-          child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text('Sync status', style: Theme.of(context).textTheme.titleLarge),
-            const SizedBox(height: 12),
-            Text(_status?.online ?? false ? 'Online' : 'Offline — changes are saved on this phone'),
-            Text('Pending changes: ${q.length}${q.any((c) => c.held) ? ' (${q.where((c) => c.held).length} held: subscription read-only)' : ''}'),
-            Text('Last sync: ${_status?.lastSyncAt == null ? 'never' : '${formatDate(_status!.lastSyncAt!.toLocal())} ${formatTime(_status!.lastSyncAt!.toLocal())}'}'),
-            const SizedBox(height: 16),
-            FilledButton.icon(
-              onPressed: () async {
-                Navigator.pop(context);
-                await e.syncNow();
-              },
-              icon: const Icon(Icons.sync_rounded),
-              label: const Text('Sync now'),
-            ),
-          ]),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Sync status', style: Theme.of(context).textTheme.titleLarge),
+              const SizedBox(height: 12),
+              Text(_status?.online ?? false ? 'Online' : 'Offline — changes are saved on this phone'),
+              Text('Pending changes: ${q.length}${q.any((c) => c.held) ? ' (${q.where((c) => c.held).length} held: subscription read-only)' : ''}'),
+              Text(
+                'Last sync: ${_status?.lastSyncAt == null ? 'never' : '${formatDate(_status!.lastSyncAt!.toLocal())} ${formatTime(_status!.lastSyncAt!.toLocal())}'}',
+              ),
+              const SizedBox(height: 16),
+              FilledButton.icon(
+                onPressed: () async {
+                  Navigator.pop(context);
+                  await e.syncNow();
+                },
+                icon: const Icon(Icons.sync_rounded),
+                label: const Text('Sync now'),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -171,10 +183,13 @@ class _StagePill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-        decoration: BoxDecoration(color: const Color(0xFFE0F2FE), borderRadius: BorderRadius.circular(20)),
-        child: Text(stage.label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Color(0xFF0369A1))),
-      );
+    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+    decoration: BoxDecoration(color: const Color(0xFFE0F2FE), borderRadius: BorderRadius.circular(20)),
+    child: Text(
+      stage.label,
+      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Color(0xFF0369A1)),
+    ),
+  );
 }
 
 /// SCR-032 — complaints, checklist, parts used, stage buttons. Every tap goes to the queue.
@@ -206,7 +221,11 @@ class JobWorkView extends StatelessWidget {
       context: context,
       builder: (ctx) => AlertDialog(
         title: Text(picked['name'] as String),
-        content: TextField(controller: qtyText, keyboardType: const TextInputType.numberWithOptions(decimal: true), decoration: InputDecoration(labelText: 'Quantity (${unit.short})')),
+        content: TextField(
+          controller: qtyText,
+          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+          decoration: InputDecoration(labelText: 'Quantity (${unit.short})'),
+        ),
         actions: [
           TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
           FilledButton(
@@ -231,91 +250,136 @@ class JobWorkView extends StatelessWidget {
     final lines = _list('lines').where((l) => l['job_id'] == job['id']).toList();
     final unchecked = checklist.where((c) => c['status'] == 'not_checked').length;
     final next = stage.mechanicNext;
-    return ListView(padding: const EdgeInsets.all(12), children: [
-      Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Row(children: [
-              Expanded(child: Text('${job['plate']} · ${[job['make'], job['model']].whereType<String>().join(' ')}', style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16))),
-              _StagePill(stage),
-            ]),
-            const SizedBox(height: 6),
-            Text('Customer: ${job['customer_name']} · ${job['odometer_km']} km'),
-            if ((job['complaints'] as String?)?.isNotEmpty ?? false) ...[const SizedBox(height: 8), Text('Complaints: ${job['complaints']}')],
-            if (job['qc_note'] != null && stage == JobStage.inProgress) ...[
-              const SizedBox(height: 8),
-              Text('Quality check note: ${job['qc_note']}', style: const TextStyle(color: Color(0xFFDC2626), fontWeight: FontWeight.w600)),
-            ],
-          ]),
-        ),
-      ),
-      const SizedBox(height: 12),
-      if (next != null)
-        FilledButton.icon(
-          key: const Key('stage-next'),
-          onPressed: next == JobStage.qualityCheck && unchecked > 0 ? null : () => _do('stage', {'job_id': job['id'], 'stage': next.code}),
-          icon: Icon(next == JobStage.inProgress ? Icons.play_arrow_rounded : Icons.rule_rounded),
-          label: Text(next == JobStage.inProgress
-              ? 'Start work'
-              : unchecked > 0
-                  ? 'Finish checklist ($unchecked left) to request QC'
-                  : 'Request quality check'),
-          style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(52)),
-        ),
-      if (stage == JobStage.qualityCheck)
-        const Card(child: Padding(padding: EdgeInsets.all(14), child: Text('Waiting for the manager\'s quality check.'))),
-      const SizedBox(height: 12),
-      Card(
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            const Text('Checklist', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
-            for (final c in checklist)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4),
-                child: Row(children: [
-                  Expanded(child: Text(c['name'] as String)),
-                  SegmentedButton<String>(
-                    showSelectedIcon: false,
-                    emptySelectionAllowed: true,
-                    segments: const [ButtonSegment(value: 'ok', label: Text('OK')), ButtonSegment(value: 'attention', label: Text('Attention'))],
-                    selected: c['status'] == 'not_checked' ? {} : {c['status'] as String},
-                    onSelectionChanged: stage == JobStage.qualityCheck
-                        ? null
-                        : (v) => _do('check', {'check_id': c['id'], 'status': v.isEmpty ? 'not_checked' : v.first, 'note': c['note']}),
+    return ListView(
+      padding: const EdgeInsets.all(12),
+      children: [
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        '${job['plate']} · ${[job['make'], job['model']].whereType<String>().join(' ')}',
+                        style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+                      ),
+                    ),
+                    _StagePill(stage),
+                  ],
+                ),
+                const SizedBox(height: 6),
+                Text('Customer: ${job['customer_name']} · ${job['odometer_km']} km'),
+                if ((job['complaints'] as String?)?.isNotEmpty ?? false) ...[const SizedBox(height: 8), Text('Complaints: ${job['complaints']}')],
+                if (job['qc_note'] != null && stage == JobStage.inProgress) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    'Quality check note: ${job['qc_note']}',
+                    style: const TextStyle(color: Color(0xFFDC2626), fontWeight: FontWeight.w600),
                   ),
-                ]),
-              ),
-          ]),
+                ],
+              ],
+            ),
+          ),
         ),
-      ),
-      const SizedBox(height: 12),
-      Card(
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            Row(children: [
-              const Expanded(child: Text('Parts used', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15))),
-              if (stage != JobStage.qualityCheck)
-                TextButton.icon(key: const Key('add-part'), onPressed: () => _addPart(context), icon: const Icon(Icons.add_rounded), label: const Text('Add part')),
-            ]),
-            if (lines.isEmpty) const Padding(padding: EdgeInsets.all(8), child: Text('No parts yet')),
-            for (final l in lines)
-              ListTile(
-                dense: true,
-                contentPadding: EdgeInsets.zero,
-                leading: Icon(l['pending'] == true ? Icons.cloud_upload_rounded : Icons.settings_rounded, size: 20),
-                title: Text('${l['description']} × ${l['qty']}'),
-                subtitle: Text(l['status'] == 'extra_pending' ? 'Added by mechanic — awaiting customer approval' : 'In the approved estimate'),
-                trailing: l['mine'] == true && stage != JobStage.qualityCheck
-                    ? IconButton(icon: const Icon(Icons.close_rounded), onPressed: () => _do('part_remove', {'line_id': l['id']}))
-                    : null,
-              ),
-          ]),
+        const SizedBox(height: 12),
+        if (next != null)
+          FilledButton.icon(
+            key: const Key('stage-next'),
+            onPressed: next == JobStage.qualityCheck && unchecked > 0 ? null : () => _do('stage', {'job_id': job['id'], 'stage': next.code}),
+            icon: Icon(next == JobStage.inProgress ? Icons.play_arrow_rounded : Icons.rule_rounded),
+            label: Text(
+              next == JobStage.inProgress
+                  ? 'Start work'
+                  : unchecked > 0
+                  ? 'Finish checklist ($unchecked left) to request QC'
+                  : 'Request quality check',
+            ),
+            style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(52)),
+          ),
+        if (stage == JobStage.qualityCheck)
+          const Card(
+            child: Padding(padding: EdgeInsets.all(14), child: Text('Waiting for the manager\'s quality check.')),
+          ),
+        const SizedBox(height: 12),
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Text('Checklist', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
+                for (final c in checklist)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    // Name and OK / Attention side by side when they fit, buttons below the name when not.
+                    child: Wrap(
+                      alignment: WrapAlignment.spaceBetween,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      spacing: 8,
+                      runSpacing: 4,
+                      children: [
+                        Text(c['name'] as String),
+                        SegmentedButton<String>(
+                          showSelectedIcon: false,
+                          emptySelectionAllowed: true,
+                          segments: const [
+                            ButtonSegment(value: 'ok', label: Text('OK')),
+                            ButtonSegment(value: 'attention', label: Text('Attention')),
+                          ],
+                          selected: c['status'] == 'not_checked' ? {} : {c['status'] as String},
+                          onSelectionChanged: stage == JobStage.qualityCheck
+                              ? null
+                              : (v) => _do('check', {'check_id': c['id'], 'status': v.isEmpty ? 'not_checked' : v.first, 'note': c['note']}),
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
+          ),
         ),
-      ),
-    ]);
+        const SizedBox(height: 12),
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  children: [
+                    const Expanded(
+                      child: Text('Parts used', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
+                    ),
+                    if (stage != JobStage.qualityCheck)
+                      TextButton.icon(
+                        key: const Key('add-part'),
+                        onPressed: () => _addPart(context),
+                        icon: const Icon(Icons.add_rounded),
+                        label: const Text('Add part'),
+                      ),
+                  ],
+                ),
+                if (lines.isEmpty) const Padding(padding: EdgeInsets.all(8), child: Text('No parts yet')),
+                for (final l in lines)
+                  ListTile(
+                    dense: true,
+                    contentPadding: EdgeInsets.zero,
+                    leading: Icon(l['pending'] == true ? Icons.cloud_upload_rounded : Icons.settings_rounded, size: 20),
+                    title: Text('${l['description']} × ${l['qty']}'),
+                    subtitle: Text(l['status'] == 'extra_pending' ? 'Added by mechanic — awaiting customer approval' : 'In the approved estimate'),
+                    trailing: l['mine'] == true && stage != JobStage.qualityCheck
+                        ? IconButton(icon: const Icon(Icons.close_rounded), onPressed: () => _do('part_remove', {'line_id': l['id']}))
+                        : null,
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
 
@@ -342,26 +406,30 @@ class _PartPickerState extends State<_PartPicker> {
         padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
         child: SizedBox(
           height: MediaQuery.sizeOf(context).height * 0.7,
-          child: Column(children: [
-            Padding(
-              padding: const EdgeInsets.all(12),
-              child: TextField(
-                autofocus: true,
-                decoration: const InputDecoration(prefixIcon: Icon(Icons.search), hintText: 'Part name, code or barcode'),
-                onChanged: (v) => setState(() => _q = v.trim()),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: TextField(
+                  autofocus: true,
+                  decoration: const InputDecoration(prefixIcon: Icon(Icons.search), hintText: 'Part name, code or barcode'),
+                  onChanged: (v) => setState(() { _q = v.trim(); }),
+                ),
               ),
-            ),
-            Expanded(
-              child: ListView(children: [
-                for (final i in shown)
-                  ListTile(
-                    title: Text(i['name'] as String),
-                    subtitle: Text('${i['code']} · stock ${formatQty(i['on_hand'] as num, ItemUnit.parse(i['unit'] as String))}'),
-                    onTap: () => Navigator.pop(context, i),
-                  ),
-              ]),
-            ),
-          ]),
+              Expanded(
+                child: ListView(
+                  children: [
+                    for (final i in shown)
+                      ListTile(
+                        title: Text(i['name'] as String),
+                        subtitle: Text('${i['code']} · stock ${formatQty(i['on_hand'] as num, ItemUnit.parse(i['unit'] as String))}'),
+                        onTap: () => Navigator.pop(context, i),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -74,7 +74,7 @@ class _StaffTabState extends State<_StaffTab> {
           await s.api.attendance(id, _day),
           owner ? await s.api.advances(id) : const [],
         );
-    setState(() => _data = load());
+    setState(() { _data = load(); });
   }
 
   bool get _isToday {
@@ -109,7 +109,10 @@ class _StaffTabState extends State<_StaffTab> {
         final d = snap.data!;
         final active = d.staff.where((m) => m.active).toList();
         final canEdit = _owner || _isToday;
-        final list = ListView(padding: const EdgeInsets.fromLTRB(16, 8, 16, 16), children: [
+        final narrow = MediaQuery.sizeOf(context).width < 1000;
+        // On narrow screens both parts sit in one page-level list, so neither scrolls by itself.
+        const noScroll = NeverScrollableScrollPhysics();
+        final list = ListView(shrinkWrap: narrow, physics: narrow ? noScroll : null, padding: const EdgeInsets.fromLTRB(16, 8, 16, 16), children: [
           Row(children: [
             IconButton(
               tooltip: 'Previous day',
@@ -163,7 +166,7 @@ class _StaffTabState extends State<_StaffTab> {
             ),
         ]);
         final counts = {for (final a in Attendance.values) a: active.where((m) => (d.attendance[m.id] ?? Attendance.present) == a).length};
-        final side = ListView(padding: const EdgeInsets.fromLTRB(0, 8, 16, 16), children: [
+        final side = ListView(shrinkWrap: narrow, physics: narrow ? noScroll : null, padding: EdgeInsets.fromLTRB(narrow ? 16 : 0, 8, 16, 16), children: [
           Card(
             margin: const EdgeInsets.only(bottom: 12),
             child: Padding(
@@ -219,7 +222,7 @@ class _StaffTabState extends State<_StaffTab> {
         ]);
         return LayoutBuilder(builder: (context, c) => c.maxWidth >= 1000
             ? Row(crossAxisAlignment: CrossAxisAlignment.start, children: [Expanded(child: list), SizedBox(width: 340, child: side)])
-            : Column(children: [SizedBox(height: 300, child: side), Expanded(child: list)]));
+            : ListView(children: [side, list]));
       },
     );
   }
@@ -256,7 +259,7 @@ class _StaffDialogState extends State<_StaffDialog> {
     if (_logins.isEmpty) {
       final s = SessionScope.of(context);
       s.api.members(s.current!.stationId).then((m) {
-        if (mounted) setState(() => _logins = m);
+        if (mounted) setState(() { _logins = m; });
       });
     }
   }
@@ -296,7 +299,7 @@ class _StaffDialogState extends State<_StaffDialog> {
                 initialValue: _role,
                 decoration: const InputDecoration(labelText: 'Role'),
                 items: [for (final r in _roles) DropdownMenuItem(value: r, child: Text(r[0].toUpperCase() + r.substring(1)))],
-                onChanged: (v) => setState(() => _role = v!),
+                onChanged: (v) => setState(() { _role = v!; }),
               ),
               const SizedBox(height: 8),
               DropdownButtonFormField<String?>(
@@ -306,7 +309,7 @@ class _StaffDialogState extends State<_StaffDialog> {
                   const DropdownMenuItem(value: null, child: Text('No login')),
                   for (final m in _logins) DropdownMenuItem(value: m.userId, child: Text('${m.name} (${m.role.label})')),
                 ],
-                onChanged: (v) => setState(() => _userId = v),
+                onChanged: (v) => setState(() { _userId = v; }),
               ),
               const SizedBox(height: 8),
               Row(children: [
@@ -324,7 +327,7 @@ class _StaffDialogState extends State<_StaffDialog> {
               ]),
               if (widget.existing != null)
                 SwitchListTile(contentPadding: EdgeInsets.zero, title: const Text('Still working here'), value: _active,
-                    onChanged: (v) => setState(() => _active = v)),
+                    onChanged: (v) => setState(() { _active = v; })),
             ]),
           ),
         ),
@@ -370,14 +373,14 @@ class _AdvanceDialogState extends State<_AdvanceDialog> {
               initialValue: _method,
               decoration: const InputDecoration(labelText: 'Paid by'),
               items: [for (final p in PayMethod.values.where((p) => p != PayMethod.credit)) DropdownMenuItem(value: p, child: Text(p.label))],
-              onChanged: (v) => setState(() => _method = v!),
+              onChanged: (v) => setState(() { _method = v!; }),
             ),
             const SizedBox(height: 8),
             DropdownButtonFormField<int>(
               initialValue: _months,
               decoration: const InputDecoration(labelText: 'Deduct over'),
               items: [for (var i = 1; i <= 6; i++) DropdownMenuItem(value: i, child: Text(i == 1 ? 'This month' : '$i months'))],
-              onChanged: (v) => setState(() => _months = v!),
+              onChanged: (v) => setState(() { _months = v!; }),
             ),
             const SizedBox(height: 8),
             TextField(controller: _note, decoration: const InputDecoration(labelText: 'Note (optional)')),
@@ -430,7 +433,7 @@ class _PayrollTabState extends State<_PayrollTab> {
 
   void _reload() {
     final s = SessionScope.of(context);
-    setState(() => _run = s.api.payroll(s.current!.stationId, _month));
+    setState(() { _run = s.api.payroll(s.current!.stationId, _month); });
   }
 
   String get _label => '${const ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][_month.month - 1]} ${_month.year}';

@@ -23,7 +23,7 @@ class _UsersScreenState extends State<UsersScreen> {
 
   void _reload() {
     final s = SessionScope.of(context);
-    setState(() => _members = s.api.members(s.current!.stationId));
+    setState(() { _members = s.api.members(s.current!.stationId); });
   }
 
   Future<void> _run(Future<void> Function() action) async {
@@ -110,14 +110,14 @@ class _AddUserDialogState extends State<AddUserDialog> {
 
   Future<void> _save() async {
     if (!_form.currentState!.validate()) return;
-    setState(() => _busy = true);
+    setState(() { _busy = true; });
     try {
       await widget.api.inviteMember(widget.stationId, name: _name.text.trim(), mobile: _mobile.text, role: _role, password: _password.text);
       if (mounted) Navigator.pop(context, true);
     } catch (e) {
       if (mounted) showError(context, e);
     } finally {
-      if (mounted) setState(() => _busy = false);
+      if (mounted) setState(() { _busy = false; });
     }
   }
 
@@ -144,7 +144,7 @@ class _AddUserDialogState extends State<AddUserDialog> {
                 items: [MemberRole.manager, MemberRole.cashier, MemberRole.mechanic]
                     .map((r) => DropdownMenuItem(value: r, child: Text(r.label)))
                     .toList(),
-                onChanged: (r) => setState(() => _role = r!),
+                onChanged: (r) => setState(() { _role = r!; }),
               ),
               const SizedBox(height: 12),
               TextFormField(

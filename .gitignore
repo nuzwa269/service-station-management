@@ -28,3 +28,6 @@ build-shots/
 
 # Built APKs for hand-out (large; publish through App releases instead)
 dist/
+
+# Layout screenshots from tests (--dart-define=SHOTS=true)
+**/test/shots/

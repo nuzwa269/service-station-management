@@ -69,14 +69,14 @@ class _SignupScreenState extends State<SignupScreen> {
 
   Future<void> _sendCode() async {
     if (!_form.currentState!.validate()) return;
-    setState(() => _busy = true);
+    setState(() { _busy = true; });
     try {
       await SessionScope.of(context).api.signUpOwner(_mobile.text, _password.text);
-      setState(() => _codeSent = true);
+      setState(() { _codeSent = true; });
     } catch (e) {
       if (mounted) showError(context, e);
     } finally {
-      if (mounted) setState(() => _busy = false);
+      if (mounted) setState(() { _busy = false; });
     }
   }
 

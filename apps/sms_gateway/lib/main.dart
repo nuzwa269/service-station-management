@@ -146,7 +146,7 @@ class _GatewayHomeState extends State<GatewayHome> {
               labelText: 'Gateway secret',
               suffixIcon: IconButton(
                 icon: Icon(_showSecret ? Icons.visibility_off : Icons.visibility),
-                onPressed: () => setState(() => _showSecret = !_showSecret),
+                onPressed: () => setState(() { _showSecret = !_showSecret; }),
               ),
             ),
           ),

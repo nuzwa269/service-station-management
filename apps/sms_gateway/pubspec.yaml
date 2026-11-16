@@ -1,7 +1,7 @@
 name: sms_gateway
 description: "Platform SMS gateway phone: sends login codes from its own SIM (TASK-005)."
 publish_to: 'none'
-version: 1.0.0+1
+version: 1.0.1+2
 
 resolution: workspace
 

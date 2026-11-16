@@ -25,7 +25,7 @@ class _CustomerHomeState extends State<CustomerHome> {
     WidgetsBinding.instance.addPostFrameCallback((_) => checkForAppUpdate(context, widget.api, 'customer'));
   }
 
-  void _reload() => setState(() => _stations = widget.api.myStations());
+  void _reload() => setState(() { _stations = widget.api.myStations(); });
 
   Future<void> _signOut() async {
     await Push.unregister(widget.api);
@@ -40,7 +40,7 @@ class _CustomerHomeState extends State<CustomerHome> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: const Text('My vehicles & stations'),
+          title: const Text('My stations'),
           actions: [
             IconButton(
               tooltip: 'Notifications',
@@ -98,7 +98,7 @@ class _LinkStationDialogState extends State<LinkStationDialog> {
   bool _busy = false;
 
   Future<void> _go() async {
-    setState(() => _busy = true);
+    setState(() { _busy = true; });
     try {
       await widget.api.linkStation(_code.text, name: _name.text.trim().isEmpty ? null : _name.text);
       if (mounted) Navigator.pop(context, true);
@@ -106,14 +106,14 @@ class _LinkStationDialogState extends State<LinkStationDialog> {
       if (!mounted) return;
       // First visit at this station: we need the customer's name to create the record.
       if (e.code == AppErrorCode.validation && !_needName) {
-        setState(() => _needName = true);
+        setState(() { _needName = true; });
       } else if (e.code == AppErrorCode.featureLocked) {
         showError(context, const AppError(AppErrorCode.validation, "This station doesn't offer the app yet"));
       } else {
         showError(context, e);
       }
     } finally {
-      if (mounted) setState(() => _busy = false);
+      if (mounted) setState(() { _busy = false; });
     }
   }
 

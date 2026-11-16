@@ -45,15 +45,15 @@ class _ReportsScreenState extends State<ReportsScreen> {
     final id = s.current!.stationId;
     final r = _report;
     if (_locked(r)) {
-      setState(() => _rows = null);
+      setState(() { _rows = null; });
       return;
     }
-    setState(() => _rows = () async {
+    setState(() { _rows = () async {
           final rows = r.fn != null
               ? await s.api.report(r.fn!, id, from: r.ranged ? _range.start : null, to: r.ranged ? _range.end : null)
               : await s.api.reportView(r.view!, id);
           return r.where == null ? rows : rows.where(r.where!).toList();
-        }());
+        }(); });
   }
 
   String get _period => _report.ranged ? '${formatDate(_range.start)} – ${formatDate(_range.end)}' : 'As of ${formatDate(toPkt(DateTime.now()))}';

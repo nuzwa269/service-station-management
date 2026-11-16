@@ -32,6 +32,10 @@ class AppUpdate {
 
 enum UpdateNeed { none, optional, required }
 
+/// Per-phone-type APKs (--split-per-abi) add 1000 × ABI to Android's version code
+/// (armv7 1003, arm64 2003 for build 3). The published build is the plain pubspec number.
+int buildFromVersionCode(int versionCode) => versionCode % 1000;
+
 extension UpdateApi on StationApi {
   Future<AppUpdate?> latestVersion(String app) => guard(() async {
         final r = await client.from('app_versions').select().eq('app', app).maybeSingle();
@@ -44,7 +48,7 @@ Future<void> checkForAppUpdate(BuildContext context, StationApi api, String app)
   try {
     final latest = await api.latestVersion(app);
     if (latest == null || !context.mounted) return;
-    final current = int.tryParse((await PackageInfo.fromPlatform()).buildNumber) ?? 0;
+    final current = buildFromVersionCode(int.tryParse((await PackageInfo.fromPlatform()).buildNumber) ?? 0);
     final need = latest.needFor(current);
     if (need == UpdateNeed.none || !context.mounted) return;
     await showDialog<void>(

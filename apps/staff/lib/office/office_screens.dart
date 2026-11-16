@@ -19,7 +19,7 @@ class _StaffMessagesTabState extends State<StaffMessagesTab> {
 
   Future<void> _reload() async {
     final f = widget.api.messagesToSend(widget.stationId);
-    setState(() => _list = f);
+    setState(() { _list = f; });
     await f;
   }
 
@@ -138,7 +138,7 @@ class _StaffAlertsTabState extends State<StaffAlertsTab> {
 
   Future<void> _reload() async {
     final f = _load();
-    setState(() => _list = f);
+    setState(() { _list = f; });
     await f;
   }
 

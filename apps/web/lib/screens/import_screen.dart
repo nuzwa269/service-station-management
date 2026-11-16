@@ -37,7 +37,7 @@ class _ImportScreenState extends State<ImportScreen> {
       _sent = rows.length;
       _result = await s.api.importRows(s.current!.stationId, items: _items, rows: rows);
     });
-    if (mounted) setState(() => _busy = false);
+    if (mounted) setState(() { _busy = false; });
   }
 
   @override
