@@ -1,7 +1,7 @@
 name: customer_app
 description: "Car service station SaaS"
 publish_to: 'none'
-version: 1.0.0+1
+version: 1.0.1+2
 
 resolution: workspace
 

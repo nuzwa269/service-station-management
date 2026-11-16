@@ -1,11 +1,11 @@
 {
-    "name": "station_web",
-    "short_name": "station_web",
+    "name": "Service Station",
+    "short_name": "Station",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#0E7490",
+    "theme_color": "#0E7490",
+    "description": "Car service station management: job cards, billing, bookings, staff and reports.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

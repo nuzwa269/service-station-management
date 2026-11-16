@@ -6,6 +6,12 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["--yes", "http-server@14.1.1", "apps/web/build/web", "-p", "8080", "-c-1"],
       "port": 8080
+    },
+    {
+      "name": "icon-preview",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["--yes", "http-server@14.1.1", "tools/icons/preview", "-p", "8099", "-c-1"],
+      "port": 8099
     }
   ]
 }
