@@ -470,6 +470,8 @@ class _ReleasesTabState extends State<_ReleasesTab> {
           if (!snap.hasData) return const Center(child: CircularProgressIndicator());
           final byApp = {for (final r in snap.data!) r['app'] as String: r};
           return ListView(padding: const EdgeInsets.all(16), children: [
+            const _SmsGatewayCard(),
+            const SizedBox(height: 8),
             for (final app in const ['staff', 'customer'])
               Card(
                 child: ListTile(
@@ -488,6 +490,54 @@ class _ReleasesTabState extends State<_ReleasesTab> {
                   'Phones offer the update on their next start; builds below "oldest allowed" must update.'),
             ),
           ]);
+        },
+      );
+}
+
+/// TASK-005: the SMS-gateway phone that sends login codes — online, waiting, sent today.
+class _SmsGatewayCard extends StatefulWidget {
+  const _SmsGatewayCard();
+
+  @override
+  State<_SmsGatewayCard> createState() => _SmsGatewayCardState();
+}
+
+class _SmsGatewayCardState extends State<_SmsGatewayCard> {
+  late Future<Map<String, dynamic>> _status;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _reload();
+  }
+
+  void _reload() {
+    final api = SessionScope.of(context).api;
+    Future<Map<String, dynamic>> load() async =>
+        Map<String, dynamic>.from(await api.guard(() async => await api.client.rpc('admin_sms_status')) as Map);
+    setState(() => _status = load());
+  }
+
+  @override
+  Widget build(BuildContext context) => FutureBuilder<Map<String, dynamic>>(
+        future: _status,
+        builder: (context, snap) {
+          final s = snap.data;
+          final seen = s?['last_seen'] == null ? null : DateTime.parse(s!['last_seen'] as String);
+          final online = seen != null && DateTime.now().difference(seen).inMinutes < 2;
+          return Card(
+            child: ListTile(
+              leading: Icon(Icons.sms_rounded, color: s == null ? null : (online ? Colors.green : Colors.red)),
+              title: Text(s == null
+                  ? (snap.hasError ? 'SMS gateway: could not load' : 'SMS gateway')
+                  : 'SMS gateway: ${online ? 'online' : 'OFFLINE — login codes are not going out'}'),
+              subtitle: s == null
+                  ? null
+                  : Text('Last contact ${seen == null ? 'never' : '${formatDate(toPkt(seen))} ${formatTime(toPkt(seen))}'}'
+                      ' · waiting ${s['waiting']} · sent today ${s['sent_today']} · failed/expired today ${s['failed_today']}'),
+              trailing: IconButton(tooltip: 'Refresh', onPressed: _reload, icon: const Icon(Icons.refresh)),
+            ),
+          );
         },
       );
 }

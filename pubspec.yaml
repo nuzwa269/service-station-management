@@ -10,6 +10,7 @@ workspace:
   - apps/web
   - apps/staff
   - apps/customer
+  - apps/sms_gateway
 
 dev_dependencies:
   lints: ^6.0.0

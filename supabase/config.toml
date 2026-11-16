@@ -36,6 +36,14 @@ verify_jwt = false
 [functions.whatsapp-connect]
 verify_jwt = true
 
+# Called by Supabase Auth (Send SMS hook): protected by the Standard Webhooks signature.
+[functions.send-sms]
+verify_jwt = false
+
+# Called by the platform's Android SMS-gateway phone with the GATEWAY_SECRET header.
+[functions.sms-gateway]
+verify_jwt = false
+
 # Called by Meta: protected by the X-Hub-Signature-256 HMAC.
 [functions.whatsapp-webhook]
 verify_jwt = false

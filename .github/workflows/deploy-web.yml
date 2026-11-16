@@ -1,0 +1,39 @@
+# Web dashboard → Vercel (static Flutter web build). Run by hand: Actions → Deploy web → Run.
+# Repository secrets needed: VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID, and for the build
+# PROD_SUPABASE_URL, PROD_SUPABASE_PUBLISHABLE_KEY (public values; never the service-role key).
+# Optional: META_APP_ID, META_CONFIG_ID.
+name: Deploy web
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "production or preview"
+        default: production
+        type: choice
+        options: [production, preview]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.47.8
+          cache: true
+      - name: Build config from secrets
+        run: |
+          cat > config/production.json <<JSON
+          {"APP_ENV":"production","SUPABASE_URL":"${{ secrets.PROD_SUPABASE_URL }}","SUPABASE_PUBLISHABLE_KEY":"${{ secrets.PROD_SUPABASE_PUBLISHABLE_KEY }}","META_APP_ID":"${{ secrets.META_APP_ID }}","META_CONFIG_ID":"${{ secrets.META_CONFIG_ID }}"}
+          JSON
+      - run: flutter pub get
+      - run: flutter build web --release --dart-define-from-file=../../config/production.json
+        working-directory: apps/web
+      - name: Deploy to Vercel
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          npx --yes vercel@latest deploy apps/web/build/web --token "${{ secrets.VERCEL_TOKEN }}" --yes \
+            ${{ inputs.target == 'production' && '--prod' || '' }}
